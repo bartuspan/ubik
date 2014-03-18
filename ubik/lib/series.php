@@ -74,7 +74,7 @@ function ubik_series_list() {
     }
   }
 }
-add_action( 'pre_entry_meta', 'ubik_series_list' );
+add_action( 'pendrell_entry_meta_before', 'ubik_series_list' );
 
 
 
@@ -95,6 +95,7 @@ add_filter( 'pre_get_posts', 'ubik_series_get_posts' );
 
 
 // Test to see whether the post is part of a series
+// TODO: tighten this up
 function ubik_in_series() {
   if (
     taxonomy_exists( 'series' )

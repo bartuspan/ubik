@@ -10,11 +10,15 @@ define( 'UBIK_GOOGLE_ANALYTICS', false );
 // Places functionality
 define( 'UBIK_PLACES', true );
 
+// Mix places in with posts?
+define( 'UBIK_PLACES_IN_LOOP', true );
+
 // Portfolio functionality
 define( 'UBIK_PORTFOLIO', true );
 
 // Post format rewrite
 define( 'UBIK_POST_FORMAT_REWRITE', true );
+define( 'UBIK_POST_FORMAT_REWRITE_BASE', 'format' );
 
 // Posts per page
 define( 'UBIK_POSTS_PER_PAGE_SEARCH', 20 );

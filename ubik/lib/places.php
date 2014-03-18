@@ -31,7 +31,7 @@ function ubik_places_init() {
     'has_archive' => true,
     'query_var' => true,
     'can_export' => true,
-    'rewrite' => true,
+    'rewrite' => array( 'slug' => 'places' ),
     'capability_type' => 'page'
   );
   register_post_type( 'place', $args );
@@ -66,7 +66,7 @@ function ubik_places_query( $query ) {
   if ( $query->is_main_query() ) {
 
     // Add places to the regular flow of items on the blog
-    if ( is_home() || is_front_page() ) {
+    if ( UBIK_PLACES_IN_LOOP && ( is_front_page() || is_home() ) ) {
 
       // Check to see if the post type is already set (avoids conflicts)
       $post_type_vars = $query->get( 'post_type' );
@@ -109,7 +109,9 @@ add_action( 'pre_get_posts', 'ubik_places_query' );
 // Places conditional
 function ubik_is_place() {
   if (
-    get_post_type() === 'place'
+    is_singular( 'place' )
+    || is_post_type_archive( 'place' )
+    || is_tax( 'place_tag' )
   ) {
     return true;
   }
@@ -122,12 +124,14 @@ function ubik_is_place() {
 function ubik_places_list() {
   global $post;
 
-  if ( ubik_is_place() ) {
+  if ( ubik_is_place() && is_singular() ) {
+
     $children = get_pages('post_type=place&child_of=' . $post->ID);
     $siblings = get_pages('post_type=place&child_of=' . $post->post_parent);
+
     if ( $children ) {
       ?><div class="entry-meta-places-list">
-        <h2><?php printf( 'Places in %s:', $post->post_title ); ?></h2>
+        <h2><?php printf( __( 'Places in %s:', 'ubik' ), $post->post_title ); ?></h2>
         <ul class="place-list"><?php wp_list_pages(
         array(
           'child_of'      => $post->ID,
@@ -137,6 +141,7 @@ function ubik_places_list() {
           )
         ); ?></ul>
       </div><?php
+
     // If there aren't any children perhaps siblings will be useful
     } elseif ( count( $siblings ) >= 3 ) {
       ?><div class="entry-meta-places-list">
@@ -156,41 +161,48 @@ function ubik_places_list() {
     }
   }
 }
-add_action( 'pre_entry_meta', 'ubik_places_list', 7 );
+add_action( 'pendrell_entry_meta_before', 'ubik_places_list', 7 );
 
 
 
 // List posts tagged with the current place
 function ubik_places_posts() {
   global $post;
-  $place_name = $post->post_name;
-  $place_title = $post->post_title;
-  $place_tag = term_exists( $place_name, 'post_tag' );
 
-  // Only do the extra work if there is a matching post tag
-  if ($place_tag !== 0 && $place_tag !== null) {
-    $place_tag_link = get_tag_link( $place_tag['term_id'] );
+  if ( ubik_is_place() && is_singular() ) {
+    $place_name = $post->post_name;
+    $place_title = $post->post_title;
+    $place_tag = term_exists( $place_name, 'post_tag' );
 
-    // Fetch posts tagged with the current place; only the slugs need to match
-    $the_query = new WP_Query( 'tag=' . $place_name );
+    // Only do the extra work if there is a matching post tag
+    if ($place_tag !== 0 && $place_tag !== null) {
+      $place_tag_link = get_tag_link( $place_tag['term_id'] );
 
-    if ( $the_query->have_posts() ) {
-      ?>
-        <div class="entry-meta-places-posts">
-          <h2>Posts tagged <a href="<?php echo $place_tag_link; ?>"><?php echo $place_title; ?></a>:</h2>
-          <ul><?php while ( $the_query->have_posts() ) {
-            $the_query->the_post();
-            ?><li><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'pendrell' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a></li><?php
-          } ?></ul>
-        </div>
-    <?php } else {
-      // no posts found
+      // Fetch posts tagged with the current place; only the slugs need to match
+      $the_query = new WP_Query( 'tag=' . $place_name );
+
+      if ( $the_query->have_posts() ) {
+        ?>
+          <div class="entry-meta-places-posts">
+            <h2><?php printf( __( 'Posts tagged <a href="%1$s">%2$s</a>:', 'ubik' ),
+              $place_tag_link,
+              $place_title
+            ); ?></h2>
+            <ul><?php while ( $the_query->have_posts() ) {
+              $the_query->the_post();
+              ?><li><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'pendrell' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a></li><?php
+            } ?></ul>
+          </div>
+      <?php } else {
+        // No posts found!
+      }
+
+      // Restore original post data
+      wp_reset_postdata();
     }
-    // Restore original post data
-    wp_reset_postdata();
   }
 }
-add_action( 'pre_entry_meta', 'ubik_places_posts', 5 );
+add_action( 'pendrell_entry_meta_before', 'ubik_places_posts', 5 );
 
 
 
