@@ -8,6 +8,8 @@ Copy `ubik/ubik` to your plugins folder and activate.
 
 Alternately, you can edit the `wpdev` variable specified in `gulpfile.js` and build your own copy.
 
+Be sure to update your permalinks.
+
 ## Configuration
 
 There is no options screen. Edit `ubik-config-sample.php` and rename to `ubik-config.php` to change default values.
