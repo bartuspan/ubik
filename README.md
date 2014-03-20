@@ -38,3 +38,8 @@ Places also includes a simple shortcode: `[place]Place name[/place]` or `[place 
 ### SERIES
 
 There is a lightweight series taxonomy for linking posts together. Usage is pretty much self-explanatory.
+
+## ISSUES
+
+* Shortcodes don't work in the excerpt or on the feed.
+* Placeholder limitation doesn't work on places shortcode queries.

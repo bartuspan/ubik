@@ -41,3 +41,44 @@ function ubik_excerpt_length( $length ) {
   return $length;
 }
 add_filter( 'excerpt_length', 'ubik_excerpt_length' );
+
+// Adds ellipsis to excerpts
+function ubik_excerpt_more( $more ) {
+  return '&hellip;' . ubik_continue_reading_link();
+}
+add_filter( 'excerpt_more', 'ubik_excerpt_more' );
+
+// Excerpt functions from Twentyeleven, slightly modified
+function ubik_continue_reading_link() {
+  return ' <a href="'. esc_url( get_permalink() ) . '">' . __( 'Continue reading&nbsp;&rarr;', 'ubik' ) . '</a>';
+}
+add_filter( 'the_content_more_link', 'ubik_continue_reading_link');
+
+// More excerpt stuff
+function ubik_custom_excerpt_more( $output ) {
+  if ( has_excerpt() && ! is_attachment() ) {
+    $output .= ubik_continue_reading_link();
+  }
+  return $output;
+}
+add_filter( 'get_the_excerpt', 'ubik_custom_excerpt_more' );
+
+
+
+// Make excerpts shortcode friendly
+function ubik_excerpt_shortcode_friendly($text = '') {
+  $raw_excerpt = $text;
+  if ( '' == $text ) {
+    $text = get_the_content('');
+    //$text = strip_shortcodes( $text );
+    $text = do_shortcode( $text );
+    $text = apply_filters('the_content', $text);
+    $text = str_replace(']]>', ']]>', $text);
+    $excerpt_length = apply_filters('excerpt_length', 55);
+    $excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
+    $text = wp_trim_words( $text, $excerpt_length, $excerpt_more );
+  }
+  return apply_filters('wp_trim_excerpt', $text, $raw_excerpt);
+}
+remove_filter( 'get_the_excerpt', 'wp_trim_excerpt'  );
+add_filter( 'get_the_excerpt', 'ubik_excerpt_shortcode_friendly'  );
