@@ -11,14 +11,17 @@ define( 'UBIK_GOOGLE_ANALYTICS', false );
 define( 'UBIK_PLACES', true );
 
 // Mix places in with posts?
-define( 'UBIK_PLACES_IN_LOOP', true );
+define( 'UBIK_PLACES_IN_LOOP', false );
 
 // Portfolio functionality
 define( 'UBIK_PORTFOLIO', true );
 
-// Post format rewrite
-define( 'UBIK_POST_FORMAT_REWRITE', true );
+// Post format rewrite; change "type/status" to "whatever/status"
+define( 'UBIK_POST_FORMAT_REWRITE', false );
 define( 'UBIK_POST_FORMAT_REWRITE_BASE', 'format' );
+
+// Post format slug; change post format slug "quote" to "quotation" as defined in lib/post-format-slug.php
+define( 'UBIK_POST_FORMAT_SLUG', false );
 
 // Posts per page
 define( 'UBIK_POSTS_PER_PAGE_SEARCH', 20 );

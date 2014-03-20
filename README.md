@@ -18,7 +18,21 @@ There is no options screen. Edit `ubik-config-sample.php` and rename to `ubik-co
 
 Merely a sampling:
 
-* Dequeues the default Open Sans stylesheet
-* Singleton search results redirect to matching post in one step
-* Thumbnail fallback: if a featured image isn't set the appropriately-sized thumbnail of the first image will be displayed
-* Reset admin-side HTML editor to a nicer font size and stack
+### HACKS
+
+* Human-readable dates on recent entries (e.g. posted 21 hours ago).
+* Optional "strict" slugs; removes non-Latin characters (designed for use with bilingual English/Chinese post titles).
+* Post format rewrite: change the base ("type" to whatever) and slugs ("quote" to "quotation").
+* Dequeues the default Open Sans stylesheet.
+* Singleton search results redirect to matching post in one step.
+* Thumbnail fallback: if a featured image isn't set the appropriately-sized thumbnail of the first image will be displayed.
+* Reset admin-side HTML editor to a nicer font size and stack.
+* Adds Google Analytics to the footer.
+
+### PLACES
+
+Places are a Custom Post Type for building a geographic database. This is still in development and very new. I am building it mainly for my own use and may transform it into a proper WordPress plugin at some point.
+
+### SERIES
+
+There is a lightweight series taxonomy for linking posts together. Usage is pretty much self-explanatory.

@@ -40,5 +40,16 @@ if ( UBIK_PORTFOLIO )
 if ( UBIK_POST_FORMAT_REWRITE )
   include( plugin_dir_path( __FILE__ ) . '/lib/post-format-rewrite.php' );
 
+if ( UBIK_POST_FORMAT_SLUG )
+  include( plugin_dir_path( __FILE__ ) . '/lib/post-format-slug.php' );
+
 if ( UBIK_SERIES )
   include( plugin_dir_path( __FILE__ ) . '/lib/series.php' );
+
+
+
+function ubik_activate() {
+  // Refresh permalinks on plugin activation
+  flush_rewrite_rules();
+}
+register_activation_hook( __FILE__, 'ubik_activate' );
