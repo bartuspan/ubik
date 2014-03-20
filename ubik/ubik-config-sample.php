@@ -13,6 +13,9 @@ define( 'UBIK_PLACES', true );
 // Mix places in with posts?
 define( 'UBIK_PLACES_IN_LOOP', false );
 
+// Placeholder place tag; use for places that are needed to flesh out the taxonomy but that shouldn't appear in lists
+define( 'UBIK_PLACES_PLACEHOLDER', 'placeholder' );
+
 // Portfolio functionality
 define( 'UBIK_PORTFOLIO', true );
 

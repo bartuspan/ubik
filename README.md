@@ -33,6 +33,8 @@ Merely a sampling:
 
 Places are a Custom Post Type for building a geographic database. This is still in development and very new. I am building it mainly for my own use and may transform it into a proper WordPress plugin at some point.
 
+Places also includes a simple shortcode: `[place]Place name[/place]` or `[place slug=placename]`.
+
 ### SERIES
 
 There is a lightweight series taxonomy for linking posts together. Usage is pretty much self-explanatory.
