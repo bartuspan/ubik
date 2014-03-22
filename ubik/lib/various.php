@@ -51,3 +51,20 @@ if ( !is_multi_author() ) {
 
 // Ditch the default gallery styling, yuck
 add_filter( 'use_default_gallery_style', '__return_false' );
+
+
+
+// Sub-optimal hack to deal with Jetpack Markdown failing to decode single quote HTML entities; should be removed when the issue is fixed
+function ubik_markdown_codeblock_fix( $content ) {
+  return preg_replace_callback( "/^(`{3})([^`\n]+)?\n([^`~]+)(`{3})/m", 'ubik_markdown_codeblock_preserve', $content );
+}
+function ubik_markdown_codeblock_replace( $content ) {
+  return str_replace( '&amp;#039;', '\'', $content);
+}
+function ubik_markdown_codeblock_preserve( $matches ) {
+  $block = html_entity_decode( $matches[3], ENT_QUOTES );
+  $open = $matches[1] . $matches[2] . "\n";
+  return $open . $block . $matches[4];
+}
+add_filter( 'edit_post_content', 'ubik_markdown_codeblock_fix', 11, 2 );
+add_filter( 'wpcom_markdown_transform_post', 'ubik_markdown_codeblock_replace');

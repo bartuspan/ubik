@@ -28,12 +28,17 @@ Merely a sampling:
 * Thumbnail fallback: if a featured image isn't set the appropriately-sized thumbnail of the first image will be displayed.
 * Reset admin-side HTML editor to a nicer font size and stack.
 * Adds Google Analytics to the footer.
+* Jetpack Markdown fenced code block fix. Should be removed for Jetpack 3.0+ after testing.
 
 ### PLACES
 
 Places are a Custom Post Type for building a geographic database. This is still in development and very new. I am building it mainly for my own use and may transform it into a proper WordPress plugin at some point.
 
 Places also includes a simple shortcode: `[place]Place name[/place]` or `[place slug=placename]`.
+
+### PORTFOLIO
+
+Not yet properly implemented; what exists is just a bunch of legacy code from an old theme of mine.
 
 ### SERIES
 
