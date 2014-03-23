@@ -54,6 +54,13 @@ add_filter( 'use_default_gallery_style', '__return_false' );
 
 
 
+function all_settings_link() {
+  add_options_page( __('All Settings'), __('All Settings'), 'administrator', 'options.php' );
+}
+add_action('admin_menu', 'all_settings_link');
+
+
+
 // Sub-optimal hack to deal with Jetpack Markdown failing to decode single quote HTML entities; should be removed when the issue is fixed
 function ubik_markdown_codeblock_fix( $content ) {
   return preg_replace_callback( "/^(`{3})([^`\n]+)?\n([^`~]+)(`{3})/m", 'ubik_markdown_codeblock_preserve', $content );

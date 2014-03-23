@@ -7,6 +7,9 @@ define( 'UBIK_EXCERPT_LENGTH', 50 );
 // Google Analytics code e.g. 'UA-XXXXXX-XX'; false when not in use
 define( 'UBIK_GOOGLE_ANALYTICS', false );
 
+// Meta tags; disable if you use some sort of SEO plugin
+define( 'UBIK_META', true );
+
 // Places functionality
 define( 'UBIK_PLACES', true );
 

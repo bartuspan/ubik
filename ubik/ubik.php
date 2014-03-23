@@ -31,6 +31,9 @@ if ( is_admin() ) {
 }
 
 // Load optional ubik modules
+if ( UBIK_META )
+  include( plugin_dir_path( __FILE__ ) . '/lib/meta.php' );
+
 if ( UBIK_PLACES )
   include( plugin_dir_path( __FILE__ ) . '/lib/places.php' );
 
