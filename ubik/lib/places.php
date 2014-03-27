@@ -71,6 +71,7 @@ function ubik_is_place() {
     is_singular( 'place' )
     || is_post_type_archive( 'place' )
     || is_tax( 'place_tag' )
+    || get_post_type( 'place' )
   ) {
     return true;
   }
@@ -204,7 +205,7 @@ function ubik_places_shortcode( $atts, $content = null ) {
 function ubik_places_list() {
   global $post;
 
-  if ( ubik_is_place() && is_singular() ) {
+  if ( is_singular( 'place' ) ) {
 
     $children = get_pages('post_type=place&child_of=' . $post->ID);
     $siblings = get_pages('post_type=place&child_of=' . $post->post_parent);
@@ -241,6 +242,7 @@ function ubik_places_list() {
     }
   }
 }
+// @TODO: move this to the_content hook
 add_action( 'pendrell_entry_meta_before', 'ubik_places_list', 7 );
 
 
@@ -249,7 +251,7 @@ add_action( 'pendrell_entry_meta_before', 'ubik_places_list', 7 );
 function ubik_places_posts() {
   global $post;
 
-  if ( ubik_is_place() && is_singular() ) {
+  if ( is_singular( 'place' ) ) {
     $place_name = $post->post_name;
     $place_title = $post->post_title;
     $place_tag = term_exists( $place_name, 'post_tag' );
@@ -282,6 +284,7 @@ function ubik_places_posts() {
     }
   }
 }
+// @TODO: move this to the_content hook
 add_action( 'pendrell_entry_meta_before', 'ubik_places_posts', 5 );
 
 
@@ -301,3 +304,13 @@ function ubik_places_widget( $depth = 3 ) {
     </aside>
   </div><!-- #secondary --><?php
 }
+
+
+
+// Filter the entry meta and add place-specific tags
+function ubik_places_meta_tags( $tags ) {
+  if ( ubik_is_place() )
+    $tags = get_the_term_list( $post->ID, 'place_tag', '', ', ', '' );
+  return $tags;
+}
+add_filter( 'ubik_content_meta_tags', 'ubik_places_meta_tags' );

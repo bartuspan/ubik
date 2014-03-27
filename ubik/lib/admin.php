@@ -17,6 +17,23 @@ if ( UBIK_ADMIN_EDITOR_FONT_SIZE || UBIK_ADMIN_EDITOR_FONT_STACK ) {
 
 
 
+// Remove all characters that are not the separator, a-z, 0-9, or whitespace; mainly for use with bilingual English/Chinese post titles
+function ubik_slug_strict( $title ) {
+  // Lifted from http://wordpress.org/plugins/strings-sanitizer/
+  $strict_title = preg_replace('![^'.preg_quote('-').'a-z0-_9\s]+!', '', strtolower( $title ) );
+
+  // Only return the strict title if there is something left
+  if ( !empty( $strict_title ) ) {
+    return $strict_title;
+  } else {
+    return $title;
+  }
+}
+if ( UBIK_CONTENT_SLUG_STRICT )
+  add_filter( 'sanitize_title', 'ubik_slug_strict', 1 );
+
+
+
 // Change user contact methods
 function ubik_contact_methods( $contact ) {
 

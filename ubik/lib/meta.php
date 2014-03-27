@@ -16,7 +16,7 @@ function ubik_meta_tags() {
   global $post, $multipage, $wp;
 
   // Title; Twitter trims this to 70 characters, Facebook seems virtually unlimited
-  $title = ubik_title();
+  $title = ubik_content_title();
 
   // Description; Twitter trims to 200 characters, Facebook likes it long.
   $description = ubik_meta_description();
@@ -187,8 +187,6 @@ function ubik_meta_tags() {
   // Optional content-specific Open Graph tags
   if ( !empty( $description ) )
     echo '<meta property="og:description" content="' . esc_attr( $description ) . '"/>' . "\n";
-  if ( !empty( $author ) )
-    echo '<meta property="og:author" content="' . esc_attr( $author ) . '"/>' . "\n";
 
   // Open Graph site name
   echo '<meta property="og:site_name" content="' . get_bloginfo( 'name' ) . '"/>' . "\n";
@@ -308,30 +306,6 @@ function ubik_meta_description() {
   if ( is_front_page() || is_home() )
     $description = get_bloginfo('description');
 
-  // Run it through the same function we use to generate excerpts
-  $description = ubik_excerpt_sanitize( $description );
-
   // Returns a description (if one was found); be sure to handle empty/blank descriptions anywhere this is used
   return $description;
-}
-
-
-
-// Testing out a character trim function; might be overkill; original by c.bavota
-function ubik_trim_characters( $text, $length = 50, $append = '&hellip;' ) {
-
-  $length = (int) $length;
-  $text = trim( strip_tags( $text ) );
-
-  if ( strlen( $text ) > $length ) {
-    $text = substr( $text, 0, $length + 1 );
-    $words = preg_split( "/[\s]|&nbsp;/", $text, -1, PREG_SPLIT_NO_EMPTY );
-    preg_match( "/[\s]|&nbsp;/", $text, $lastchar, 0, $length );
-    if ( empty( $lastchar ) )
-      array_pop( $words );
-
-    $text = implode( ' ', $words ) . $append;
-  }
-
-  return $text;
 }

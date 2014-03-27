@@ -19,6 +19,12 @@ define( 'UBIK_ADMIN_EDITOR_FONT_STACK', 'Georgia, "Palatino Linotype", Palatino,
 // Filter get_the_date with Ubik's custom date function; true/false
 define( 'UBIK_CONTENT_DATE', false );
 
+// Override WordPress date format; string or false to disable
+define( 'UBIK_CONTENT_DATE_FORMAT', 'M j, Y, g:i a' );
+
+// Human-readable dates; true/false
+define( 'UBIK_CONTENT_DATE_HUMAN', true );
+
 // Strict titles; removes non-standard characters; true/false
 define( 'UBIK_CONTENT_SLUG_STRICT', true );
 

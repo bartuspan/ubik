@@ -27,14 +27,18 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 ### Admin
 
 * Reset admin-side HTML editor to a nicer font size and stack.
+* "Strict" slugs; removes non-Latin characters (designed for use with bilingual English/Chinese post titles).
 * Adds Facebook, Flickr, GitHub, Google+, Instagram, and Twitter to user contact methods; removes AIM, Jabber, and Yahoo.
 * Switch for the magic "all settings" hack.
 
 ### Content
 
 * SEO-friendly title generator.
-* Optional "strict" slugs; removes non-Latin characters (designed for use with bilingual English/Chinese post titles).
 * Human-readable dates on recent entries (e.g. posted 21 hours ago).
+* Standards-compliant structured entry metadata.
+
+### Excerpts
+
 * Nicer, smarter excerpts with sensible defaults and several configuration options.
 
 ### Feed
@@ -58,7 +62,7 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 
 ### Meta
 
-* Facebook/Open Graph, Google+, and Twitter social media meta tags.
+* Facebook/Open Graph, Google+, and Twitter social media meta tags. You will need to activate/verify ownership of all three.
 * SEO-friendly description generator (based on excerpts).
 * Be sure to fill out the relevant fields in the configuration file to activate and use this component.
 * Filter `ubik_meta_image_size` for setting image meta tags. Defaults to 'large' and falls back to the original image.

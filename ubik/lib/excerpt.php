@@ -12,24 +12,12 @@ function ubik_excerpt( $text = '' ) {
     if ( post_password_required( $post->ID ) )
       return;
 
-    // Fetch post contents
-    $text = $post->post_content;
-
     // Regular content filter
-    $text = apply_filters( 'the_content', $text );
-
-    $text = ubik_excerpt_sanitize( $text );
-
-  // If a custom excerpt is already set
-  } else {
-
-    // Do shortcodes
-    $text = ubik_excerpt_shortcode_handler( $text );
-
-    // Beautify excerpts
-    $text = wptexturize( $text );
-
+    $text = apply_filters( 'the_content', $post->post_content );
   }
+
+  $text = ubik_excerpt_sanitize( $text );
+
   return apply_filters( 'wp_trim_excerpt', $text, $raw_excerpt );
 }
 if ( UBIK_EXCERPT ) {
