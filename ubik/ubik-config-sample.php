@@ -1,53 +1,128 @@
-<?php // Ubik configuration file
-define( 'UBIK_VERSION', '0.1.0' );
+<?php // === UBIK CONFIGURATION FILE === //
 
-// Custom post excerpt length
-define( 'UBIK_EXCERPT_LENGTH', 50 );
+// Switch for the magic "all settings" hack; true/false
+define( 'UBIK_ADMIN_ALL_SETTINGS', true );
 
-// Google Analytics code e.g. 'UA-XXXXXX-XX'; false when not in use
-define( 'UBIK_GOOGLE_ANALYTICS', false );
+// Additional contact methods hack; true/false
+define( 'UBIK_ADMIN_CONTACT_METHODS', true );
 
-// Meta tags; disable if you use some sort of SEO plugin
+// Admin HTML editor font size; string or false to disable
+define( 'UBIK_ADMIN_EDITOR_FONT_SIZE', '18px' );
+
+// Admin HTML editor font stack; string or false to disable
+define( 'UBIK_ADMIN_EDITOR_FONT_STACK', 'Georgia, "Palatino Linotype", Palatino, "URW Palladio L", "Book Antiqua", "Times New Roman", serif;' );
+
+
+
+// === CONTENT === //
+
+// Filter get_the_date with Ubik's custom date function; true/false
+define( 'UBIK_CONTENT_DATE', false );
+
+// Strict titles; removes non-standard characters; true/false
+define( 'UBIK_CONTENT_SLUG_STRICT', true );
+
+// Switch for wp_title filter; disable if you use some sort of SEO plugin; true/false
+define( 'UBIK_CONTENT_TITLE', true );
+
+
+
+// === EXCERPTS === //
+
+// Custom excerpt handling; true/false
+define( 'UBIK_EXCERPT', true );
+
+// Custom post excerpt length; integer or false to disable
+define( 'UBIK_EXCERPT_LENGTH', 70 );
+
+// Custom post excerpt ending; string or false to disable
+define( 'UBIK_EXCERPT_MORE', '...' );
+
+// Custom "more" link; true/false
+define( 'UBIK_EXCERPT_MORE_LINK', true );
+
+// Make excerpts shortcode-friendly; true/false
+define( 'UBIK_EXCERPT_SHORTCODES', true );
+
+
+
+// === FORMATS === //
+
+// Activate post format module; true/false
+define( 'UBIK_FORMAT', true );
+
+// Post format rewrite; change "type/status" to "whatever/status"; string or false to disable
+define( 'UBIK_FORMAT_REWRITE', false );
+
+// Post format slug; change post format slug "quote" to "quotation" as defined in lib/formats.php; string or false to disable
+define( 'UBIK_FORMAT_SLUG', false );
+
+
+
+// === META TAGS === //
+
+// Main switch for additional meta functionality; disable if you use another SEO plugin; true/false
 define( 'UBIK_META', true );
 
-// Places functionality
+// Facebook admin value for page insights; can be a single ID or comma-separated series of IDs; string or false to disable
+define( 'UBIK_META_FACEBOOK_ADMINS', false );
+
+// Facebook publisher; only for media outlets; string or false to disable
+define( 'UBIK_META_FACEBOOK_PUBLISHER', false );
+
+// Google Plus page for the entire site
+define( 'UBIK_META_GOOGLE_PUBLISHER', false );
+
+// Set the desired image size for images in the meta tags; defaults to 'large'; string or false to disable
+define( 'UBIK_META_IMAGE_SIZE', false );
+
+// Name of the Twitter account associated with the whole web site; should be "Account" without the @ sign; string or false to disable
+define( 'UBIK_META_TWITTER_PUBLISHER', false );
+
+
+
+// === PLACES === //
+
+// Places functionality; true/false
 define( 'UBIK_PLACES', true );
 
-// Mix places in with posts?
+// Mix places in with posts; true/false
 define( 'UBIK_PLACES_IN_LOOP', false );
 
-// Placeholder place tag; use for places that are needed to flesh out the taxonomy but that shouldn't appear in lists
+// Placeholder place tag; use for places that are needed to flesh out the taxonomy but that shouldn't appear in lists; string or false to disable
 define( 'UBIK_PLACES_PLACEHOLDER', 'placeholder' );
 
-// Portfolio functionality
+
+
+// === PORTFOLIO === //
+
+// Portfolio functionality; true/false
 define( 'UBIK_PORTFOLIO', true );
 
-// Post format rewrite; change "type/status" to "whatever/status"
-define( 'UBIK_POST_FORMAT_REWRITE', false );
-define( 'UBIK_POST_FORMAT_REWRITE_BASE', 'format' );
 
-// Post format slug; change post format slug "quote" to "quotation" as defined in lib/post-format-slug.php
-define( 'UBIK_POST_FORMAT_SLUG', false );
 
-// Posts per page
-define( 'UBIK_POSTS_PER_PAGE_SEARCH', 20 );
+// === SEARCH === //
 
-// Search redirect
+// Posts per search page; integer or false to disable
+define( 'UBIK_SEARCH_POSTS_PER_PAGE', 20 );
+
+// Singleton search redirect; true/false
 define( 'UBIK_SEARCH_REDIRECT', true );
 
-// Post series functionality
+
+
+// === SERIES === //
+
+// Post series functionality; true/false
 define( 'UBIK_SERIES', true );
 
-// Post series order; chronological by default
+// Post series order; chronological by default; string or false to disable
 define( 'UBIK_SERIES_ORDER', 'ASC' );
 
-// Strict titles; removes non-standard characters
-define( 'UBIK_STRICT_TITLE', true );
 
-if ( is_admin() ) {
-  // Admin HTML editor font size.
-  define( 'UBIK_FONTSIZE_EDITOR', '18px' );
 
-  // Admin HTML editor font stack.
-  define( 'UBIK_FONTSTACK_EDITOR', 'Georgia, "Palatino Linotype", Palatino, "URW Palladio L", "Book Antiqua", "Times New Roman", serif;' );
-}
+// === VARIOUS === //
+
+// Google Analytics code e.g. 'UA-XXXXXX-XX'; string or false to disable
+define( 'UBIK_GOOGLE_ANALYTICS', false );
+

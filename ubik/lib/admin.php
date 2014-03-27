@@ -5,13 +5,15 @@ function ubik_html_editor_fontstack() {
   ?><style type="text/css">
     #wp-content-editor-container textarea#content,
     textarea#wp_mce_fullscreen {
-      font-size: <?php echo UBIK_FONTSIZE_EDITOR; ?>;
-      font-family: <?php echo UBIK_FONTSTACK_EDITOR; ?>;
+      font-size: <?php echo UBIK_ADMIN_EDITOR_FONT_SIZE; ?>;
+      font-family: <?php echo UBIK_ADMIN_EDITOR_FONT_STACK; ?>;
     }
   </style><?php
 }
-add_action( 'admin_head-post.php', 'ubik_html_editor_fontstack' );
-add_action( 'admin_head-post-new.php', 'ubik_html_editor_fontstack' );
+if ( UBIK_ADMIN_EDITOR_FONT_SIZE || UBIK_ADMIN_EDITOR_FONT_STACK ) {
+  add_action( 'admin_head-post.php', 'ubik_html_editor_fontstack' );
+  add_action( 'admin_head-post-new.php', 'ubik_html_editor_fontstack' );
+}
 
 
 
@@ -26,7 +28,7 @@ function ubik_contact_methods( $contact ) {
     $contact['flickr'] = 'Flickr';
 
   if ( !isset( $contact['github'] ) )
-    $contact['google'] = 'GitHub';
+    $contact['github'] = 'GitHub';
 
   if ( !isset( $contact['google'] ) )
     $contact['google'] = 'Google+';
@@ -49,4 +51,14 @@ function ubik_contact_methods( $contact ) {
 
   return $contact;
 }
-add_filter('user_contactmethods', 'ubik_contact_methods');
+if ( UBIK_ADMIN_CONTACT_METHODS )
+  add_filter('user_contactmethods', 'ubik_contact_methods');
+
+
+
+// Show all settings link
+function all_settings_link() {
+  add_options_page( __('All Settings'), __('All Settings'), 'administrator', 'options.php' );
+}
+if ( UBIK_ADMIN_ALL_SETTINGS )
+  add_action('admin_menu', 'all_settings_link');

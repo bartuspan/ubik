@@ -5,8 +5,9 @@
  * Description: A handy set of custom functions for WordPress
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.1.0
+ * Version: 0.2.0
  */
+define( 'UBIK_VERSION', '0.2.0' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -22,8 +23,11 @@ if ( is_readable( plugin_dir_path( __FILE__ ) . '/ubik-config.php' ) ) {
 
 // Load ubik core library
 include( plugin_dir_path( __FILE__ ) . '/lib/content.php' );
+include( plugin_dir_path( __FILE__ ) . '/lib/excerpt.php' );
+//include( plugin_dir_path( __FILE__ ) . '/lib/feed.php' );
 include( plugin_dir_path( __FILE__ ) . '/lib/general.php' );
 include( plugin_dir_path( __FILE__ ) . '/lib/media.php' );
+include( plugin_dir_path( __FILE__ ) . '/lib/search.php' );
 include( plugin_dir_path( __FILE__ ) . '/lib/various.php' );
 
 if ( is_admin() ) {
@@ -31,6 +35,9 @@ if ( is_admin() ) {
 }
 
 // Load optional ubik modules
+if ( UBIK_FORMAT )
+  include( plugin_dir_path( __FILE__ ) . '/lib/formats.php' );
+
 if ( UBIK_META )
   include( plugin_dir_path( __FILE__ ) . '/lib/meta.php' );
 
@@ -39,12 +46,6 @@ if ( UBIK_PLACES )
 
 if ( UBIK_PORTFOLIO )
   include( plugin_dir_path( __FILE__ ) . '/lib/portfolio.php' );
-
-if ( UBIK_POST_FORMAT_REWRITE )
-  include( plugin_dir_path( __FILE__ ) . '/lib/post-format-rewrite.php' );
-
-if ( UBIK_POST_FORMAT_SLUG )
-  include( plugin_dir_path( __FILE__ ) . '/lib/post-format-slug.php' );
 
 if ( UBIK_SERIES )
   include( plugin_dir_path( __FILE__ ) . '/lib/series.php' );

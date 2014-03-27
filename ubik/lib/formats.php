@@ -1,6 +1,15 @@
-<?php // === POST FORMAT SLUG === //
+<?php // === POST FORMAT === //
 
 // Source for this hack: http://justintadlock.com/archives/2012/09/11/custom-post-format-urls
+
+// Rewrite post format base; be sure to update permalinks afterward
+function ubik_format_rewrite_base( $slug ) {
+  return UBIK_FORMAT_REWRITE;
+}
+if ( UBIK_FORMAT_REWRITE )
+  add_filter( 'post_format_rewrite_base', 'ubik_format_rewrite_base' );
+
+
 
 // Array containing desired post format slugs
 function ubik_get_post_format_slugs() {
@@ -47,10 +56,6 @@ function ubik_post_format_link( $link, $term, $taxonomy ) {
   return $link;
 }
 
-// Remove core WordPress filter and add custom filter
-remove_filter( 'term_link', '_post_format_link', 10 );
-add_filter( 'term_link', 'ubik_post_format_link', 10, 3 );
-
 
 
 /**
@@ -77,6 +82,10 @@ function ubik_post_format_request( $qvs ) {
   return $qvs;
 }
 
-// Remove core WordPress filter and add custom filter
-remove_filter( 'request', '_post_format_request' );
-add_filter( 'request', 'ubik_post_format_request' );
+if ( UBIK_FORMAT_SLUG ) {
+  // Remove core WordPress filter and add custom filter
+  remove_filter( 'term_link', '_post_format_link', 10 );
+  add_filter( 'term_link', 'ubik_post_format_link', 10, 3 );
+  remove_filter( 'request', '_post_format_request' );
+  add_filter( 'request', 'ubik_post_format_request' );
+}
