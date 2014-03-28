@@ -166,4 +166,5 @@ pip-log.txt
 assets/staging
 node_modules
 ubik-config.php
+ubik-config-core.php
 bower_components

@@ -1,4 +1,4 @@
-<?php // === POST FORMAT === //
+<?php // ==== POST FORMAT ==== //
 
 // Source for this hack: http://justintadlock.com/archives/2012/09/11/custom-post-format-urls
 
@@ -29,14 +29,7 @@ function ubik_get_post_format_slugs() {
 
 
 
-/**
- * Filters post format links to use a custom slug.
- *
- * @param string $link The permalink to the post format archive.
- * @param object $term The term object.
- * @param string $taxnomy The taxonomy name.
- * @return string
- */
+// Filters post format links to use a custom slug.
 function ubik_post_format_link( $link, $term, $taxonomy ) {
   global $wp_rewrite;
 
@@ -58,12 +51,7 @@ function ubik_post_format_link( $link, $term, $taxonomy ) {
 
 
 
-/**
- * Changes the queried post format slug to the slug saved in the database.
- *
- * @param array $qvs The queried variables.
- * @return array
- */
+// Changes the queried post format slug to the slug saved in the database
 function ubik_post_format_request( $qvs ) {
 
   if ( !isset( $qvs['post_format'] ) )
@@ -82,10 +70,28 @@ function ubik_post_format_request( $qvs ) {
   return $qvs;
 }
 
+
+
+// Filter the entry meta type; swaps "Quote" with "Quotation"
+function ubik_post_format_entry_meta( $post_format ) {
+  if ( $post_format ) {
+    if ( $post_format === 'Quote' || $post_format === 'quotation' ) {
+      $post_format = __( 'Quotation', 'ubik' );
+    }
+  }
+  return $post_format;
+}
+
+
+
+// Main switch for slug functionality
 if ( UBIK_FORMAT_SLUG ) {
   // Remove core WordPress filter and add custom filter
   remove_filter( 'term_link', '_post_format_link', 10 );
   add_filter( 'term_link', 'ubik_post_format_link', 10, 3 );
   remove_filter( 'request', '_post_format_request' );
   add_filter( 'request', 'ubik_post_format_request' );
+
+  // Hook our custom entry meta function to change the display name
+  add_filter( 'ubik_content_meta_format', 'ubik_post_format_entry_meta' );
 }

@@ -1,4 +1,4 @@
-<?php // === VARIOUS === //
+<?php // ==== VARIOUS ==== //
 // A collection of theme-agnostic snippets
 
 // Removes the ".recentcomments" style added to the header for no good reason

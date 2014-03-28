@@ -1,4 +1,4 @@
-<?php // === SEARCH === //
+<?php // ==== SEARCH ==== //
 
 // Modify how many posts per page are displayed in different contexts
 // Source: http://wordpress.stackexchange.com/questions/21/show-a-different-number-of-posts-per-page-depending-on-context-e-g-homepage

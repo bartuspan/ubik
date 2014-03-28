@@ -1,4 +1,6 @@
-<?php // === ADMIN === //
+<?php // ==== ADMIN ==== //
+
+// This file is only loaded if is_admin() returns true!
 
 // HTML editor fontstack and fontsize hack; source: http://justintadlock.com/archives/2011/07/06/fixing-wordpress-3-2s-html-editor-font
 function ubik_html_editor_fontstack() {

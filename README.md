@@ -1,6 +1,6 @@
 # Ubik 0.2.0
 
-Ubik is my personal library of theme-agnostic hacks and snippets for WordPress. It is designed to be lightweight with no options screen or user interface of any kind. All options are handled by a single configuration file. The goal is to build on core WordPress functionality rather than writing a bloated, sprawling plugin with far too many moving parts. Even so, Ubik does a lot; it's like a Swiss army knife.
+Ubik is my personal library of theme-agnostic hacks and snippets for WordPress. It is designed to be lightweight with no options screen or user interface of any kind. All options are handled by a single configuration file. The goal is to build on core WordPress functionality rather than writing a bloated, sprawling plugin with far too many moving parts. Even so, Ubik does a lot; it's meant to be the Swiss army knife of WordPress plugins.
 
 
 
@@ -16,7 +16,14 @@ Be sure to update your permalinks.
 
 ## Configuration
 
-There is no options screen. Edit `ubik-config-sample.php` and rename to `ubik-config.php` to change default values.
+There is no options screen. Most of Ubik's features are disabled by default to reduce collision with other plugins and themes. There are two ways to activate Ubik's features or change settings:
+
+1. Override default values in your `wp-config.php` file.
+2. Edit `ubik-config-sample.php` and rename to `ubik-config.php` to change default values.
+
+So, for instance, to activate the meta module add this line to your `wp-config.php` file:
+
+`define( 'UBIK_META', true );`
 
 
 

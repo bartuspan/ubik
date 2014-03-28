@@ -1,4 +1,4 @@
-<?php // === MEDIA === //
+<?php // ==== MEDIA ==== //
 
 // Default thumbnail taken from first attached image
 function ubik_post_thumbnail( $html, $post_id, $post_thumbnail_id, $size, $attr ) {

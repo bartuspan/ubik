@@ -1,4 +1,4 @@
-<?php // === PORTFOLIO === //
+<?php // ==== PORTFOLIO ==== //
 
 // This needs to be converted into a custom post type
 

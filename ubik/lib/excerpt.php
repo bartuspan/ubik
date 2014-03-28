@@ -1,4 +1,4 @@
-<?php // === EXCERPT === //
+<?php // ==== EXCERPT ==== //
 
 // Excerpt handling; shortcode activation, custom excerpt length and ending
 function ubik_excerpt( $text = '' ) {

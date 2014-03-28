@@ -1,4 +1,4 @@
-<?php // === SERIES === //
+<?php // ==== SERIES ==== //
 
 // Everything you need to implement a quick and dirty post series custom taxonomy
 function ubik_series_init() {

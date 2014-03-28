@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ubik
  * Plugin URI: http://github.com/synapticism/ubik
- * Description: A handy set of custom functions for WordPress
+ * Description: A handy set of custom functions for WordPress.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
  * Version: 0.2.0
@@ -14,41 +14,45 @@ if ( !defined( 'WPINC' ) ) {
   die;
 }
 
-// Pendrell ultra configuration files
-if ( is_readable( plugin_dir_path( __FILE__ ) . '/ubik-config.php' ) ) {
-  require_once( plugin_dir_path( __FILE__ ) . '/ubik-config.php' );
-} else {
-  require_once( plugin_dir_path( __FILE__ ) . '/ubik-config-sample.php' );
-}
+// Ubik configuration file loading: first we try to grab user-defined settings
+if ( is_readable( plugin_dir_path( __FILE__ ) . 'ubik-config.php' ) )
+  require_once( plugin_dir_path( __FILE__ ) . 'ubik-config.php' );
+
+// Ubik configuration file loading: now load the defaults
+require_once( plugin_dir_path( __FILE__ ) . 'ubik-config-defaults.php' );
+
+// Ubik wp-config.php overrides
+if ( UBIK_WPCONFIG )
+  include( plugin_dir_path( __FILE__ ) . 'ubik-config-core.php' );
 
 // Load ubik core library
-include( plugin_dir_path( __FILE__ ) . '/lib/content.php' );
-include( plugin_dir_path( __FILE__ ) . '/lib/excerpt.php' );
-//include( plugin_dir_path( __FILE__ ) . '/lib/feed.php' );
-include( plugin_dir_path( __FILE__ ) . '/lib/general.php' );
-include( plugin_dir_path( __FILE__ ) . '/lib/media.php' );
-include( plugin_dir_path( __FILE__ ) . '/lib/search.php' );
-include( plugin_dir_path( __FILE__ ) . '/lib/various.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/content.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/excerpt.php' );
+//include( plugin_dir_path( __FILE__ ) . 'lib/feed.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/general.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/media.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/search.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/various.php' );
 
 if ( is_admin() ) {
-  include( plugin_dir_path( __FILE__ ) . '/lib/admin.php' );
+  include( plugin_dir_path( __FILE__ ) . 'lib/admin.php' );
 }
 
 // Load optional ubik modules
 if ( UBIK_FORMAT )
-  include( plugin_dir_path( __FILE__ ) . '/lib/formats.php' );
+  include( plugin_dir_path( __FILE__ ) . 'lib/formats.php' );
 
 if ( UBIK_META )
-  include( plugin_dir_path( __FILE__ ) . '/lib/meta.php' );
+  include( plugin_dir_path( __FILE__ ) . 'lib/meta.php' );
 
 if ( UBIK_PLACES )
-  include( plugin_dir_path( __FILE__ ) . '/lib/places.php' );
+  include( plugin_dir_path( __FILE__ ) . 'lib/places.php' );
 
 if ( UBIK_PORTFOLIO )
-  include( plugin_dir_path( __FILE__ ) . '/lib/portfolio.php' );
+  include( plugin_dir_path( __FILE__ ) . 'lib/portfolio.php' );
 
 if ( UBIK_SERIES )
-  include( plugin_dir_path( __FILE__ ) . '/lib/series.php' );
+  include( plugin_dir_path( __FILE__ ) . 'lib/series.php' );
 
 
 

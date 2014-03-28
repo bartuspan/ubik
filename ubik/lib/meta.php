@@ -1,4 +1,4 @@
-<?php // === META === //
+<?php // ==== META ==== //
 
 // These functions are roughly in the order they are invoked
 // Filters: ubik_wp_title
@@ -251,10 +251,11 @@ function ubik_meta_tags() {
     if ( $card === 'gallery' ) {
       // Twitter gallery cards only handle up to 4 images
       for( $i = 0; $i < 4; ++$i) {
-        echo '<meta property="twitter:image' . $i . ':src" content="' . esc_url( $images[$i]['url'] ) . '"/>' . "\n";
-        if ( $images[0]['width'] )
+        if ( $images[$i]['url'] )
+          echo '<meta property="twitter:image' . $i . ':src" content="' . esc_url( $images[$i]['url'] ) . '"/>' . "\n";
+        if ( $images[$i]['width'] )
           echo '<meta property="twitter:image' . $i . ':width" content="' . esc_attr( $images[$i]['width'] ) . '"/>' . "\n";
-        if ( $images[0]['height'] )
+        if ( $images[$i]['height'] )
           echo '<meta property="twitter:image' . $i . ':height" content="' . esc_attr( $images[$i]['height'] ) . '"/>' . "\n";
       }
     } else {

@@ -1,4 +1,4 @@
-<?php // === PLACES === //
+<?php // ==== PLACES ==== //
 
 // Quick and dirty places custom post type
 function ubik_places_init() {

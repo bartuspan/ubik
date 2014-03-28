@@ -1,4 +1,4 @@
-<?php // === CONTENT === //
+<?php // ==== CONTENT ==== //
 
 // Dynamic page titles; hooks into wp_title to improve search engine ranking without making a mess
 function ubik_content_title_filter( $title = '', $sep = '-', $seplocation = 'right' ) {
@@ -116,7 +116,7 @@ function ubik_content_date( $date ) {
     $date_format = UBIK_CONTENT_DATE_FORMAT;
   } else {
     // Whatever the default is...
-    $date_format = 'M j, Y, g:i a';
+    $date_format = get_option('date_format') . ', ' . get_option('time_format');
   }
 
   if ( UBIK_CONTENT_DATE_HUMAN && !is_archive() && ( current_time( 'timestamp' ) - $date ) < 86400 ) {
@@ -135,6 +135,28 @@ if ( UBIK_CONTENT_DATE )
 // Output entry metadata: date, author, category, tags, etc.
 function ubik_content_meta() {
 
+  // FILTERS
+  // ubik_content_meta_format
+  // ubik_content_meta_type
+  // ubik_content_meta_date_published
+  // ubik_content_meta_date_updated
+  // ubik_content_meta_date_parent
+  // ubik_content_meta_categories
+  // ubik_content_meta_tags
+  // ubik_content_meta_author
+
+  $type = '';
+  $post_format = '';
+  $custom_post_types = '';
+  $parent = '';
+  $date_published_u = '';
+  $date_published = '';
+  $date_updated_u = '';
+  $date_updated = '';
+  $categories = '';
+  $tags = '';
+  $author = '';
+
   // Content type
   if ( is_attachment() ) {
     if ( wp_attachment_is_image() ) {
@@ -145,17 +167,14 @@ function ubik_content_meta() {
   } elseif ( is_page() ) {
     $type = __( 'page', 'ubik' );
   } else {
+    // This sets a default type that can be overridden later
     $type = __( 'entry', 'ubik' );
   }
 
   // Post format voodoo
   $post_format = get_post_format();
   if ( $post_format ) {
-    if ( $post_format === 'quote' || $post_format === 'quotation' ) {
-      $post_format_name = 'Quotation';
-    } else {
-      $post_format_name = get_post_format_string( $post_format );
-    }
+    $post_format_name = apply_filters( 'ubik_content_meta_format', get_post_format_string( $post_format ) );
     $type = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
       esc_url( get_post_format_link( $post_format ) ),
       esc_attr( sprintf( __( '%s archive', 'ubik' ), $post_format_name ) ),
@@ -163,7 +182,7 @@ function ubik_content_meta() {
     );
   }
 
-  // Post type voodoo; get all post types that aren't built in and cycle through to see if we have a match
+  // Post type voodoo; get all post types that aren't built-in and cycle through to see if we have a match
   $custom_post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
   foreach ( $custom_post_types as $custom_post_type ) {
     if ( $custom_post_type->name === get_post_type() ) {
@@ -184,16 +203,17 @@ function ubik_content_meta() {
 
 
   // Date
-  $date_published_raw = get_the_time( 'U' );
-  $date_updated_raw = get_the_modified_time( 'U' );
+  $date_published_u = get_the_time( 'U' );
+  $date_updated_u = get_the_modified_time( 'U' );
 
   // If the dates are the same both classes need to be added to the same span
-  if ( $date_published_raw === $date_updated_raw ) {
-    $date_published_class = 'published updated';
+  if ( $date_published_u === $date_updated_u ) {
+    $date_published_class = 'post-date published updated';
+    $date_updated = '';
   } else {
     // Only generate updated date if the dates differ
-    $date_updated = '<span class="updated">' . ubik_content_date( $date_updated_raw ) . '</span>';
-    $date_published_class = 'published';
+    $date_published_class = 'post-date published';
+    $date_updated = '<span class="updated">' . ubik_content_date( $date_updated_u ) . '</span>';
   }
 
   // Published date
@@ -201,17 +221,23 @@ function ubik_content_meta() {
     $date_published_class,
     esc_url( get_permalink() ),
     the_title_attribute( array( 'before' => __( 'Permalink to ', 'ubik' ), 'echo' => false ) ),
-    ubik_content_date( $date_published_raw )
+    ubik_content_date( $date_published_u )
   );
+
+  apply_filters( 'ubik_content_meta_date_published', $date_published );
+  apply_filters( 'ubik_content_meta_date_updated', $date_updated );
+
+  // Special formatting to add updated date to the end of the entry meta line
+  if ( $date_updated )
+    $date_updated = sprintf( __( '<span class="last-updated"> Last updated %s.</span>', 'ubik' ), $date_updated );
 
 
 
   // Parent link for pages, images, attachments, and places
-  $parent = '';
-  if ( ( is_attachment() && wp_attachment_is_image() && $post->post_parent ) || ( ( is_page() || get_post_type() === 'place' ) && $post->post_parent ) ) {
-    if ( is_attachment() && wp_attachment_is_image() && $post->post_parent ) {
+  if ( $post->post_parent ) {
+    if ( is_attachment() && wp_attachment_is_image() ) {
       $parent_rel = 'gallery';
-    } elseif ( is_page() && $post->post_parent ) {
+    } else {
       $parent_rel = 'parent';
     }
     $parent = sprintf( __( '<a href="%1$s" title="Return to %2$s" rel="%3$s">%4$s</a>', 'ubik' ),
@@ -222,15 +248,19 @@ function ubik_content_meta() {
     );
   }
 
+  $parent = apply_filters( 'ubik_content_meta_parent', $parent );
+
 
 
   // Category
-  $categories = apply_filters( 'ubik_content_meta_categories', get_the_category_list( __( ', ', 'ubik' ) ) );
+  $categories = get_the_category_list( __( ', ', 'ubik' ) );
+  $categories = apply_filters( 'ubik_content_meta_categories', $categories );
 
 
 
   // Tags
-  $tags = apply_filters( 'ubik_content_meta_tags', get_the_tag_list( '', __( ', ', 'ubik' ) ) );
+  $tags = get_the_tag_list( '', __( ', ', 'ubik' ) );
+  $tags = apply_filters( 'ubik_content_meta_tags', $tags );
 
 
 
@@ -240,43 +270,37 @@ function ubik_content_meta() {
     esc_attr( sprintf( __( 'View all posts by %s', 'ubik' ), get_the_author() ) ),
     get_the_author()
   );
+
   $author = apply_filters( 'ubik_content_meta_author', $author );
 
 
 
-  // Build the entry meta line
-  $entry_meta = 'This %1$s was published %2$s';
-  if ( $parent ) {
-    $entry_meta .= ' under %$3s';
-  }
-  if ( $categories && ( $post_format === false ) ) {
-    $entry_meta .= ' in %$4s';
-  }
-  if ( $tags ) {
-    $entry_meta .= ' and tagged %5$s';
-  }
-  $entry_meta .= '<span class="by-author"> by %6$s</span>.';
-  if ( $date_updated ) {
-    $entry_meta .= '<span class="last-updated"> Last updated %7$s.</a>';
-  }
-
-  // Build the entry meta line the old-fashioned way
-  $entry_meta = 'This ' . $type . ' was published ' . $date_published;
-  if ( $parent ) {
-    $entry_meta .= ' under ' . $parent;
-  }
-  if ( $categories && ( $post_format === false ) ) {
-    $entry_meta .= ' in ' . $categories;
-  }
-  if ( $tags ) {
-    $entry_meta .= ' and tagged ' . $tags;
-  }
-  $entry_meta .= '<span class="by-author"> by ' . $author . '</span>.';
-  if ( $date_updated ) {
-    $entry_meta .= '<span class="last-updated"> Last updated ' . $date_updated . '.</span>';
+  // Nightmare logic; it's the best we can do if we want to be able to translate the string
+  if ( !empty( $parent ) ) {
+    if ( !empty( $categories ) ) {
+      if ( !empty( $tags ) ) {
+        $entry_meta = __( 'This %1$s was published %2$s under %3$s in %4$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      } else {
+        $entry_meta = __( 'This %1$s was published %2$s under %3$s in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      }
+    } elseif ( !empty( $tags ) ) {
+      $entry_meta = __( 'This %1$s was published %2$s under %3$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+    } else {
+      $entry_meta = __( 'This %1$s was published %2$s under %3$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+    }
+  } elseif ( !empty( $categories ) ) {
+    if ( !empty( $tags ) ) {
+      $entry_meta = __( 'This %1$s was published %2$s in %4$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+    } else {
+      $entry_meta = __( 'This %1$s was published %2$s in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+    }
+  } elseif ( !empty( $tags ) ) {
+    $entry_meta = __( 'This %1$s was published %2$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+  } else {
+    $entry_meta = __( 'This %1$s was published %2$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
   }
 
-  // Translating this is a nightmare; Twenty Twelve had it down cold but it was also much more simple
+  // Final output
   printf(
     $entry_meta,
     $type,
@@ -288,13 +312,4 @@ function ubik_content_meta() {
     $date_updated
   );
 
-  /*printf(
-      $utility_text,
-      $categories,
-      $tags,
-      $date,
-      $author,
-      $type,
-      $parent
-    );*/
 }

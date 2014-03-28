@@ -1,4 +1,4 @@
-<?php // === FEED === //
+<?php // ==== FEED ==== //
 
 // Untested
 

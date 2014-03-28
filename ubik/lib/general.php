@@ -1,4 +1,4 @@
-<?php // === GENERAL === //
+<?php // ==== GENERAL ==== //
 
 // Head cleaner: removes useless fluff, Windows Live Writer support, version info, pointless relational links
 function ubik_init() {
