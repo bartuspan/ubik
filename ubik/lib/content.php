@@ -124,7 +124,8 @@ function ubik_content_date( $date ) {
   } else {
     $ubik_date = date( $date_format, $date );
   }
-  return '<time datetime="' . date('c', $date ) . '" pubdate>' . $ubik_date . '</time>';
+  // The HTML5 spec for the time tag used to include a pubdate attribute but as of March 2014 it no longer does
+  return '<time datetime="' . date('c', $date ) . '">' . $ubik_date . '</time>';
 }
 // Switch for the date function; of course the function can still be called directly in templates
 if ( UBIK_CONTENT_DATE )
