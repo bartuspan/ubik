@@ -289,6 +289,18 @@ add_action( 'pendrell_entry_meta_before', 'ubik_places_posts', 5 );
 
 
 
+// Don't display regular sidebar on portfolio items
+function ubik_places_sidebar( $sidebar ) {
+  if ( ubik_is_place() ) {
+    ubik_places_widget();
+    $sidebar = false;
+  }
+  return $sidebar;
+}
+add_filter( 'pendrell_sidebar', 'ubik_places_sidebar' );
+
+
+
 // Places widget; this isn't a true widget... but it's also not 200+ lines of code I don't need
 function ubik_places_widget( $depth = 3 ) {
 ?><div id="secondary" class="widget-area" role="complementary">

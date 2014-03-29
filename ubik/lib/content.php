@@ -134,7 +134,7 @@ if ( UBIK_CONTENT_DATE )
 
 
 // Output entry metadata: date, author, category, tags, etc.
-function ubik_content_meta() {
+function ubik_content_entry_meta() {
 
   // FILTERS
   // ubik_content_meta_format
@@ -209,11 +209,11 @@ function ubik_content_meta() {
 
   // If the dates are the same both classes need to be added to the same span
   if ( $date_published_u === $date_updated_u ) {
-    $date_published_class = 'post-date published updated';
+    $date_published_class = 'entry-date post-date published updated';
     $date_updated = '';
   } else {
     // Only generate updated date if the dates differ
-    $date_published_class = 'post-date published';
+    $date_published_class = 'entry-date post-date published';
     $date_updated = '<span class="updated">' . ubik_content_date( $date_updated_u ) . '</span>';
   }
 
