@@ -226,8 +226,6 @@ function ubik_meta_tags() {
   // === TWITTER === //
 
   // Twitter title, description, and URL meta tags are not required when equivalent Open Graph tags exist!
-
-  // Twitter card format; @TODO: Twitter also has a "gallery" card
   if ( is_attachment() && wp_attachment_is_image() && !empty( $images ) ) {
     $card = 'photo';
   } elseif ( is_singular() && !is_attachment() && !empty( $images ) && count( $images ) > 2 ) {
@@ -247,6 +245,7 @@ function ubik_meta_tags() {
     echo '<meta name="twitter:site" content="@' . UBIK_META_TWITTER_PUBLISHER . '">' . "\n";
 
   // Twitter card images; we could fallback on Open Graph images but there are some slight differences here
+  // @TODO: check to ensure all images are less than 1 Mb
   if ( !empty( $images ) ) {
     if ( $card === 'gallery' ) {
       // Twitter gallery cards only handle up to 4 images

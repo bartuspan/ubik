@@ -1,6 +1,6 @@
 <?php // ==== PORTFOLIO ==== //
 
-// This needs to be converted into a custom post type
+// @TODO: this needs to be converted into a custom post type
 
 // Portfolio categories; add or remove any slug to this array to enable matching categories with portfolio functionality
 $ubik_portfolio_cats = array( 'creative', 'design', 'photography', 'portfolio' );

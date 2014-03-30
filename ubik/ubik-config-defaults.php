@@ -76,6 +76,13 @@ defined( 'UBIK_FORMAT_SLUG' )               || define( 'UBIK_FORMAT_SLUG', false
 
 
 
+// == MEDIA == //
+
+// Custom gallery function
+defined( 'UBIK_MEDIA_GALLERY' )             || define( 'UBIK_MEDIA_GALLERY', false );
+
+
+
 // == META TAGS == //
 
 // Facebook admin value for page insights; can be a single ID or comma-separated series of IDs; string or false to disable

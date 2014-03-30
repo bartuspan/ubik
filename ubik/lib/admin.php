@@ -2,6 +2,8 @@
 
 // This file is only loaded if is_admin() returns true!
 
+// == EDITOR == //
+
 // HTML editor fontstack and fontsize hack; source: http://justintadlock.com/archives/2011/07/06/fixing-wordpress-3-2s-html-editor-font
 function ubik_html_editor_fontstack() {
   ?><style type="text/css">
@@ -35,6 +37,8 @@ if ( UBIK_CONTENT_SLUG_STRICT )
   add_filter( 'sanitize_title', 'ubik_slug_strict', 1 );
 
 
+
+// == USERS == //
 
 // Change user contact methods
 function ubik_contact_methods( $contact ) {

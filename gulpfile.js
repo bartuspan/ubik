@@ -55,13 +55,16 @@ gulp.task('devcopy', function() {
   .pipe(gulp.dest(wpdev));
 });
 
-gulp.task('watch', function() {
-
+gulp.task('livereload', function() {
   // Listen on port 35729
   server.listen(35729, function (err) {
-  if (err) {
-    return console.log(err)
-  };
+    if (err) {
+      return console.log(err)
+    };
+  });
+});
+
+gulp.task('watch', function() {
 
   // Watch .scss files
   gulp.watch('assets/src/scss/*.scss', ['styles']);
@@ -74,8 +77,6 @@ gulp.task('watch', function() {
 
   // Watch build folder
   gulp.watch(build+'**/*', ['devcopy']);
-
-  });
 
 });
 
