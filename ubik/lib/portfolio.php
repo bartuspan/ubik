@@ -2,6 +2,12 @@
 
 // @TODO: this needs to be converted into a custom post type
 
+function ubik_portfolio_init() {
+  // Thumbnails on the portfolio screen
+  add_image_size( 'portfolio-navigation', 300, 200, true );
+}
+add_action( 'init', 'ubik_portfolio_init' );
+
 // Portfolio categories; add or remove any slug to this array to enable matching categories with portfolio functionality
 $ubik_portfolio_cats = array( 'creative', 'design', 'photography', 'portfolio' );
 
@@ -16,14 +22,15 @@ add_filter( 'body_class', 'ubik_portfolio_body_class' );
 
 
 
-// Rescued from Pendrell; might be totally useless, haven't looked into it yet
-function ubik_portfolio_content_width() {
-  if ( pendrell_is_portfolio() ) {
-    global $content_width;
-    $content_width = 960;
+// This lets Pendrell know to make portfolio items full-width
+function ubik_portfolio_width() {
+  if ( ubik_is_portfolio() ) {
+    return true;
+  } else {
+    return false;
   }
 }
-add_action( 'template_redirect', 'ubik_portfolio_content_width' );
+add_filter( 'pendrell_full_width', 'ubik_portfolio_width' );
 
 
 
