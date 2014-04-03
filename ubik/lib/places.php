@@ -124,8 +124,21 @@ function ubik_places_shortcode( $atts, $content = null ) {
       endwhile;
     } else {
       // No posts found; try places taxonomy
-      //$tax_query = new WP_Query( $args );
+      $term = get_term_by( 'slug', $slug_query, 'places' );
+      if ( $term ) {
 
+        if ( empty( $slug ) || empty( $content ) ) {
+          $title = $term->name;
+        } else {
+          $title = $content;
+        }
+
+        $content = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+          get_term_link( $term->term_id, 'places' ),
+          esc_attr( sprintf( __( 'Permalink to %s', 'ubik' ), $term->name ) ),
+          $title
+        );
+      }
     }
     // Restore original post data
     wp_reset_postdata();
@@ -139,7 +152,7 @@ function ubik_places_shortcode( $atts, $content = null ) {
 
 // == PLACES ARCHIVES == //
 
-//
+// Adds places to the archive title system
 function ubik_places_archive_title( $title ) {
   if ( is_tax( 'places' ) ) {
     $term = get_term_by( 'slug', get_query_var( 'term' ), 'places' );
@@ -151,7 +164,7 @@ add_filter( 'pendrell_archive_title', 'ubik_places_archive_title' );
 
 
 
-// List places
+// A list of places; tries to list children, falls back to siblings if there are enough of them
 function ubik_places_list( $term, $depth = 2 ) {
 
   // Allows us to pass an explicit term and achieve the same functionality
@@ -161,7 +174,8 @@ function ubik_places_list( $term, $depth = 2 ) {
   if ( $term ) {
 
     $children = get_term_children( $term->term_id, 'places' );
-    $siblings = get_term_children( $term->parent, 'places' );
+    // We can't use get_term_children for siblings as we are only interested in direct descendents of the parent term
+    $siblings = get_terms( 'places', array( 'parent' => $term->parent ) );
 
     // Show children
     if ( $children ) {
@@ -178,13 +192,13 @@ function ubik_places_list( $term, $depth = 2 ) {
       </div><?php
 
     // If there aren't any children perhaps siblings will be useful
-    } elseif ( count( $siblings ) >= 3 ) {
+    } elseif ( count( $siblings ) >= 2 ) {
       ?><div class="archive-places-list">
         <h2><?php printf( 'Places near %s:', $term->name ); ?></h2>
         <ul class="place-list"><?php wp_list_categories(
           array(
             'child_of'      => $term->parent,
-            'depth'         => $depth - 1,
+            'depth'         => 1,
             'taxonomy'      => 'places',
             'title_li'      => '',
             'exclude'       => $term->term_id
@@ -198,18 +212,13 @@ add_action( 'pendrell_archive_description_after', 'ubik_places_list', 7 );
 
 
 
-
 // == PLACES ENTRY META == //
 
 // Filter the entry meta and add place-specific tags
+// @TODO: need major work
 function ubik_places_meta_tags( $tags ) {
   if ( is_tax( 'places' ) )
-    $tags = get_the_term_list( $post->ID, 'places', '', ', ', '' );
-  return $tags;
+    $places = get_the_term_list( $post->ID, 'places', '', ', ', '' );
+  return $tags . $places;
 }
-add_filter( 'ubik_content_meta_tags', 'ubik_places_meta_tags' );
-
-
-
-// @TODO: add markdown support to descriptions
-//WPCom_Markdown::get_instance()->transform( $content )
+//add_filter( 'ubik_content_meta_tags', 'ubik_places_meta_tags' );
