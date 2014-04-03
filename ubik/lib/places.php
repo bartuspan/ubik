@@ -1,129 +1,76 @@
 <?php // ==== PLACES ==== //
 
-// Quick and dirty places custom post type
+// Quick and dirty places taxonomy
 function ubik_places_init() {
-  $labels = array(
-    'name' => _x( 'Places', 'ubik' ),
-    'singular_name' => _x( 'Place', 'ubik' ),
-    'add_new' => _x( 'Add New', 'ubik' ),
-    'add_new_item' => _x( 'Add New Place', 'ubik' ),
-    'edit_item' => _x( 'Edit Place', 'ubik' ),
-    'new_item' => _x( 'New Place', 'ubik' ),
-    'view_item' => _x( 'View Place', 'ubik' ),
-    'search_items' => _x( 'Search Places', 'ubik' ),
-    'not_found' => _x( 'No places found', 'ubik' ),
-    'not_found_in_trash' => _x( 'No places found in trash', 'ubik' ),
-    'parent_item_colon' => _x( 'Parent Place:', 'ubik' ),
-    'menu_name' => _x( 'Places', 'ubik' ),
-  );
-  $args = array(
-    'labels' => $labels,
-    'hierarchical' => true,
-    'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'custom-fields', 'comments', 'revisions', 'page-attributes', 'wpcom-markdown' ),
-    'taxonomies' => array( 'place_tag' ),
-    'public' => true,
-    'show_ui' => true,
-    'show_in_menu' => true,
-    'menu_position' => 5,
-    'menu_icon' => 'dashicons-location-alt',
-    'show_in_nav_menus' => true,
-    'publicly_queryable' => true,
-    'exclude_from_search' => false,
-    'has_archive' => true,
-    'query_var' => true,
-    'can_export' => true,
-    'rewrite' => array( 'slug' => 'places' ),
-    'capability_type' => 'page'
-  );
-  register_post_type( 'place', $args );
 
-  // Place tag taxonomy
-  register_taxonomy( 'place_tag', 'place', array(
-    'hierarchical' => false,
+  // Places taxonomy
+  register_taxonomy( 'places', 'post', array(
     'labels' => array(
-      'name' => _x( 'Place Tags', 'taxonomy general name' ),
-      'singular_name' => _x( 'Place Tag', 'taxonomy singular name' ),
-      'search_items' =>  __( 'Search Place Tags' ),
-      'all_items' => __( 'All Place Tags' ),
-      'parent_item' => __( 'Parent Place Tags' ),
-      'parent_item_colon' => __( 'Parent Place Tags:' ),
-      'edit_item' => __( 'Edit Place Tag' ),
-      'update_item' => __( 'Update Place Tag' ),
-      'add_new_item' => __( 'Add New Place Tag' ),
-      'new_item_name' => __( 'New Place Tag Name' ),
-      'menu_name' => __( 'Place Tags' ),
+      'name' => _x( 'Places', 'taxonomy general name' ),
+      'singular_name' => _x( 'Places', 'taxonomy singular name' ),
+      'menu_name' => __( 'Places' ),
+      'all_items' => __( 'All places' ),
+      'edit_item' => __( 'Edit place' ),
+      'view_item' => __( 'View place' ),
+      'update_item' => __( 'Update places' ),
+      'add_new_item' => __( 'Add new place' ),
+      'new_item_name' => __( 'New place name' ),
+      'parent_item' => __( 'Parent place' ),
+      'parent_item_colon' => __( 'Parent place:' ),
+      'search_items' =>  __( 'Search places' ),
     ),
+    'show_admin_column' => true,
+    'hierarchical' => true,
     'rewrite' => array(
-      'slug' => 'place-tag',
-      'with_front' => false
+      'slug' => 'places',
+      'with_front' => true,
+      'hierarchical' => true
     )
   ));
 
+  // Places shortcode
   add_shortcode('place', 'ubik_places_shortcode');
 }
 add_action( 'init', 'ubik_places_init' );
 
 
 
-// Places conditional
-function ubik_is_place() {
-  if (
-    is_singular( 'place' )
-    || is_post_type_archive( 'place' )
-    || is_tax( 'place_tag' )
-    || get_post_type( 'place' )
-  ) {
-    return true;
+// == SIDEBAR == //
+
+// Don't display regular sidebar on portfolio items
+function ubik_places_sidebar( $sidebar ) {
+  if ( is_tax( 'places' ) ) {
+    ubik_places_widget();
+    $sidebar = false;
   }
-  return false;
+  return $sidebar;
+}
+add_filter( 'pendrell_sidebar', 'ubik_places_sidebar' );
+
+
+
+// Places widget; this isn't a true widget... but it's also not 200+ lines of code I don't need
+function ubik_places_widget( $depth = 3 ) {
+?><div id="secondary" class="widget-area" role="complementary">
+    <aside id="places" class="widget widget_places">
+      <h3 class="widget-title">Places</h3>
+      <ul class="place-list"><?php
+        wp_list_categories(
+          array(
+            'depth'         => $depth,
+            'hide_empty'    => 0,
+            'taxonomy'      => 'places',
+            'title_li'      => '',
+          )
+        );
+      ?></ul>
+    </aside>
+  </div><!-- #secondary --><?php
 }
 
 
 
-// Controls the flow of places in regular queries
-function ubik_places_query( $query ) {
-  if ( $query->is_main_query() ) {
-
-    // Add places to the regular flow of items on the blog
-    if ( UBIK_PLACES_IN_LOOP && ( is_front_page() || is_home() ) ) {
-
-      // Check to see if the post type is already set (avoids conflicts)
-      $post_type_vars = $query->get( 'post_type' );
-
-      // Conditionally add places to the query
-      if ( is_string( $post_type_vars ) && !empty( $post_type_vars ) ) {
-        $query->set( 'post_type', array( $post_type_vars, 'place' ) );
-      } elseif ( is_array( $post_type_vars ) ) {
-        $post_type_vars[] = 'place';
-        $query->set( 'post_type', $post_type_vars );
-      } else {
-        $query->set( 'post_type', array( 'post', 'place' ) );
-      }
-    }
-
-    // Don't bother with anything tagged as a placeholder in the regular flow or on place type archives
-    if ( UBIK_PLACES_PLACEHOLDER && ( ( UBIK_PLACES_IN_LOOP && ( is_front_page() || is_home() ) ) || is_post_type_archive( 'place' ) ) ) {
-      $tax_query = array(
-        'taxonomy'  => 'place_tag',
-        'field'     => 'slug',
-        'terms'     => UBIK_PLACES_PLACEHOLDER,
-        'operator'  => 'NOT IN'
-      );
-      $query->set( 'tax_query', array( $tax_query ) );
-    }
-
-    // Display place tags in forward chronological order
-    if ( is_tax ( 'place_tag' ) ) {
-      $query->set( 'posts_per_page', 10 );
-      $query->set( 'order', 'ASC' );
-      $query->set( 'orderby', 'title' );
-    }
-  }
-  return $query;
-}
-add_action( 'pre_get_posts', 'ubik_places_query' );
-
-
+// == SHORTCODE == //
 
 // Places shortcode; simply wrap places in [place]Place name[/place]; alternately [place slug="place_slug"]Place name[/place]
 function ubik_places_shortcode( $atts, $content = null ) {
@@ -147,22 +94,9 @@ function ubik_places_shortcode( $atts, $content = null ) {
     // Fetch posts tagged with the current place; only the slugs need to match
     $args = array(
       'name'        => $slug_query,
-      'post_type'   => 'place',
+      'post_type'   => 'post',
       'post_status' => 'publish'
     );
-
-    // Doesn't work for some reason
-    if ( UBIK_PLACES_PLACEHOLDER ) {
-      $tax_query = array(
-        array(
-          'taxonomy'  => 'place_tag',
-          'field'     => 'slug',
-          'terms'     => UBIK_PLACES_PLACEHOLDER,
-          'operator'  => 'NOT IN'
-        )
-      );
-      $args['tax_query'] = $tax_query;
-    }
 
     // Roll with what we've got
     $the_query = new WP_Query( $args );
@@ -189,7 +123,9 @@ function ubik_places_shortcode( $atts, $content = null ) {
 
       endwhile;
     } else {
-      // No posts found!
+      // No posts found; try places taxonomy
+      //$tax_query = new WP_Query( $args );
+
     }
     // Restore original post data
     wp_reset_postdata();
@@ -201,128 +137,79 @@ function ubik_places_shortcode( $atts, $content = null ) {
 
 
 
-// List places in the entry meta area
-function ubik_places_list() {
-  global $post;
+// == PLACES ARCHIVES == //
 
-  if ( is_singular( 'place' ) ) {
+//
+function ubik_places_archive_title( $title ) {
+  if ( is_tax( 'places' ) ) {
+    $term = get_term_by( 'slug', get_query_var( 'term' ), 'places' );
+    $title = sprintf( __( 'Posts found in %s', 'pendrell' ), '<span><a href="' . get_term_link( $term->term_id, 'places' ) . '" title="' . $term->name . '">' . $term->name . '</a></span>' );
+  }
+  return $title;
+}
+add_filter( 'pendrell_archive_title', 'ubik_places_archive_title' );
 
-    $children = get_pages('post_type=place&child_of=' . $post->ID);
-    $siblings = get_pages('post_type=place&child_of=' . $post->post_parent);
 
+
+// List places
+function ubik_places_list( $term, $depth = 2 ) {
+
+  // Allows us to pass an explicit term and achieve the same functionality
+  if ( empty( $term ) || $term == '' )
+    $term = get_term_by( 'slug', get_query_var( 'term' ), 'places' );
+
+  if ( $term ) {
+
+    $children = get_term_children( $term->term_id, 'places' );
+    $siblings = get_term_children( $term->parent, 'places' );
+
+    // Show children
     if ( $children ) {
-      ?><div class="entry-meta-places-list">
-        <h2><?php printf( __( 'Places in %s:', 'ubik' ), $post->post_title ); ?></h2>
-        <ul class="place-list"><?php wp_list_pages(
-        array(
-          'child_of'      => $post->ID,
-          'depth'         => 2,
-          'post_type'     => 'place',
-          'title_li'      => '',
+      ?><div class="archive-places-list">
+        <h2><?php printf( __( 'Places in %s:', 'ubik' ), $term->name ); ?></h2>
+        <ul class="place-list"><?php wp_list_categories(
+          array(
+            'child_of'      => $term->term_id,
+            'depth'         => $depth,
+            'taxonomy'      => 'places',
+            'title_li'      => '',
           )
         ); ?></ul>
       </div><?php
 
     // If there aren't any children perhaps siblings will be useful
     } elseif ( count( $siblings ) >= 3 ) {
-      ?><div class="entry-meta-places-list">
-        <h2><?php printf( 'Places near %s:', $post->post_title ); ?></h2>
-        <ul class="place-list"><?php wp_list_pages(
-        array(
-          'child_of'      => $post->post_parent,
-          'depth'         => 1,
-          'post_type'     => 'place',
-          'title_li'      => '',
-          'exclude'       => $post->ID,
+      ?><div class="archive-places-list">
+        <h2><?php printf( 'Places near %s:', $term->name ); ?></h2>
+        <ul class="place-list"><?php wp_list_categories(
+          array(
+            'child_of'      => $term->parent,
+            'depth'         => $depth - 1,
+            'taxonomy'      => 'places',
+            'title_li'      => '',
+            'exclude'       => $term->term_id
           )
         ); ?></ul>
       </div><?php
-    } else {
-      // Show parent?
     }
   }
 }
-// @TODO: move this to the_content hook
-add_action( 'pendrell_entry_meta_before', 'ubik_places_list', 7 );
+add_action( 'pendrell_archive_description_after', 'ubik_places_list', 7 );
 
 
 
-// List posts tagged with the current place
-function ubik_places_posts() {
-  global $post;
 
-  if ( is_singular( 'place' ) ) {
-    $place_name = $post->post_name;
-    $place_title = $post->post_title;
-    $place_tag = term_exists( $place_name, 'post_tag' );
-
-    // Only do the extra work if there is a matching post tag
-    if ($place_tag !== 0 && $place_tag !== null) {
-      $place_tag_link = get_tag_link( $place_tag['term_id'] );
-
-      // Fetch posts tagged with the current place; only the slugs need to match
-      $the_query = new WP_Query( 'tag=' . $place_name );
-
-      if ( $the_query->have_posts() ) {
-        ?>
-          <div class="entry-meta-places-posts">
-            <h2><?php printf( __( 'Posts tagged <a href="%1$s">%2$s</a>:', 'ubik' ),
-              $place_tag_link,
-              $place_title
-            ); ?></h2>
-            <ul><?php while ( $the_query->have_posts() ) {
-              $the_query->the_post();
-              ?><li><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'ubik' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a></li><?php
-            } ?></ul>
-          </div>
-      <?php } else {
-        // No posts found!
-      }
-
-      // Restore original post data
-      wp_reset_postdata();
-    }
-  }
-}
-// @TODO: move this to the_content hook
-add_action( 'pendrell_entry_meta_before', 'ubik_places_posts', 5 );
-
-
-
-// Don't display regular sidebar on portfolio items
-function ubik_places_sidebar( $sidebar ) {
-  if ( ubik_is_place() ) {
-    ubik_places_widget();
-    $sidebar = false;
-  }
-  return $sidebar;
-}
-add_filter( 'pendrell_sidebar', 'ubik_places_sidebar' );
-
-
-
-// Places widget; this isn't a true widget... but it's also not 200+ lines of code I don't need
-function ubik_places_widget( $depth = 3 ) {
-?><div id="secondary" class="widget-area" role="complementary">
-    <aside id="places" class="widget widget_places">
-      <h3 class="widget-title">Places</h3>
-      <ul class="place-list"><?php wp_list_pages(
-      array(
-        'depth'         => $depth,
-        'post_type'     => 'place',
-        'title_li'      => '',
-        )
-      ); ?></ul>
-    </aside>
-  </div><!-- #secondary --><?php
-}
-
-
+// == PLACES ENTRY META == //
 
 // Filter the entry meta and add place-specific tags
 function ubik_places_meta_tags( $tags ) {
-  if ( ubik_is_place() )
-    $tags = get_the_term_list( $post->ID, 'place_tag', '', ', ', '' );
+  if ( is_tax( 'places' ) )
+    $tags = get_the_term_list( $post->ID, 'places', '', ', ', '' );
   return $tags;
 }
 add_filter( 'ubik_content_meta_tags', 'ubik_places_meta_tags' );
+
+
+
+// @TODO: add markdown support to descriptions
+//WPCom_Markdown::get_instance()->transform( $content )
