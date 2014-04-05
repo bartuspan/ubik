@@ -27,6 +27,9 @@ defined( 'UBIK_ADMIN_EDITOR_FONT_SIZE' )    || define( 'UBIK_ADMIN_EDITOR_FONT_S
 // Admin HTML editor font stack; string or false to disable
 defined( 'UBIK_ADMIN_EDITOR_FONT_STACK' )   || define( 'UBIK_ADMIN_EDITOR_FONT_STACK', 'Georgia, "Palatino Linotype", Palatino, "URW Palladio L", "Book Antiqua", "Times New Roman", serif;' );
 
+// Rich term editor; true/false
+defined( 'UBIK_ADMIN_TERM_EDITOR' )         || define( 'UBIK_ADMIN_TERM_EDITOR', false );
+
 
 
 // == CONTENT == //
@@ -104,11 +107,7 @@ defined( 'UBIK_META_TWITTER_PUBLISHER' )    || define( 'UBIK_META_TWITTER_PUBLIS
 
 // == PLACES == //
 
-// Mix places in with posts; true/false
-defined( 'UBIK_PLACES_IN_LOOP' )            || define( 'UBIK_PLACES_IN_LOOP', false );
-
-// Placeholder place tag; use for places that are needed to flesh out the taxonomy but that shouldn't appear in lists; string or false to disable
-defined( 'UBIK_PLACES_PLACEHOLDER' )        || define( 'UBIK_PLACES_PLACEHOLDER', 'placeholder' );
+// More to come...
 
 
 

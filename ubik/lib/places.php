@@ -156,7 +156,8 @@ function ubik_places_shortcode( $atts, $content = null ) {
 function ubik_places_archive_title( $title ) {
   if ( is_tax( 'places' ) ) {
     $term = get_term_by( 'slug', get_query_var( 'term' ), 'places' );
-    $title = sprintf( __( 'Posts found in %s', 'pendrell' ), '<span><a href="' . get_term_link( $term->term_id, 'places' ) . '" title="' . $term->name . '">' . $term->name . '</a></span>' );
+    //$title = sprintf( __( 'Place archives: %s', 'pendrell' ), '<span><a href="' . get_term_link( $term->term_id, 'places' ) . '" title="' . $term->name . '">' . $term->name . '</a></span>' );
+    $title = sprintf( __( 'Place archives: %s', 'pendrell' ), '<span>' . $term->name . '</span>' );
   }
   return $title;
 }
@@ -166,6 +167,10 @@ add_filter( 'pendrell_archive_title', 'ubik_places_archive_title' );
 
 // A list of places; tries to list children, falls back to siblings if there are enough of them
 function ubik_places_list( $term, $depth = 2 ) {
+
+  // Don't display on paged archives
+  if ( is_archive() && is_paged() )
+    return;
 
   // Allows us to pass an explicit term and achieve the same functionality
   if ( empty( $term ) || $term == '' )
@@ -214,11 +219,27 @@ add_action( 'pendrell_archive_description_after', 'ubik_places_list', 7 );
 
 // == PLACES ENTRY META == //
 
-// Filter the entry meta and add place-specific tags
-// @TODO: need major work
-function ubik_places_meta_tags( $tags ) {
-  if ( is_tax( 'places' ) )
+// @TODO: figure out a better solution than jamming this into the "parent" part of the entry meta
+function ubik_places_meta_tags( $parent ) {
+  if ( has_term( '', 'places' ) )
     $places = get_the_term_list( $post->ID, 'places', '', ', ', '' );
-  return $tags . $places;
+  return $places;
 }
-//add_filter( 'ubik_content_meta_tags', 'ubik_places_meta_tags' );
+add_filter( 'ubik_content_meta_parent', 'ubik_places_meta_tags' );
+
+
+
+// == PLACES ADMIN == //
+
+// Removes description from places admin
+function ubik_places_admin_columns( $theme_columns ) {
+    $new_columns = array(
+        'cb' => '<input type="checkbox" />',
+        'name' => __('Name'),
+        'slug' => __('Slug'),
+        'posts' => __('Posts')
+        );
+    return $new_columns;
+}
+if ( UBIK_ADMIN_TERM_EDITOR )
+  add_filter( 'manage_edit-places_columns', 'ubik_places_admin_columns' );

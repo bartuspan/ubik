@@ -248,7 +248,6 @@ function ubik_content_entry_meta() {
       get_the_title( $post->post_parent )
     );
   }
-
   $parent = apply_filters( 'ubik_content_meta_parent', $parent );
 
 
@@ -280,25 +279,25 @@ function ubik_content_entry_meta() {
   if ( !empty( $parent ) ) {
     if ( !empty( $categories ) ) {
       if ( !empty( $tags ) ) {
-        $entry_meta = __( 'This %1$s was published %2$s under %3$s in %4$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+        $entry_meta = __( 'This %1$s was published on %2$s, under %3$s, in %4$s, and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
       } else {
-        $entry_meta = __( 'This %1$s was published %2$s under %3$s in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+        $entry_meta = __( 'This %1$s was published on %2$s, under %3$s, and in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
       }
     } elseif ( !empty( $tags ) ) {
-      $entry_meta = __( 'This %1$s was published %2$s under %3$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      $entry_meta = __( 'This %1$s was published on %2$s, under %3$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
     } else {
-      $entry_meta = __( 'This %1$s was published %2$s under %3$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      $entry_meta = __( 'This %1$s was published on %2$s, under %3$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
     }
   } elseif ( !empty( $categories ) ) {
     if ( !empty( $tags ) ) {
-      $entry_meta = __( 'This %1$s was published %2$s in %4$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      $entry_meta = __( 'This %1$s was published on %2$s, in %4$s, and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
     } else {
-      $entry_meta = __( 'This %1$s was published %2$s in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      $entry_meta = __( 'This %1$s was published on %2$s in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
     }
   } elseif ( !empty( $tags ) ) {
-    $entry_meta = __( 'This %1$s was published %2$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+    $entry_meta = __( 'This %1$s was published on %2$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
   } else {
-    $entry_meta = __( 'This %1$s was published %2$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+    $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
   }
 
   // Final output
