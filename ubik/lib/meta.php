@@ -306,6 +306,9 @@ function ubik_meta_description() {
   if ( is_front_page() || is_home() )
     $description = get_bloginfo('description');
 
+  if ( UBIK_EXCERPT )
+    $description = ubik_excerpt_sanitize( $description );
+
   // Returns a description (if one was found); be sure to handle empty/blank descriptions anywhere this is used
   return $description;
 }

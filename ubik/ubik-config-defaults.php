@@ -43,6 +43,9 @@ defined( 'UBIK_CONTENT_DATE_FORMAT' )       || define( 'UBIK_CONTENT_DATE_FORMAT
 // Human-readable dates; true/false
 defined( 'UBIK_CONTENT_DATE_HUMAN' )        || define( 'UBIK_CONTENT_DATE_HUMAN', true );
 
+// Human-readable time span; integer or false to disable and use default
+defined( 'UBIK_CONTENT_DATE_HUMAN_SPAN' )   || define( 'UBIK_CONTENT_DATE_HUMAN_SPAN', false);
+
 // Strict titles; removes non-standard characters; true/false
 defined( 'UBIK_CONTENT_SLUG_STRICT' )       || define( 'UBIK_CONTENT_SLUG_STRICT', false );
 

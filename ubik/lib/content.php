@@ -119,7 +119,14 @@ function ubik_content_date( $date ) {
     $date_format = get_option('date_format') . ', ' . get_option('time_format');
   }
 
-  if ( UBIK_CONTENT_DATE_HUMAN && !is_archive() && ( current_time( 'timestamp' ) - $date ) < 86400 ) {
+  // Human date span
+  if ( UBIK_CONTENT_DATE_HUMAN_SPAN ) {
+    $date_span = UBIK_CONTENT_DATE_HUMAN_SPAN;
+  } else {
+    $date_span = 604800; // One week
+  }
+
+  if ( UBIK_CONTENT_DATE_HUMAN && !is_archive() && ( current_time( 'timestamp' ) - $date ) < $date_span ) {
     $ubik_date = human_time_diff( $date, current_time( 'timestamp' ) ) . ' ago';
   } else {
     $ubik_date = date( $date_format, $date );
@@ -206,14 +213,18 @@ function ubik_content_entry_meta() {
   // Date
   $date_published_u = get_the_time( 'U' );
   $date_updated_u = get_the_modified_time( 'U' );
+  $date_diff = $date_updated_u - $date_published_u;
 
-  // If the dates are the same both classes need to be added to the same span
-  if ( $date_published_u === $date_updated_u ) {
+  // If the dates differ by less than a day just go with the updated date
+  // This accounts for two scenarios: posts that haven't been updated and posts that were updated not long after initial publication
+  if ( $date_diff < 86400 ) {
     $date_published_class = 'entry-date post-date published updated';
+    $date_published = ubik_content_date( $date_updated_u );
     $date_updated = '';
   } else {
     // Only generate updated date if the dates differ
     $date_published_class = 'entry-date post-date published';
+    $date_published = ubik_content_date( $date_published_u );
     $date_updated = '<span class="updated">' . ubik_content_date( $date_updated_u ) . '</span>';
   }
 
@@ -222,19 +233,16 @@ function ubik_content_entry_meta() {
     $date_published_class,
     esc_url( get_permalink() ),
     the_title_attribute( array( 'before' => __( 'Permalink to ', 'ubik' ), 'echo' => false ) ),
-    ubik_content_date( $date_published_u )
+    $date_published
   );
 
   apply_filters( 'ubik_content_meta_date_published', $date_published );
   apply_filters( 'ubik_content_meta_date_updated', $date_updated );
 
-  // Special formatting to add updated date to the end of the entry meta line
-  if ( $date_updated )
-    $date_updated = sprintf( __( '<span class="last-updated"> Last updated %s.</span>', 'ubik' ), $date_updated );
-
 
 
   // Parent link for pages, images, attachments, and places
+  global $post;
   if ( $post->post_parent ) {
     if ( is_attachment() && wp_attachment_is_image() ) {
       $parent_rel = 'gallery';
@@ -264,6 +272,12 @@ function ubik_content_entry_meta() {
 
 
 
+  // Taxonomies; allows plugins and other code to hook into this function to add entry metadata
+  $taxonomies = '';
+  $taxonomies = apply_filters( 'ubik_content_meta_taxonomies', $taxonomies );
+
+
+
   // Author
   $author = sprintf( '<span class="author vcard"><a class="fn n url" href="%1$s" title="%2$s" rel="author">%3$s</a></span>',
     esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
@@ -275,33 +289,34 @@ function ubik_content_entry_meta() {
 
 
 
+  //Published X; last updated Y; in Category; under Parent; tagged X, y, z; at Geolocation; by author.
   // Nightmare logic; it's the best we can do if we want to be able to translate the string
   if ( !empty( $parent ) ) {
     if ( !empty( $categories ) ) {
       if ( !empty( $tags ) ) {
-        $entry_meta = __( 'This %1$s was published on %2$s, under %3$s, in %4$s, and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+        $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>. Filed under %3$s, in %4$s, and tagged %5$s.%7$s', 'ubik' );
       } else {
-        $entry_meta = __( 'This %1$s was published on %2$s, under %3$s, and in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+        $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span> iled under %3$s, and in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
       }
     } elseif ( !empty( $tags ) ) {
-      $entry_meta = __( 'This %1$s was published on %2$s, under %3$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>, under %3$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
     } else {
-      $entry_meta = __( 'This %1$s was published on %2$s, under %3$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>, under %3$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
     }
   } elseif ( !empty( $categories ) ) {
     if ( !empty( $tags ) ) {
-      $entry_meta = __( 'This %1$s was published on %2$s, in %4$s, and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>, in %4$s, and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
     } else {
-      $entry_meta = __( 'This %1$s was published on %2$s in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+      $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span> in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
     }
   } elseif ( !empty( $tags ) ) {
-    $entry_meta = __( 'This %1$s was published on %2$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
+    $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span> and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
   } else {
     $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
   }
 
   // Final output
-  printf(
+  $x = sprintf(
     $entry_meta,
     $type,
     $date_published,
@@ -311,5 +326,30 @@ function ubik_content_entry_meta() {
     $author,
     $date_updated
   );
+
+  // Has this post been updated?
+  $date_updated_text = '';
+  if ( !empty( $date_updated ) )
+    $date_updated_text = '<span class="last-updated"> and updated ' . $date_updated . '</span>';
+
+  // Setup basic entry meta data; the only information we have for sure is type, date, and author
+  $entry_meta = 'This ' . $type . ' was published ' . $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>. ' . "\n";
+
+  if ( !empty( $parent ) )
+    $entry_meta_extras[] = 'Posted under: ' . $parent . '. ';
+
+  if ( !empty( $categories ) )
+    $entry_meta_extras[] = 'Categories: ' . $categories . '. ';
+
+  if ( !empty( $tags ) )
+    $entry_meta_extras[] = 'Tags: ' . $tags . '. ';
+
+  if ( !empty( $taxonomies ) )
+    $entry_meta_extras[] = $taxonomies . '. ';
+
+  if ( $entry_meta_extras )
+    $entry_meta .= implode( $entry_meta_extras );
+
+  echo $entry_meta;
 
 }

@@ -58,7 +58,7 @@ function ubik_places_widget( $depth = 3 ) {
         wp_list_categories(
           array(
             'depth'         => $depth,
-            'hide_empty'    => 0,
+            //'hide_empty'    => 0,
             'taxonomy'      => 'places',
             'title_li'      => '',
           )
@@ -157,7 +157,7 @@ function ubik_places_archive_title( $title ) {
   if ( is_tax( 'places' ) ) {
     $term = get_term_by( 'slug', get_query_var( 'term' ), 'places' );
     //$title = sprintf( __( 'Place archives: %s', 'pendrell' ), '<span><a href="' . get_term_link( $term->term_id, 'places' ) . '" title="' . $term->name . '">' . $term->name . '</a></span>' );
-    $title = sprintf( __( 'Place archives: %s', 'pendrell' ), '<span>' . $term->name . '</span>' );
+    $title = sprintf( __( 'Posts placed in <mark>%s</mark>', 'pendrell' ), '<span>' . $term->name . '</span>' );
   }
   return $title;
 }
@@ -220,12 +220,12 @@ add_action( 'pendrell_archive_description_after', 'ubik_places_list', 7 );
 // == PLACES ENTRY META == //
 
 // @TODO: figure out a better solution than jamming this into the "parent" part of the entry meta
-function ubik_places_meta_tags( $parent ) {
+function ubik_places_entry_meta( $places ) {
   if ( has_term( '', 'places' ) )
-    $places = get_the_term_list( $post->ID, 'places', '', ', ', '' );
+    $places = 'Places: ' . get_the_term_list( $post->ID, 'places', '', ', ', '' );
   return $places;
 }
-add_filter( 'ubik_content_meta_parent', 'ubik_places_meta_tags' );
+add_filter( 'ubik_content_meta_taxonomies', 'ubik_places_entry_meta' );
 
 
 
