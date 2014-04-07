@@ -199,7 +199,7 @@ function ubik_places_list( $term, $depth = 2 ) {
   $tax = get_query_var( 'taxonomy' );
 
   // Don't display on paged archives
-  if ( is_archive() && is_paged() )
+  if ( is_archive() && is_paged() || ( $tax !== 'places' ) )
     return;
 
   // Allows us to pass an explicit term and achieve the same functionality

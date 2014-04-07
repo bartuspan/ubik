@@ -7,7 +7,6 @@ defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
 defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
 defined( 'UBIK_PLACES' )                    || define( 'UBIK_PLACES', false );
-defined( 'UBIK_PORTFOLIO' )                 || define( 'UBIK_PORTFOLIO', false );
 defined( 'UBIK_SERIES' )                    || define( 'UBIK_SERIES', false );
 defined( 'UBIK_WPCONFIG' )                  || define( 'UBIK_WPCONFIG', false );
 
@@ -105,18 +104,6 @@ defined( 'UBIK_META_IMAGE_SIZE' )           || define( 'UBIK_META_IMAGE_SIZE', f
 
 // Name of the Twitter account associated with the whole web site; should be "Account" without the @ sign; string or false to disable
 defined( 'UBIK_META_TWITTER_PUBLISHER' )    || define( 'UBIK_META_TWITTER_PUBLISHER', false );
-
-
-
-// == PLACES == //
-
-// More to come...
-
-
-
-// == PORTFOLIO == //
-
-// More to come...
 
 
 

@@ -293,6 +293,7 @@ function ubik_meta_description() {
   if ( is_404() || is_search() )
     return '';
 
+  // Now match other possibilities...
   if ( is_author() ) {
     $description = get_the_author_meta( 'description' );
   }

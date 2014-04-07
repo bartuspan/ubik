@@ -5,9 +5,9 @@
  * Description: A handy set of custom functions for WordPress.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.2.0
+ * Version: 0.3.0
  */
-define( 'UBIK_VERSION', '0.2.0' );
+define( 'UBIK_VERSION', '0.3.0' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -47,9 +47,6 @@ if ( UBIK_META )
 
 if ( UBIK_PLACES )
   include( plugin_dir_path( __FILE__ ) . 'lib/places.php' );
-
-if ( UBIK_PORTFOLIO )
-  include( plugin_dir_path( __FILE__ ) . 'lib/portfolio.php' );
 
 if ( UBIK_SERIES )
   include( plugin_dir_path( __FILE__ ) . 'lib/series.php' );

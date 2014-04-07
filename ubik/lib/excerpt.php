@@ -12,8 +12,10 @@ function ubik_excerpt( $text = '' ) {
     if ( post_password_required( $post->ID ) )
       return;
 
+    $content = apply_filters( 'ubik_excerpt_content', $post->post_content );
+
     // Regular content filter
-    $text = apply_filters( 'the_content', $post->post_content );
+    $text = apply_filters( 'the_content', $content );
   }
 
   $text = ubik_excerpt_sanitize( $text );
@@ -93,3 +95,23 @@ function ubik_excerpt_shortcode_handler( $text ) {
     return strip_shortcodes( $text );
   }
 }
+
+
+
+// Fix the description for image format posts to the metadata associated with that image
+function ubik_excerpt_image_format( $content ) {
+  global $post;
+
+  // If we're dealing with an image format post with a thumbnail fetch caption and description of the image attachment
+  if ( is_singular() && has_post_format( 'image' ) && has_post_thumbnail() ) {
+    $caption = get_post( get_post_thumbnail_id() )->post_excerpt;
+    $description = get_post( get_post_thumbnail_id() )->post_content;
+    if ( !empty( $caption ) ) {
+      $content = $caption;
+    } elseif ( !empty( $description ) ) {
+      $content = $description;
+    }
+  }
+  return $content;
+}
+add_filter( 'ubik_excerpt_content', 'ubik_excerpt_image_format' );

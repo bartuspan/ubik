@@ -1,4 +1,4 @@
-# Ubik 0.2.0
+# Ubik 0.3.0
 
 Ubik is my personal library of theme-agnostic hacks and snippets for WordPress. It is designed to be lightweight with no options screen or user interface of any kind. All options are handled by a single configuration file. The goal is to build on core WordPress functionality rather than writing a bloated, sprawling plugin with far too many moving parts. Even so, Ubik does a lot; it's meant to be the Swiss army knife of WordPress plugins.
 
@@ -76,20 +76,12 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 
 ### Places
 
-* Custom Post Type for building a geographic database. Each place is a post-like object in a page-like heirarchy.
-* Includes a "place tag" taxonomy for tagging places (e.g. "food", "transportation", "attraction", etc.).
-* `ubik_is_place()` conditional function.
-* Places post type archive. You can also slip places into the regular flow of posts.
-* Special "placeholder" place tag to keep some places out of sight. This should really be a custom post status but the current implementation in WordPress is lacking. Define and use a placeholder if you want to scaffold out a place heirarchy without bothering to polish intermediary places (e.g. you want "Empire State Building" under "Manhattan" but you don't want to fill out Manhattan's info and don't want it to appear in the post type archive or in the regular flow of posts). A bit complex, I know, but the utility of this little hack should be obvious if you start playing around with this feature.
+* Custom Post Taxonomy for building a geographic database. Each place is a term in a heirarchal taxonomy.
 * Places shortcode: `[place]Place name[/place]` or `[place slug=placename]`. Will default back to plain text when the place doesn't exist. Makes it easy to reference places in your posts.
-* Lists posts tagged with the place name. This way you can have an index of places that relates back to your travel writing or whatever. Only the slug needs to match.
+* Place taxonomy archives effortlessly list posts tagged with a given place.
 * Lists related places in a sensible manner. No extra work required.
 * Places sidebar when navigating within the places database.
-* No custom mapping function at present. I just use simple Google Maps embeds.
-
-### Portfolio
-
-* Not yet properly implemented; what exists is just a bunch of legacy code from an old theme of mine.
+* No custom mapping function at present. Just use simple Google Maps embeds.
 
 ### Search
 
@@ -115,9 +107,3 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 
 * Fill out your full user profile, blog description, and all category, tag, taxonomy, and other descriptions where available! All the SEO-friendly goodness in this plugin reads from standard WordPress data.
 * Flush your permalinks after fiddling around with anything.
-
-
-
-## Issues
-
-* Placeholder limitation doesn't work on places shortcode queries. You can still link to placeholders.
