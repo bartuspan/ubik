@@ -85,3 +85,4 @@ function all_settings_link() {
 }
 if ( UBIK_ADMIN_ALL_SETTINGS )
   add_action('admin_menu', 'all_settings_link');
+

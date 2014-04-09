@@ -1,5 +1,7 @@
 <?php // ==== CONTENT ==== //
 
+// == TITLE == //
+
 // Dynamic page titles; hooks into wp_title to improve search engine ranking without making a mess
 function ubik_content_title_filter( $title = '', $sep = '-', $seplocation = 'right' ) {
 
@@ -105,6 +107,8 @@ function ubik_content_title( $sep = ' - ' ) {
 
 
 
+// == DATE == //
+
 // Output a human readable date wrapped in an HTML5 time tag
 function ubik_content_date( $date ) {
 
@@ -139,6 +143,20 @@ if ( UBIK_CONTENT_DATE )
   add_filter( 'get_the_date', 'ubik_content_date' );
 
 
+
+// == CONTENT FILTERS == //
+
+// Playing around with a function to strip paragraph tags off of images and such
+function ubik_media_strip_p( $content ) {
+  //$content = preg_replace( '/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content );
+  $content = preg_replace( '/<p>\s*(<iframe .*>*.<\/iframe>)\s*<\/p>/iU', '\1', $content );
+  return $content;
+}
+add_filter( 'the_content', 'ubik_media_strip_p' );
+
+
+
+// == ENTRY META == //
 
 // Output entry metadata: date, author, category, tags, etc.
 function ubik_content_entry_meta() {

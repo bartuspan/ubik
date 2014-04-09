@@ -58,13 +58,18 @@ add_filter( 'img_caption_shortcode', 'ubik_media_caption_shortcode', 10, 3 );
 
 
 
-// Playing around with a function to strip paragraph tags off of images and such
-function ubik_media_strip_p( $content ) {
-  $content = preg_replace( '/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content );
-  $content = preg_replace( '/<p>\s*(<iframe .*>*.<\/iframe>)\s*<\/p>/iU', '\1', $content );
-  return $content;
+// == ATTACHMENTS == //
+
+// Turn off comments for all attachments; source: http://rayofsolaris.net/blog/2011/comments-on-attachments-in-wordpress
+function ubik_media_attachment_comments( $open, $post_id ) {
+  $post = get_post( $post_id );
+  if( $post->post_type == 'attachment' ) {
+    return false;
+  }
+  return $open;
 }
-// Hook this to the_content to use it
+if ( UBIK_MEDIA_ATTACHMENT_COMMENTS === false )
+  add_filter( 'comments_open', 'ubik_media_attachment_comments', 10 , 2 );
 
 
 

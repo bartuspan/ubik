@@ -217,8 +217,13 @@ function ubik_places_list( $term, $depth = 2 ) {
 
     // Show children
     if ( $children ) {
+
+      // Attempt to put a damper on top-level places with many children
+      if ( count( $children ) >= 25 )
+        $depth = 1;
+
       ?><div class="archive-places-list">
-        <h2><?php printf( __( 'Places in %s:', 'ubik' ), $term->name ); ?></h2>
+        <h2><?php printf( __( 'Places in %s', 'ubik' ), $term->name ); ?></h2>
         <ul class="place-list"><?php wp_list_categories(
           array(
             'child_of'      => $term->term_id,
@@ -232,7 +237,7 @@ function ubik_places_list( $term, $depth = 2 ) {
     // If there aren't any children perhaps siblings will be useful
     } elseif ( count( $siblings ) >= 2 ) {
       ?><div class="archive-places-list">
-        <h2><?php printf( 'Places linked to %s:', $term->name ); ?></h2>
+        <h2>Related places</h2>
         <ul class="place-list"><?php wp_list_categories(
           array(
             'child_of'      => $term->parent,

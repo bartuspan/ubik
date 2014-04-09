@@ -83,6 +83,9 @@ defined( 'UBIK_FORMAT_SLUG' )               || define( 'UBIK_FORMAT_SLUG', false
 
 // == MEDIA == //
 
+// Turn comments on/off for all attachments; true for enable, false for disable
+defined( 'UBIK_MEDIA_ATTACHMENT_COMMENTS' ) || define( 'UBIK_MEDIA_ATTACHMENT_COMMENTS', false );
+
 // Custom gallery function
 defined( 'UBIK_MEDIA_GALLERY' )             || define( 'UBIK_MEDIA_GALLERY', false );
 
