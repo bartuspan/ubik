@@ -120,57 +120,23 @@ function ubik_places_shortcode( $atts, $content = null ) {
   // Don't bother if there's no slug
   if ( $slug_query ) {
 
-    // Fetch posts tagged with the current place; only the slugs need to match
-    $args = array(
-      'name'        => $slug_query,
-      'post_type'   => 'post',
-      'post_status' => 'publish'
-    );
+    // Now test to see if the term exists in the places taxonomy
+    $term = get_term_by( 'slug', $slug_query, 'places' );
 
-    // Roll with what we've got
-    $the_query = new WP_Query( $args );
+    if ( !empty( $term ) ) {
 
-    if ( $the_query->have_posts() ) {
-      while ( $the_query->have_posts() ) : $the_query->the_post();
-
-        // Use the proper title if no slug was passed (but content was) or vice versa
-        // This is just a confusing way to allow for non-Latin characters in the actual posted title
-        // That way we can go from [place]Taiwan[/place] to Taiwan (with Chinese characters from the original post)
-        // This also allows for [place=taiwan] to work without any content passed
-        if ( empty( $slug ) || empty( $content ) ) {
-          $title = get_the_title();
-        } else {
-          $title = $content;
-        }
-
-        // Put it all together
-        $content = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
-          get_permalink(),
-          esc_attr( sprintf( __( 'Permalink to %s', 'ubik' ), the_title_attribute( 'echo=0' ) ) ),
-          $title
-        );
-
-      endwhile;
-    } else {
-      // No posts found; try places taxonomy
-      $term = get_term_by( 'slug', $slug_query, 'places' );
-      if ( $term ) {
-
-        if ( empty( $slug ) || empty( $content ) ) {
-          $title = $term->name;
-        } else {
-          $title = $content;
-        }
-
-        $content = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
-          get_term_link( $term->term_id, 'places' ),
-          esc_attr( sprintf( __( 'Permalink to %s', 'ubik' ), $term->name ) ),
-          $title
-        );
+      if ( empty( $slug ) || empty( $content ) ) {
+        $title = $term->name;
+      } else {
+        $title = $content;
       }
+
+      $content = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+        get_term_link( $term->term_id, 'places' ),
+        esc_attr( sprintf( __( 'Permalink to %s', 'ubik' ), $term->name ) ),
+        $title
+      );
     }
-    // Restore original post data
-    wp_reset_postdata();
   }
 
   // If the preceding loop didn't find a match we still return the original content as-is; graceful fallback
