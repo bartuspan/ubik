@@ -147,7 +147,9 @@ function ubik_places_shortcode( $atts, $content = null ) {
 
 // == PLACES ARCHIVES == //
 
-// Adds places to the archive title system
+// All of these functions depend on Pendrell but they can easily be adapted for use with other WordPress themes
+
+// Adds places to the Pendrell archive title system
 function ubik_places_archive_title( $title ) {
   if ( is_tax( 'places' ) ) {
     $term = get_term_by( 'slug', get_query_var( 'term' ), 'places' );
@@ -268,7 +270,7 @@ add_action( 'pendrell_archive_term_before', 'ubik_places_breadcrumb', 10 );
 
 // == PLACES ENTRY META == //
 
-// @TODO: figure out a better solution than jamming this into the "parent" part of the entry meta
+// Adds places to entry metadata right after other taxonomies
 function ubik_places_entry_meta( $places ) {
   if ( has_term( '', 'places' ) )
     $places = 'Places: ' . get_the_term_list( $post->ID, 'places', '', ', ', '' );
