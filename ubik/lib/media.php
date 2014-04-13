@@ -37,13 +37,13 @@ add_filter( 'post_thumbnail_html', 'ubik_media_post_thumbnail', 11, 5 );
 function ubik_media_caption_shortcode( $val, $attr, $content = null ) {
   extract( shortcode_atts( array(
     'id'      => '',
-    'align'   => 'aligncenter',
+    'align'   => 'alignnone',
     'width'   => '',
     'caption' => ''
   ), $attr));
 
-  // No caption, no dice... But why width?
-  if ( 1 > (int) $width || empty( $caption ) )
+  // No caption, no dice...
+  if ( empty( $caption ) )
     return $val;
 
   if ( $id )
@@ -52,7 +52,12 @@ function ubik_media_caption_shortcode( $val, $attr, $content = null ) {
   // Add itemprop="contentURL" to image; ugly hack
   $content = str_replace('<img', '<img itemprop="contentURL"', $content);
 
-  return '<figure id="' . $id . '" aria-describedby="figcaption-' . $id . '" class="wp-caption ' . esc_attr($align) . '" itemscope itemtype="http://schema.org/ImageObject">' . do_shortcode( $content ) . '<figcaption id="figcaption-'. $id . '" class="wp-caption-text" itemprop="description">' . $caption . '</figcaption></figure>';
+  $figure = '<figure id="' . $id . '" aria-describedby="figcaption-' . $id . '" class="wp-caption ' . esc_attr($align) . '" itemscope itemtype="http://schema.org/ImageObject">' . "\n";
+  $figure .= do_shortcode( $content ) . "\n";
+  $figure .= '<figcaption id="figcaption-'. $id . '" class="wp-caption-text" itemprop="description">' . $caption . '</figcaption>' . "\n";
+  $figure .= '</figure>' . "\n";
+
+  return $figure;
 }
 add_filter( 'img_caption_shortcode', 'ubik_media_caption_shortcode', 10, 3 );
 
