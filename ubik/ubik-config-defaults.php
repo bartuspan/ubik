@@ -3,12 +3,12 @@
 // == UBIK CORE SWITCHES == //
 
 // The following switches enable or disable various Ubik modules; true/false
+defined( 'UBIK_DEV' )                       || define( 'UBIK_DEV', true );
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
 defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
 defined( 'UBIK_PLACES' )                    || define( 'UBIK_PLACES', false );
 defined( 'UBIK_SERIES' )                    || define( 'UBIK_SERIES', false );
-defined( 'UBIK_WPCONFIG' )                  || define( 'UBIK_WPCONFIG', false );
 
 
 
@@ -124,19 +124,6 @@ defined( 'UBIK_SEARCH_REDIRECT' )           || define( 'UBIK_SEARCH_REDIRECT', t
 
 // Post series order; chronological by default; string or false to disable
 defined( 'UBIK_SERIES_ORDER' )              || define( 'UBIK_SERIES_ORDER', 'ASC' );
-
-
-
-// == WPCONFIG == //
-
-// Compression; flips several core settings to turn on gzip etc.; don't use with an already minified theme; true/false
-defined( 'UBIK_WPCONFIG_COMPRESS' )         || define( 'UBIK_WPCONFIG_COMPRESS', false );
-
-// Development mode; flips various settings in wp-config for debugging; true/false
-defined( 'UBIK_WPCONFIG_DEV' )              || define( 'UBIK_WPCONFIG_DEV', false );
-
-// Force SSL; true/false
-defined( 'UBIK_WPCONFIG_FORCE_SSL' )        || define( 'UBIK_WPCONFIG_FORCE_SSL', false );
 
 
 
