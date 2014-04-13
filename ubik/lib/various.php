@@ -18,6 +18,14 @@ function ubik_is_post_paginated() {
 
 
 
+// Remove "protected" from password-protected posts: http://www.paulund.co.uk/remove-protected-post-titles
+function ubik_strip_protected( $title ) {
+  return '%s';
+}
+add_filter( 'protected_title_format', 'ubik_strip_protected' );
+
+
+
 // Sub-optimal hack to deal with Jetpack Markdown failing to decode single quote HTML entities; should be removed when the issue is fixed
 function ubik_markdown_codeblock_fix( $content ) {
   return preg_replace_callback( "/^(`{3})([^`\n]+)?\n([^`~]+)(`{3})/m", 'ubik_markdown_codeblock_preserve', $content );
