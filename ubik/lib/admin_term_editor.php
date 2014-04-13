@@ -1,13 +1,12 @@
-<?php /**
- * Plugin Name: Visual Term Description Editor
- * Plugin URI:  https://github.com/bungeshea/visual-term-description-editor
- * Description: Replaces the plain-text term (category, tag) description editor with a WYSIWYG visual editor
- * Author:      Shea Bunge
- * Author URI:  http://bungeshea.com
- * License:     MIT
- * License URI: http://opensource.com/licences/MIT
- * Version:     1.0
- */
+<?php
+// Plugin Name: Visual Term Description Editor
+// Plugin URI:  https://github.com/bungeshea/visual-term-description-editor
+// Description: Replaces the plain-text term (category, tag) description editor with a WYSIWYG visual editor
+// Author:      Shea Bunge
+// Author URI:  http://bungeshea.com
+// License:     MIT
+// License URI: http://opensource.com/licences/MIT
+// Version:     1.0
 
 /* Exit if accessed directly */
 if ( ! defined( 'ABSPATH' ) )
