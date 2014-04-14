@@ -37,7 +37,7 @@ add_filter( 'post_thumbnail_html', 'ubik_media_post_thumbnail', 11, 5 );
 function ubik_media_caption_shortcode( $val, $attr, $html = '' ) {
   extract( shortcode_atts( array(
     'id'      => '',
-    'align'   => 'alignnone',
+    'align'   => 'none',
     'width'   => '',
     'caption' => ''
   ), $attr));
@@ -67,7 +67,7 @@ function ubik_image_shortcode( $atts, $caption = null ) {
   extract( shortcode_atts( array(
     'id'            => '',
     'title'         => '',
-    'align'         => 'alignnone',
+    'align'         => 'none',
     'url'           => '',
     'size'          => 'medium',
     'alt'           => ''
@@ -80,13 +80,12 @@ add_shortcode( 'image', 'ubik_image_shortcode' );
 
 
 // Build an image shortcode when inserting images into a post
-function ubik_image_send_to_editor( $html, $id, $caption, $title, $align, $url = '', $size = 'medium', $alt = '' ) {
+function ubik_image_send_to_editor( $html, $id, $caption, $title = '', $align, $url = '', $size = 'medium', $alt = '' ) {
 
   if ( !empty( $id ) )
     $content = ' id="' . esc_attr( $id ) . '"';
 
-  if ( !empty( $title ) )
-    $content .= ' title="' . esc_attr( $title ) . '"';
+  // We don't bother with the title attribute; it's not useful for much of anything
 
   if ( !empty( $align ) )
     $content .= ' align="align' . esc_attr( $align ) . '"';
@@ -122,32 +121,32 @@ function ubik_image_markup( $html = '', $id, $caption, $title, $align = 'alignno
     // Responsive image size hook; see Pendrell for an example of usage
     $size = apply_filters( 'ubik_image_markup_size', $size );
 
-    $html = get_image_tag( $id, $alt, '', $align, $size );
+    // Custom get_image_tag() function; used instead of $html = get_image_tag( $id, $alt, $title, $align, $size );
+    list( $img_src, $width, $height ) = image_downsize( $id, $size );
+    $html = '<img src="' . esc_attr( $img_src ) . '" alt="' . esc_attr( $alt ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image' . esc_attr( $id ) . '" itemprop="contentUrl" />';
 
-    // @TODO: add "rel" somehow
+    // @TODO: determine whether the link is an attachment or not; we shouldn't add rel in all circumstances
+    //$rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';
 
     if ( !empty( $url ) )
-      $html = '<a href="' . esc_attr( $url ) . '" title="' . esc_attr( $title ) . '">' . $html . '</a>';
+      $html = '<a href="' . esc_attr( $url ) . '">' . $html . '</a>';
   }
 
-  // In case the prefix wasn't properly formed at some point
+  // Caption cleaning; from core
+  //$caption = str_replace( array("\r\n", "\r"), "\n", $caption);
+  //$caption = preg_replace_callback( '/<[a-zA-Z0-9]+(?: [^<>]+>)*/', '_cleanup_image_add_caption', $caption );
+  //$caption = preg_replace( '/[ \n\t]*\n[ \t]*/', '<br />', $caption );
   if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
     $align = 'align' . $align;
 
-  // @TODO: add image size classes
-  $class = '';
+  if ( !empty( $caption ) )
+    $aria = 'aria-describedby="figcaption-' . $id . '" ';
 
-  if ( !empty( $caption ) ) {
-    $aria = 'aria-describedby="figcaption-' . esc_attr( $id ) . '" ';
-  } else {
-    $aria = '';
-  }
-
-  $content = '<figure id="' . esc_attr( $id ) . '" ' . $aria . 'class="wp-caption ' . esc_attr( $align ) . esc_attr( $class ) . '" itemscope itemtype="http://schema.org/ImageObject">' . "\n";
+  $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . esc_attr( $id ) . ' ' . esc_attr( $align ) . ' size-' . esc_attr( $size ) . '" itemscope itemtype="http://schema.org/ImageObject">' . "\n";
   $content .= $html . "\n";
 
   if ( !empty( $caption ) )
-    $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . do_shortcode( $caption ) . '</figcaption>' . "\n";
+    $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . do_shortcode( trim( $caption ) ) . '</figcaption>' . "\n";
 
   $content .= '</figure>' . "\n";
 
