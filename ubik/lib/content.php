@@ -291,8 +291,7 @@ function ubik_content_entry_meta() {
 
 
   // Taxonomies; allows plugins and other code to hook into this function to add entry metadata
-  $taxonomies = '';
-  $taxonomies = apply_filters( 'ubik_content_meta_taxonomies', $taxonomies );
+  $taxonomies = apply_filters( 'ubik_content_meta_taxonomies', $taxonomies = '' );
 
 
 
@@ -333,18 +332,6 @@ function ubik_content_entry_meta() {
     $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
   }
 
-  // Final output
-  $x = sprintf(
-    $entry_meta,
-    $type,
-    $date_published,
-    $parent,
-    $categories,
-    $tags,
-    $author,
-    $date_updated
-  );
-
   // Has this post been updated?
   $date_updated_text = '';
   if ( !empty( $date_updated ) )
@@ -365,9 +352,8 @@ function ubik_content_entry_meta() {
   if ( !empty( $taxonomies ) )
     $entry_meta_extras[] = $taxonomies . '. ';
 
-  if ( $entry_meta_extras )
+  if ( !empty( $entry_meta_extras ) )
     $entry_meta .= implode( $entry_meta_extras );
 
   echo $entry_meta;
-
 }

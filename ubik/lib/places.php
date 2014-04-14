@@ -228,6 +228,9 @@ function ubik_places_breadcrumb( $term ) {
 
   $tax = get_query_var( 'taxonomy' );
 
+  if ( $tax !== 'places' )
+    return;
+
   // Allows us to pass an explicit term and achieve the same functionality
   if ( empty( $term ) || $term == '' )
     $term = get_term_by( 'slug', get_query_var( 'term' ), $tax );
@@ -272,6 +275,7 @@ add_action( 'pendrell_archive_term_before', 'ubik_places_breadcrumb', 10 );
 
 // Adds places to entry metadata right after other taxonomies
 function ubik_places_entry_meta( $places ) {
+  global $post;
   if ( has_term( '', 'places' ) )
     $places = 'Places: ' . get_the_term_list( $post->ID, 'places', '', ', ', '' );
   return $places;

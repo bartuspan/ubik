@@ -55,11 +55,11 @@ function ubik_meta_tags() {
   // Image handling
   $images = array();
   if ( UBIK_META_IMAGE_SIZE ) {
-    $image_size_default = UBIK_META_IMAGE_SIZE;
+    $image_size = UBIK_META_IMAGE_SIZE;
   } else {
-    $image_size_default = 'large';
+    $image_size = 'large';
   }
-  $image_size = apply_filters( 'ubik_meta_image_size', $image_size_default );
+  $image_size = apply_filters( 'ubik_meta_image_size', $image_size );
   if ( is_singular() ) {
 
     // Are we are dealing with an image attachment page?
@@ -70,7 +70,7 @@ function ubik_meta_tags() {
       $image_src = wp_get_attachment_image_src( $post->ID, $image_size );
 
       // Is there an attachment of the desired size? Fill the mime type and appropriate height/width info
-      if ( $attachment['sizes'][$image_size] ) {
+      if ( !empty( $attachment['sizes'][$image_size] ) ) {
         $images[] = array(
           'url' => $image_src[0],
           'type' => $attachment['sizes'][$image_size]['mime-type'],
@@ -80,8 +80,7 @@ function ubik_meta_tags() {
 
       // Otherwise fallback to the default image size and no mime type
       } else {
-        $image_src = wp_get_attachment_image_src( $post->ID, $image_size );
-        $images[] = array (
+        $images[] = array(
           'url' => $image_src[0],
           'width' => $image_src[1],
           'height' => $image_src[2]
@@ -93,18 +92,19 @@ function ubik_meta_tags() {
 
       // Featured images should be first
       if ( has_post_thumbnail( $post->ID ) ) {
-        $image_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), apply_filters( 'ubik_meta_image_size', $image_size ) );
+        $image_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), $image_size );
         $images[] = array(
           'url' => $image_src[0],
           'width' => $image_src[1],
           'height' => $image_src[2]
         );
       }
+
       // Fetch additional images here but be sure not to duplicate the featured image
       $attachments = get_attached_media( 'image' );
-      if ( $attachments ) {
+      if ( count( $attachments ) > 1 ) {
         foreach ( $attachments as $attachment ) {
-          $image_src = wp_get_attachment_image_src( $attachment->ID, apply_filters( 'ubik_meta_image_size', $image_size ) );
+          $image_src = wp_get_attachment_image_src( $attachment->ID, $image_size );
 
           // Don't duplicate featured image
           if ( $image_src[0] !== $images[0]['url'] ) {
@@ -146,7 +146,7 @@ function ubik_meta_tags() {
     echo '<meta name="description" content="' . esc_attr( $description ) . '"/>' . "\n";
 
   // Output canonical URL if it exists
-  if ( $canonical )
+  if ( !empty( $canonical ) )
     echo '<link rel="canonical" href="' . esc_url( $canonical ) . '" />' . "\n";
 
 
@@ -175,11 +175,11 @@ function ubik_meta_tags() {
   if ( !empty( $images ) ) {
     foreach ( $images as $image ) {
       echo '<meta property="og:image" content="' . esc_url( $image['url'] ) . '"/>' . "\n";
-      if ( $image['type'] )
+      if ( !empty( $image['type'] ) )
         echo '<meta property="og:image:type" content="' . esc_attr( $image['type'] ) . '"/>' . "\n";
-      if ( $image['width'] )
+      if ( !empty( $image['width'] ) )
         echo '<meta property="og:image:width" content="' . esc_attr( $image['width'] ) . '"/>' . "\n";
-      if ( $image['height'] )
+      if ( !empty( $image['height'] ) )
         echo '<meta property="og:image:height" content="' . esc_attr( $image['height'] ) . '"/>' . "\n";
     }
   }
@@ -202,7 +202,7 @@ function ubik_meta_tags() {
     echo '<meta property="article:modified_time" content="' . get_post_modified_time( 'c', true ) . '"/>' . "\n";
 
     // Author, in profile format
-    if ( $author_facebook )
+    if ( !empty( $author_facebook ) )
       echo '<meta property="article:author" content="http://www.facebook.com/' . esc_attr( $author_facebook ) . '"/>' . "\n";
 
     // Publisher; must be a Facebook Page
@@ -210,11 +210,11 @@ function ubik_meta_tags() {
       echo '<meta property="article:publisher" content="http://www.facebook.com/' . UBIK_META_FACEBOOK_PUBLISHER . '"/>' . "\n";
 
     // Category, but only one... @TODO: custom usort() function to select category by count or something
-    if ( $category )
+    if ( !empty( $category ) )
       echo '<meta property="article:section" content="' . esc_attr( $category[0]->cat_name ) . '"/>' . "\n";
 
     // Tags, as many as you like...
-    if ( $tags ) {
+    if ( !empty( $tags ) ) {
       foreach ( $tags as $tag ) {
         echo '<meta property="article:tag" content="' . esc_attr( $tag->name ) . '"/>' . "\n";
       }
@@ -239,7 +239,7 @@ function ubik_meta_tags() {
   echo '<meta name="twitter:card" content="' . $card . '">' . "\n";
 
   // Twitter card author; article-specific as well as site-wide, if defined
-  if ( $author_twitter )
+  if ( !empty( $author_twitter ) )
     echo '<meta name="twitter:creator" content="@' . get_the_author_meta( 'twitter', $post->post_author ) . '">' . "\n";
   if ( UBIK_META_TWITTER_PUBLISHER )
     echo '<meta name="twitter:site" content="@' . UBIK_META_TWITTER_PUBLISHER . '">' . "\n";
@@ -271,7 +271,7 @@ function ubik_meta_tags() {
   // === GOOGLE === //
 
   // Google Plus author and publisher
-  if ( $author_google )
+  if ( !empty( $author_google ) )
     echo '<link rel="author" href="https://google.com/+' . $author_google . '">' . "\n";
   if ( UBIK_META_GOOGLE_PUBLISHER )
     echo '<link rel="publisher" href="https://plus.google.com/' . UBIK_META_GOOGLE_PUBLISHER . '">' . "\n";
