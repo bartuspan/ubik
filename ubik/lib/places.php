@@ -131,9 +131,8 @@ function ubik_places_shortcode( $atts, $content = null ) {
         $title = $content;
       }
 
-      $content = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+      $content = sprintf( '<a href="%1$s">%2$s</a>',
         get_term_link( $term->term_id, 'places' ),
-        esc_attr( sprintf( __( 'Permalink to %s', 'ubik' ), $term->name ) ),
         $title
       );
     }

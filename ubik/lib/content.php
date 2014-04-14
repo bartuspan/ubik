@@ -201,9 +201,8 @@ function ubik_content_entry_meta() {
   $post_format = get_post_format();
   if ( $post_format ) {
     $post_format_name = apply_filters( 'ubik_content_meta_format', get_post_format_string( $post_format ) );
-    $type = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+    $type = sprintf( '<a href="%1$s">%2$s</a>',
       esc_url( get_post_format_link( $post_format ) ),
-      esc_attr( sprintf( __( '%s archive', 'ubik' ), $post_format_name ) ),
       esc_attr( strtolower( $post_format_name ) )
     );
   }
@@ -213,9 +212,8 @@ function ubik_content_entry_meta() {
   foreach ( $custom_post_types as $custom_post_type ) {
     if ( $custom_post_type->name === get_post_type() ) {
       if ( $custom_post_type->has_archive ) {
-        $type = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+        $type = sprintf( '<a href="%1$s">%2$s</a>',
           esc_url( get_post_type_archive_link( $custom_post_type->name ) ),
-          esc_attr( sprintf( __( '%s archive', 'ubik' ), $custom_post_type->name ) ),
           esc_attr( strtolower( $custom_post_type->labels->singular_name ) )
         );
       } else {
@@ -247,10 +245,9 @@ function ubik_content_entry_meta() {
   }
 
   // Published date
-  $date_published = sprintf( '<span class="%1$s"><a href="%2$s" title="%3$s" rel="bookmark">%4$s</a></span>',
+  $date_published = sprintf( '<span class="%1$s"><a href="%2$s" rel="bookmark">%3$s</a></span>',
     $date_published_class,
     esc_url( get_permalink() ),
-    the_title_attribute( array( 'before' => __( 'Permalink to ', 'ubik' ), 'echo' => false ) ),
     $date_published
   );
 
@@ -267,9 +264,8 @@ function ubik_content_entry_meta() {
     } else {
       $parent_rel = 'parent';
     }
-    $parent = sprintf( __( '<a href="%1$s" title="Return to %2$s" rel="%3$s">%4$s</a>', 'ubik' ),
+    $parent = sprintf( __( '<a href="%1$s" rel="%2$s">%3$s</a>', 'ubik' ),
       esc_url( get_permalink( $post->post_parent ) ),
-      esc_attr( strip_tags( get_the_title( $post->post_parent ) ) ),
       $parent_rel,
       get_the_title( $post->post_parent )
     );
@@ -296,9 +292,8 @@ function ubik_content_entry_meta() {
 
 
   // Author
-  $author = sprintf( '<span class="author vcard"><a class="fn n url" href="%1$s" title="%2$s" rel="author">%3$s</a></span>',
+  $author = sprintf( '<span class="author vcard"><a class="fn n url" href="%1$s" rel="author">%2$s</a></span>',
     esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
-    esc_attr( sprintf( __( 'View all posts by %s', 'ubik' ), get_the_author() ) ),
     get_the_author()
   );
 
