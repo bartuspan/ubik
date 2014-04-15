@@ -50,9 +50,6 @@ function ubik_media_caption_shortcode( $val, $attr, $html = '' ) {
   if ( $id )
     $id = esc_attr( $id );
 
-  // Add itemprop="contentURL" to image; ugly hack
-  $html = str_replace( '<img', '<img itemprop="contentUrl"', $html );
-
   // Pass whatever we have to the general image markup generator
   return ubik_image_markup( $html, $id, $caption, $title = '', $align, $url = '', $size = '', $alt = '' );
 }
@@ -99,10 +96,11 @@ function ubik_image_send_to_editor( $html, $id, $caption, $title = '', $align, $
   if ( !empty( $alt ) )
     $content .= ' alt="' . esc_attr( $alt ) . '"';
 
-  $content = '[image' . $content . ']';
-
-  if ( !empty( $caption ) )
-    $content .= $caption . '[/image]';
+  if ( !empty( $caption ) ) {
+    $content = '[image' . $content . ']' . $caption . '[/image]';
+  } else {
+    $content = '[image' . $content . '/]';
+  }
 
   return $content;
 }
@@ -113,7 +111,7 @@ add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
 // == IMAGE MARKUP == //
 
 // Generalized image markup generator; used by caption and image shortcodes
-function ubik_image_markup( $html = '', $id, $caption, $title, $align = 'alignnone', $url = '', $size = 'medium', $alt = '' ) {
+function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'alignnone', $url = '', $size = 'medium', $alt = '' ) {
 
   // If the $html variable is empty let's generate our own markup
   if ( empty( $html ) ) {
@@ -123,30 +121,42 @@ function ubik_image_markup( $html = '', $id, $caption, $title, $align = 'alignno
 
     // Custom get_image_tag() function; used instead of $html = get_image_tag( $id, $alt, $title, $align, $size );
     list( $img_src, $width, $height ) = image_downsize( $id, $size );
-    $html = '<img src="' . esc_attr( $img_src ) . '" alt="' . esc_attr( $alt ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image' . esc_attr( $id ) . '" itemprop="contentUrl" />';
+    $html = '<img src="' . esc_attr( $img_src ) . '" alt="' . esc_attr( $alt ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . '" itemprop="contentUrl" />';
 
     // @TODO: determine whether the link is an attachment or not; we shouldn't add rel in all circumstances
     //$rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';
 
     if ( !empty( $url ) )
       $html = '<a href="' . esc_attr( $url ) . '">' . $html . '</a>';
+
+  // If the $html variable has been passed (e.g. from caption shortcode or post thumbnail functions) let's get fancy
+  } else {
+    // Add itemprop="contentURL" to image; ugly hack
+    $html = str_replace( '<img', '<img itemprop="contentUrl"', $html );
   }
 
-  // Caption cleaning; from core
-  //$caption = str_replace( array("\r\n", "\r"), "\n", $caption);
-  //$caption = preg_replace_callback( '/<[a-zA-Z0-9]+(?: [^<>]+>)*/', '_cleanup_image_add_caption', $caption );
-  //$caption = preg_replace( '/[ \n\t]*\n[ \t]*/', '<br />', $caption );
+  // Sanitize $id
+  $id = esc_attr( $id );
+
+  // Caption handling; enable shortcodes and clean up the text a bit, removing line breaks and other formatting
+  $caption = strip_tags( $caption, '<a><abbr><acronym><b><bdi><bdo><cite><code><del><em><i><ins><mark><q><rp><rt><ruby><s><small><strong><sub><sup><time><u>' );
+  $caption = trim( str_replace( array("\r\n", "\r", "\n"), ' ', $caption ) );
+  $caption = wptexturize( do_shortcode( $caption ) );
+
+  if ( !empty( $caption ) ) {
+    $aria = 'aria-describedby="figcaption-' . $id . '" ';
+  } else {
+    $aria = '';
+  }
+
   if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
     $align = 'align' . $align;
 
-  if ( !empty( $caption ) )
-    $aria = 'aria-describedby="figcaption-' . $id . '" ';
-
-  $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . esc_attr( $id ) . ' ' . esc_attr( $align ) . ' size-' . esc_attr( $size ) . '" itemscope itemtype="http://schema.org/ImageObject">' . "\n";
+  $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . ' ' . esc_attr( $align ) . ' size-' . esc_attr( $size ) . '" itemscope itemtype="http://schema.org/ImageObject">' . "\n";
   $content .= $html . "\n";
 
   if ( !empty( $caption ) )
-    $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . do_shortcode( trim( $caption ) ) . '</figcaption>' . "\n";
+    $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>' . "\n";
 
   $content .= '</figure>' . "\n";
 
