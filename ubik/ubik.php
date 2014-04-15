@@ -24,7 +24,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'ubik-config-defaults.php' );
 // Load ubik core library
 include( plugin_dir_path( __FILE__ ) . 'lib/content.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/excerpt.php' );
-//include( plugin_dir_path( __FILE__ ) . 'lib/feed.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/feed.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/general.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/media.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/microdata.php' );

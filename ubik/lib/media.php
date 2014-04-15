@@ -82,8 +82,6 @@ function ubik_image_send_to_editor( $html, $id, $caption, $title = '', $align, $
   if ( !empty( $id ) )
     $content = ' id="' . esc_attr( $id ) . '"';
 
-  // We don't bother with the title attribute; it's not useful for much of anything
-
   if ( !empty( $align ) )
     $content .= ' align="align' . esc_attr( $align ) . '"';
 
@@ -119,45 +117,66 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
     // Responsive image size hook; see Pendrell for an example of usage
     $size = apply_filters( 'ubik_image_markup_size', $size );
 
-    // Custom get_image_tag() function; used instead of $html = get_image_tag( $id, $alt, $title, $align, $size );
-    list( $img_src, $width, $height ) = image_downsize( $id, $size );
-    $html = '<img src="' . esc_attr( $img_src ) . '" alt="' . esc_attr( $alt ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . '" itemprop="contentUrl" />';
+    // WordPress is very good at alt attribute fallbacks; just in case, let's copy the caption over here if it isn't filled
+    if ( empty( $alt ) )
+      $alt = esc_attr( $caption );
 
-    // @TODO: determine whether the link is an attachment or not; we shouldn't add rel in all circumstances
+    // Custom get_image_tag() function; used instead of $html = get_image_tag( $id, $alt, $title, $align, $size );
+    list( $src, $width, $height ) = image_downsize( $id, $size );
+
+    // For reference: ' . image_hwstring( $width, $height ) . '
+    $html = '<img src="' . esc_attr( $src ) . '" alt="' . esc_attr( $alt ) . '" class="wp-image-' . esc_attr( $id ) . '" itemprop="contentUrl" />';
+
+    // @TODO: determing whether $url points to an attachment or not; add the rel attribute if so; low-priority
     //$rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';
 
     if ( !empty( $url ) )
       $html = '<a href="' . esc_attr( $url ) . '">' . $html . '</a>';
 
-  // If the $html variable has been passed (e.g. from caption shortcode or post thumbnail functions) let's get fancy
+  // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code)
   } else {
     // Add itemprop="contentURL" to image; ugly hack
     $html = str_replace( '<img', '<img itemprop="contentUrl"', $html );
   }
 
-  // Sanitize $id
+  // Sanitize $id, not that this should really be a problem
   $id = esc_attr( $id );
 
-  // Caption handling; enable shortcodes and clean up the text a bit, removing line breaks and other formatting
-  $caption = strip_tags( $caption, '<a><abbr><acronym><b><bdi><bdo><cite><code><del><em><i><ins><mark><q><rp><rt><ruby><s><small><strong><sub><sup><time><u>' );
-  $caption = trim( str_replace( array("\r\n", "\r", "\n"), ' ', $caption ) );
-  $caption = wptexturize( do_shortcode( $caption ) );
-
+  // If the caption isn't empty generate wai-aria attribute for the figure element
   if ( !empty( $caption ) ) {
     $aria = 'aria-describedby="figcaption-' . $id . '" ';
   } else {
     $aria = '';
   }
 
+  // Strip tags from captions but preserve some text formatting elements; this is mainly used to get rid of stray paragraph and break tags
+  $caption = strip_tags( $caption, '<a><abbr><acronym><b><bdi><bdo><cite><code><del><em><i><ins><mark><q><rp><rt><ruby><s><small><strong><sub><sup><time><u>' );
+
+  // Get rid of excess white space and line breaks to make things neat; adds a space instead
+  $caption = trim( str_replace( array("\r\n", "\r", "\n"), ' ', $caption ) );
+
+  // Do shortcodes and texturize (since shortcode contents aren't texturized by default)
+  $caption = wptexturize( do_shortcode( $caption ) );
+
+  // In case the align property arrived without being properly formed; might be unnecessary
   if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
     $align = 'align' . $align;
 
-  $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . ' ' . esc_attr( $align ) . ' size-' . esc_attr( $size ) . '" itemscope itemtype="http://schema.org/ImageObject">' . "\n";
+  // There's a chance no $size will be passed to this function
+  if ( !empty( $size ) )
+    $size = ' size-' . esc_attr( $size );
+
+  // Image wrapper element
+  $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . ' ' . esc_attr( $align ) . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . "\n";
+
+  // The HTML for the link (optional) and image generated above or fed into this function from somewhere else
   $content .= $html . "\n";
 
+  // Wraps the caption in a figcaption element with appropriate markup
   if ( !empty( $caption ) )
     $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>' . "\n";
 
+  // Good to the last drop
   $content .= '</figure>' . "\n";
 
   return $content;

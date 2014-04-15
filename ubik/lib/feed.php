@@ -1,8 +1,17 @@
 <?php // ==== FEED ==== //
 
-// Untested
+// Standardize image sizes on feeds; just send medium regardless of what's in the original content
+function ubik_feed_images( $size ) {
+    if ( is_feed() )
+        return 'medium';
+    return $size;
+}
+add_filter( 'ubik_image_markup_size', 'ubik_feed_images' );
+add_filter( 'post_thumbnail_size', 'ubik_feed_images' );
 
-// delay feed update
+
+
+// Delay feed update
 function publish_later_on_feed($where) {
     global $wpdb;
 
@@ -21,4 +30,5 @@ function publish_later_on_feed($where) {
     }
     return $where;
 }
-add_filter('posts_where', 'publish_later_on_feed');
+// Untested
+//add_filter('posts_where', 'publish_later_on_feed');
