@@ -6,8 +6,8 @@ function ubik_feed_images( $size ) {
         return 'medium';
     return $size;
 }
-add_filter( 'ubik_image_markup_size', 'ubik_feed_images' );
 add_filter( 'post_thumbnail_size', 'ubik_feed_images' );
+add_filter( 'ubik_image_markup_size', 'ubik_feed_images' );
 
 
 

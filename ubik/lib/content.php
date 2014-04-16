@@ -127,7 +127,7 @@ function ubik_content_date( $date ) {
   if ( UBIK_CONTENT_DATE_HUMAN_SPAN ) {
     $date_span = UBIK_CONTENT_DATE_HUMAN_SPAN;
   } else {
-    $date_span = 604800; // One week
+    $date_span = 4838000; // Eight weeks
   }
 
   if ( UBIK_CONTENT_DATE_HUMAN && !is_archive() && ( current_time( 'timestamp' ) - $date ) < $date_span ) {

@@ -15,7 +15,7 @@ defined( 'UBIK_SERIES' )                    || define( 'UBIK_SERIES', false );
 // == ADMIN == //
 
 // Switch for the magic "all settings" hack; true/false
-defined( 'UBIK_ADMIN_ALL_SETTINGS' )        || define( 'UBIK_ADMIN_ALL_SETTINGS', true );
+defined( 'UBIK_ADMIN_ALL_SETTINGS' )        || define( 'UBIK_ADMIN_ALL_SETTINGS', false );
 
 // Additional contact methods hack; true/false
 defined( 'UBIK_ADMIN_CONTACT_METHODS' )     || define( 'UBIK_ADMIN_CONTACT_METHODS', true );
@@ -42,7 +42,7 @@ defined( 'UBIK_CONTENT_DATE_FORMAT' )       || define( 'UBIK_CONTENT_DATE_FORMAT
 // Human-readable dates; true/false
 defined( 'UBIK_CONTENT_DATE_HUMAN' )        || define( 'UBIK_CONTENT_DATE_HUMAN', true );
 
-// Human-readable time span; integer or false to disable and use default
+// Human-readable time span; integer or false to disable and use default (4838000; one week = 604800)
 defined( 'UBIK_CONTENT_DATE_HUMAN_SPAN' )   || define( 'UBIK_CONTENT_DATE_HUMAN_SPAN', false);
 
 // Strict titles; removes non-standard characters; true/false
@@ -60,7 +60,7 @@ defined( 'UBIK_CONTENT_TITLE' )             || define( 'UBIK_CONTENT_TITLE', tru
 // Custom post excerpt length; integer or false to disable
 defined( 'UBIK_EXCERPT_LENGTH' )            || define( 'UBIK_EXCERPT_LENGTH', 70 );
 
-// Custom post excerpt ending; string or false to disable
+// Custom post excerpt ending; had some problems with '&hellip;'' in places so '...' it is; string or false to disable
 defined( 'UBIK_EXCERPT_MORE' )              || define( 'UBIK_EXCERPT_MORE', '...' );
 
 // Custom "more" link; true/false
