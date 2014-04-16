@@ -122,10 +122,13 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
       $alt = esc_attr( $caption );
 
     // Custom get_image_tag() function; used instead of $html = get_image_tag( $id, $alt, $title, $align, $size );
-    list( $src, $width, $height ) = image_downsize( $id, $size );
+    list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
+
+    if ( $is_intermediate === false )
+      $size = 'full';
 
     // For reference: ' . image_hwstring( $width, $height ) . '
-    $html = '<img src="' . esc_attr( $src ) . '" alt="' . esc_attr( $alt ) . '" class="wp-image-' . esc_attr( $id ) . '" itemprop="contentUrl" />';
+    $html = '<img src="' . esc_attr( $src ) . '" alt="' . esc_attr( $alt ) . '" class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" itemprop="contentUrl" />';
 
     // @TODO: determing whether $url points to an attachment or not; add the rel attribute if so; low-priority
     //$rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';

@@ -66,6 +66,8 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 ### Media
 
 * Thumbnail fallback: if a featured image isn't set the appropriately-sized thumbnail of the first image will be displayed.
+* Nicer HTML5-friendly image markup for attachments, image format posts, and image captions. Includes wai-aria and schema.org structured data markup.
+* Image shortcode `[image/]` automatically entered in the post editor. This allows for dynamic resizing of the image to suit different contexts. (See the source for more on this.)
 
 ### Meta
 
@@ -79,6 +81,7 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 * Custom Post Taxonomy for building a geographic database. Each place is a term in a heirarchal taxonomy.
 * Places shortcode: `[place]Place name[/place]` or `[place slug=placename]`. Will default back to plain text when the place doesn't exist. Makes it easy to reference places in your posts.
 * Place taxonomy archives effortlessly list posts tagged with a given place.
+* Places breadcrumb navigation.
 * Lists related places in a sensible manner. No extra work required.
 * Places sidebar when navigating within the places database.
 * No custom mapping function at present. Just use simple Google Maps embeds.
@@ -107,3 +110,4 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 
 * Fill out your full user profile, blog description, and all category, tag, taxonomy, and other descriptions where available! All the SEO-friendly goodness in this plugin reads from standard WordPress data.
 * Flush your permalinks after fiddling around with anything.
+* See `usage.md` for additional tips.
