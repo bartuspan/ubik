@@ -148,3 +148,29 @@ function ubik_netlabel_entry_meta( $meta ) {
   return $meta;
 }
 add_filter( 'ubik_content_meta_taxonomies', 'ubik_netlabel_entry_meta' );
+
+
+
+// Hook into Pendrell to deliver excerpts of profiles on relevant terms (i.e. an artist with a profile page)
+function ubik_netlabel_term_description( $description ) {
+
+  $tax = get_query_var( 'taxonomy' );
+
+  if ( $tax === 'artists' ) {
+
+    //$term = get_term_by( 'slug', get_query_var( 'term' ), $tax );
+    $profile = get_posts( array(
+        'name'        => get_query_var( 'term' ),
+        'post_type'   => array( 'post', 'page' ),
+        'post_status' => 'publish',
+        'numberposts' => 1
+      )
+    );
+    if ( !empty( $profile ) ) {
+      $description = ubik_excerpt( $profile[0]->post_content ) . "\n";
+      $description .= ' <a href="'. esc_url( get_permalink( $profile[0]->ID ) ) . '" class="more-link">' . __( 'Continue reading&nbsp;&rarr;', 'ubik' ) . '</a>';
+    }
+  }
+  return $description;
+}
+add_filter( 'pendrell_archive_term_description', 'ubik_netlabel_term_description' );
