@@ -161,13 +161,13 @@ add_filter( 'pendrell_archive_title', 'ubik_places_archive_title' );
 
 
 // A list of places; tries to list children, falls back to siblings if there are enough of them
-function ubik_places_list( $term, $depth = 2 ) {
+function ubik_places_list( $content, $term = '', $depth = 2 ) {
 
   $tax = get_query_var( 'taxonomy' );
 
   // Don't display on paged archives
   if ( is_archive() && is_paged() || ( $tax !== 'places' ) )
-    return;
+    return $content;
 
   // Allows us to pass an explicit term and achieve the same functionality
   if ( empty( $term ) || $term == '' )
@@ -189,46 +189,49 @@ function ubik_places_list( $term, $depth = 2 ) {
       if ( count( $children ) >= 25 )
         $depth = 1;
 
-      ?><div class="archive-places-list">
-        <h2><?php printf( __( 'Places in %s', 'ubik' ), $term->name ); ?></h2>
-        <ul class="place-list"><?php wp_list_categories(
+      $content .= "\n" . '<div class="archive-places-list">' . "\n";
+      $content .= '<h2>' . sprintf( __( 'Places in %s', 'ubik' ), $term->name ) . '</h2>' . "\n";
+      $content .= '<ul class="place-list">' . wp_list_categories(
           array(
             'child_of'      => $term->term_id,
             'depth'         => $depth,
             'taxonomy'      => $tax,
             'title_li'      => '',
+            'echo'          => 0
           )
-        ); ?></ul>
-      </div><?php
+        ) . '</ul>' . "\n";
+      $content .= '</div>';
 
     // If there aren't any children perhaps siblings will be useful
     } elseif ( count( $siblings ) >= 2 ) {
-      ?><div class="archive-places-list">
-        <h2>Related places</h2>
-        <ul class="place-list"><?php wp_list_categories(
+      $content .= "\n" . '<div class="archive-places-list">' . "\n";
+      $content .= '<h2>' . __( 'Related places', 'ubik' ) . '</h2>' . "\n";
+      $content .= '<ul class="place-list">' . wp_list_categories(
           array(
             'child_of'      => $term->parent,
             'depth'         => 1,
             'taxonomy'      => $tax,
             'title_li'      => '',
-            'exclude'       => $term->term_id
+            'exclude'       => $term->term_id,
+            'echo'          => 0
           )
-        ); ?></ul>
-      </div><?php
+        ) . '</ul>' . "\n";
+      $content .= '</div>' . "\n";
     }
   }
+  return $content;
 }
-add_action( 'pendrell_archive_term_after', 'ubik_places_list', 10 );
+add_filter( 'pendrell_archive_term_after', 'ubik_places_list' );
 
 
 
 // Breadcrumb navigation for places based on http://www.billerickson.net/wordpress-taxonomy-breadcrumbs/
-function ubik_places_breadcrumb( $term ) {
+function ubik_places_breadcrumb( $content, $term = '' ) {
 
   $tax = get_query_var( 'taxonomy' );
 
   if ( $tax !== 'places' )
-    return;
+    return $content;
 
   // Allows us to pass an explicit term and achieve the same functionality
   if ( empty( $term ) || $term == '' )
@@ -252,21 +255,22 @@ function ubik_places_breadcrumb( $term ) {
       $parents = array_reverse( $parents );
 
       // Wrap it up
-      echo '<nav class="breadcrumbs">' . "\n" . '<ul>' . "\n";
+      $content .= "\n" . '<nav class="breadcrumbs">' . "\n" . '<ul>' . "\n";
 
       // For each parent, create a breadcrumb item
       foreach ( $parents as $parent ) {
         $item = get_term_by( 'id', $parent, $tax );
         $link = get_term_link( $parent, $tax );
-        echo '<li><a href="' . $link . '">' . $item->name . '</a></li>' . "\n";
+        $content .= '<li><a href="' . $link . '">' . $item->name . '</a></li>' . "\n";
       }
 
       // Wrap it up
-      echo '</ul>' . "\n" . '</nav>' . "\n";
+      $content .= '</ul>' . "\n" . '</nav>' . "\n";
     }
   }
+  return $content;
 }
-add_action( 'pendrell_archive_term_before', 'ubik_places_breadcrumb', 10 );
+add_filter( 'pendrell_archive_term_before', 'ubik_places_breadcrumb' );
 
 
 
