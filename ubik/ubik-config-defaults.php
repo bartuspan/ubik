@@ -7,6 +7,7 @@ defined( 'UBIK_DEV' )                       || define( 'UBIK_DEV', true );
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
 defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
+defined( 'UBIK_NETLABEL' )                  || define( 'UBIK_NETLABEL', false );
 defined( 'UBIK_PLACES' )                    || define( 'UBIK_PLACES', false );
 defined( 'UBIK_SERIES' )                    || define( 'UBIK_SERIES', false );
 
@@ -28,6 +29,9 @@ defined( 'UBIK_ADMIN_EDITOR_FONT_STACK' )   || define( 'UBIK_ADMIN_EDITOR_FONT_S
 
 // Rich term editor; true/false
 defined( 'UBIK_ADMIN_TERM_EDITOR' )         || define( 'UBIK_ADMIN_TERM_EDITOR', false );
+
+// Rich visual editor; true/false; defaults to true (e.g. visual editor is enabled)
+defined( 'UBIK_ADMIN_VISUAL_EDITOR' )       || define( 'UBIK_ADMIN_VISUAL_EDITOR', true );
 
 
 

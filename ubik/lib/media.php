@@ -2,9 +2,8 @@
 
 // == THUMBNAILS == //
 
-// Default thumbnail taken from first attached image
+// Default thumbnail taken from first attached image; source: http://wpengineer.com/1735/easier-better-solutions-to-get-pictures-on-your-posts/
 function ubik_media_post_thumbnail( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
-  // Source: http://wpengineer.com/1735/easier-better-solutions-to-get-pictures-on-your-posts/
   if ( empty( $html ) ) {
     $attachments = get_children( array(
       'post_parent'    => get_the_ID(),
@@ -17,9 +16,9 @@ function ubik_media_post_thumbnail( $html, $post_id, $post_thumbnail_id, $size, 
     ), ARRAY_A );
 
     if ( !empty( $attachments ) ) {
-      echo wp_get_attachment_image( current( array_keys( $attachments ) ), $size );
+      return wp_get_attachment_image( current( array_keys( $attachments ) ), $size );
     }
-    // @TODO: add a default thumbnail!
+    // @TODO: add a default thumbnail
   } else {
     return $html;
   }
@@ -39,14 +38,15 @@ function ubik_media_caption_shortcode( $val, $attr, $html = '' ) {
     'id'      => '',
     'align'   => 'none',
     'width'   => '',
-    'caption' => ''
+    'caption' => '',
+    'class'   => '' // New in WP 3.9; doesn't mean we need to use it
   ), $attr));
 
   // Fail gracefully if we aren't provided with an ID or a caption
   if ( empty( $id ) || empty( $caption ) )
     return $val;
 
-  // Possible unnecessary given further processing
+  // Possible unnecessary given further processing, couldn't hurt
   if ( $id )
     $id = esc_attr( $id );
 
@@ -82,7 +82,7 @@ function ubik_image_send_to_editor( $html, $id, $caption, $title = '', $align, $
   if ( !empty( $id ) )
     $content = ' id="' . esc_attr( $id ) . '"';
 
-  if ( !empty( $align ) )
+  if ( !empty( $align ) && $align !== 'none' )
     $content .= ' align="align' . esc_attr( $align ) . '"';
 
   if ( !empty( $url ) )
@@ -109,7 +109,7 @@ add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
 // == IMAGE MARKUP == //
 
 // Generalized image markup generator; used by caption and image shortcodes
-function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'alignnone', $url = '', $size = 'medium', $alt = '' ) {
+function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'alignnone', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
   // If the $html variable is empty let's generate our own markup
   if ( empty( $html ) ) {
@@ -124,21 +124,29 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
     // Custom get_image_tag() function; used instead of $html = get_image_tag( $id, $alt, $title, $align, $size );
     list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
 
+    // If the image isn't resized then it is obviously the original
     if ( $is_intermediate === false )
       $size = 'full';
 
-    // For reference: ' . image_hwstring( $width, $height ) . '
+    // For reference (removed to let the stylesheet handle such things): ' . image_hwstring( $width, $height ) . '
     $html = '<img src="' . esc_attr( $src ) . '" alt="' . esc_attr( $alt ) . '" class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" itemprop="contentUrl" />';
 
-    // @TODO: determing whether $url points to an attachment or not; add the rel attribute if so; low-priority
-    //$rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';
+    // Generate rel attribute from $rel variable; we only want this on images explicitly identified as attachments
+    if ( !empty( $rel ) ) {
+      if ( $rel === 'attachment' ) {
+        $rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';
+      } else {
+        // Reset the attribute so we don't pass garbage
+        $rel = '';
+      }
+    }
 
     if ( !empty( $url ) )
-      $html = '<a href="' . esc_attr( $url ) . '">' . $html . '</a>';
+      $html = '<a href="' . esc_attr( $url ) . '"' . $rel . '>' . $html . '</a>';
 
   // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code)
   } else {
-    // Add itemprop="contentURL" to image; ugly hack
+    // Add itemprop="contentURL" to image element when $html variable is passed to this function; ugly hack
     $html = str_replace( '<img', '<img itemprop="contentUrl"', $html );
   }
 

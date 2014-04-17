@@ -35,12 +35,15 @@ if ( is_admin() ) {
   include( plugin_dir_path( __FILE__ ) . 'lib/admin.php' );
 }
 
-// Load optional ubik modules
+// Load optional Ubik modules; set these in your `ubik-config.php`
 if ( UBIK_FORMAT )
   include( plugin_dir_path( __FILE__ ) . 'lib/formats.php' );
 
 if ( UBIK_META )
   include( plugin_dir_path( __FILE__ ) . 'lib/meta.php' );
+
+if ( UBIK_NETLABEL )
+  include( plugin_dir_path( __FILE__ ) . 'lib/netlabel.php' );
 
 if ( UBIK_PLACES )
   include( plugin_dir_path( __FILE__ ) . 'lib/places.php' );

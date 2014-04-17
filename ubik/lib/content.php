@@ -169,6 +169,7 @@ function ubik_content_entry_meta() {
   // ubik_content_meta_date_parent
   // ubik_content_meta_categories
   // ubik_content_meta_tags
+  // ubik_content_meta_taxonomies
   // ubik_content_meta_author
 
   $type = '';
@@ -345,7 +346,7 @@ function ubik_content_entry_meta() {
     $entry_meta_extras[] = 'Tags: ' . $tags . '. ';
 
   if ( !empty( $taxonomies ) )
-    $entry_meta_extras[] = $taxonomies . '. ';
+    $entry_meta_extras[] = $taxonomies;
 
   if ( !empty( $entry_meta_extras ) )
     $entry_meta .= implode( $entry_meta_extras );

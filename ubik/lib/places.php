@@ -7,17 +7,17 @@ function ubik_places_init() {
   register_taxonomy( 'places', 'post', array(
     'labels' => array(
       'name' => _x( 'Places', 'taxonomy general name' ),
-      'singular_name' => _x( 'Places', 'taxonomy singular name' ),
-      'menu_name' => __( 'Places' ),
-      'all_items' => __( 'All places' ),
-      'edit_item' => __( 'Edit place' ),
-      'view_item' => __( 'View place' ),
-      'update_item' => __( 'Update places' ),
-      'add_new_item' => __( 'Add new place' ),
-      'new_item_name' => __( 'New place name' ),
-      'parent_item' => __( 'Parent place' ),
+      'singular_name'     => _x( 'Places', 'taxonomy singular name' ),
+      'menu_name'         => __( 'Places' ),
+      'all_items'         => __( 'All places' ),
+      'edit_item'         => __( 'Edit place' ),
+      'view_item'         => __( 'View place' ),
+      'update_item'       => __( 'Update places' ),
+      'add_new_item'      => __( 'Add new place' ),
+      'new_item_name'     => __( 'New place name' ),
+      'parent_item'       => __( 'Parent place' ),
       'parent_item_colon' => __( 'Parent place:' ),
-      'search_items' =>  __( 'Search places' ),
+      'search_items'      => __( 'Search places' ),
     ),
     'show_admin_column' => true,
     'hierarchical' => true,
@@ -29,7 +29,7 @@ function ubik_places_init() {
   ));
 
   // Places shortcode
-  add_shortcode('place', 'ubik_places_shortcode');
+  add_shortcode( 'place', 'ubik_places_shortcode' );
 }
 add_action( 'init', 'ubik_places_init' );
 
@@ -277,11 +277,11 @@ add_filter( 'pendrell_archive_term_before', 'ubik_places_breadcrumb' );
 // == PLACES ENTRY META == //
 
 // Adds places to entry metadata right after other taxonomies
-function ubik_places_entry_meta( $places ) {
+function ubik_places_entry_meta( $meta ) {
   global $post;
   if ( has_term( '', 'places' ) )
-    $places = 'Places: ' . get_the_term_list( $post->ID, 'places', '', ', ', '' );
-  return $places;
+    $meta .= 'Places: ' . get_the_term_list( $post->ID, 'places', '', ', ', '. ' );
+  return $meta;
 }
 add_filter( 'ubik_content_meta_taxonomies', 'ubik_places_entry_meta' );
 

@@ -21,6 +21,12 @@ if ( UBIK_ADMIN_EDITOR_FONT_SIZE || UBIK_ADMIN_EDITOR_FONT_STACK ) {
 
 
 
+// Disable the visual editor
+if ( UBIK_ADMIN_VISUAL_EDITOR === false )
+  add_filter( 'user_can_richedit' , '__return_false', 50 );
+
+
+
 // Remove all characters that are not the separator, a-z, 0-9, or whitespace; mainly for use with bilingual English/Chinese post titles
 function ubik_slug_strict( $title ) {
   // Lifted from http://wordpress.org/plugins/strings-sanitizer/
@@ -78,6 +84,8 @@ if ( UBIK_ADMIN_CONTACT_METHODS )
   add_filter('user_contactmethods', 'ubik_contact_methods');
 
 
+
+// == SETTINGS == //
 
 // Show all settings link
 function all_settings_link() {
