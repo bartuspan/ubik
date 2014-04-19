@@ -67,31 +67,32 @@ function ubik_places_widget( $depth = 2, $term = null ) {
     // What we're looking for is the last element of the array; pop it off and get its info
     $ancestor = get_term( array_pop( $ancestors ), $tax );
     $title = sprintf( __( 'Places in %s', 'ubik' ), '<a href="' . get_term_link( $ancestor->term_id, $tax ) . '">' . $ancestor->name . '</a>' );
-    $child_of = $ancestor->term_id;
-    $show_count = 0;
+    $args = array(
+      'child_of'      => $ancestor->term_id,
+      'depth'         => $depth,
+      'show_count'    => 0,
+      'taxonomy'      => $tax,
+      'title_li'      => '',
+    );
 
   } else {
 
     // Master list of top-level places
     $title = __( 'Top-level places', 'ubik' );
-    $child_of = 0;
-    $depth = 1;
-    $show_count = 1;
+    $args = array(
+      'child_of'      => 0,
+      'depth'         => 1,
+      'show_count'    => 1,
+      'taxonomy'      => $tax,
+      'title_li'      => '',
+    );
   }
 
 ?><div id="secondary" class="widget-area" role="complementary">
     <aside id="places" class="widget widget_places">
       <h3 class="widget-title"><?php echo $title; ?></a></h3>
       <ul class="place-list"><?php
-        wp_list_categories(
-          array(
-            'child_of'      => $ancestor->term_id,
-            'depth'         => $depth,
-            'show_count'    => $show_count,
-            'taxonomy'      => $tax,
-            'title_li'      => '',
-          )
-        );
+        wp_list_categories( $args );
       ?></ul>
     </aside>
   </div><!-- #secondary --><?php
