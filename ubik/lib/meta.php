@@ -107,7 +107,15 @@ function ubik_meta_tags() {
           $image_src = wp_get_attachment_image_src( $attachment->ID, $image_size );
 
           // Don't duplicate featured image
-          if ( $image_src[0] !== $images[0]['url'] ) {
+          if ( has_post_thumbnail( $post->ID ) ) {
+            if ( $image_src[0] !== $images[0]['url'] ) {
+              $images[] = array(
+                'url' => $image_src[0],
+                'width' => $image_src[1],
+                'height' => $image_src[2]
+              );
+            }
+          } else {
             $images[] = array(
               'url' => $image_src[0],
               'width' => $image_src[1],
