@@ -187,14 +187,14 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
     $size = ' size-' . esc_attr( $size );
 
   // Image wrapper element
-  $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . ' ' . esc_attr( $align ) . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . "\n";
+  $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . ' ' . esc_attr( $align ) . $size . '" itemscope itemtype="http://schema.org/ImageObject">';
 
   // The HTML for the link (optional) and image generated above or fed into this function from somewhere else
-  $content .= $html . "\n";
+  $content .= $html;
 
   // Wraps the caption in a figcaption element with appropriate markup
   if ( !empty( $caption ) )
-    $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>' . "\n";
+    $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
 
   $content .= '</figure>' . "\n";
 
