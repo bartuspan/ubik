@@ -60,22 +60,3 @@ function ubik_enqueue_scripts() {
     wp_enqueue_script( 'comment-reply' );
 }
 add_action( 'wp_enqueue_scripts', 'ubik_enqueue_scripts' );
-
-
-
-// Google Analytics code
-function ubik_analytics() {
-  if ( UBIK_GOOGLE_ANALYTICS ) { ?>
-        <script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '<?php echo UBIK_GOOGLE_ANALYTICS; ?>']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script><?php
-  }
-}
-add_action( 'wp_footer', 'ubik_analytics' );

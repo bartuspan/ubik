@@ -39,6 +39,9 @@ if ( is_admin() ) {
 if ( UBIK_FORMAT )
   include( plugin_dir_path( __FILE__ ) . 'lib/formats.php' );
 
+if ( UBIK_GOOGLE_ANALYTICS )
+  include( plugin_dir_path( __FILE__ ) . 'lib/google_analytics.php' );
+
 if ( UBIK_META )
   include( plugin_dir_path( __FILE__ ) . 'lib/meta.php' );
 

@@ -85,6 +85,19 @@ defined( 'UBIK_FORMAT_SLUG' )               || define( 'UBIK_FORMAT_SLUG', false
 
 
 
+// == GOOGLE ANALYTICS == //
+
+// Google Analytics tracking code e.g. 'UA-XXXXXX-XX'; string or false to disable
+defined( 'UBIK_GOOGLE_ANALYTICS' )          || define( 'UBIK_GOOGLE_ANALYTICS', false );
+
+// Google Analytics display features; enable for compatibility with demographic reporting
+defined( 'UBIK_GOOGLE_ANALYTICS_DISPLAYF' ) || define( 'UBIK_GOOGLE_ANALYTICS_DISPLAYF', false );
+
+// Google Analytics tracking code version; true for universal analytics, false to fallback to asynchronous analytics
+defined( 'UBIK_GOOGLE_ANALYTICS_UA' )       || define( 'UBIK_GOOGLE_ANALYTICS_UA', true );
+
+
+
 // == MEDIA == //
 
 // Turn comments on/off for all attachments; true for enable, false for disable
@@ -128,11 +141,3 @@ defined( 'UBIK_SEARCH_REDIRECT' )           || define( 'UBIK_SEARCH_REDIRECT', t
 
 // Post series order; chronological by default; string or false to disable
 defined( 'UBIK_SERIES_ORDER' )              || define( 'UBIK_SERIES_ORDER', 'ASC' );
-
-
-
-// == VARIOUS == //
-
-// Google Analytics code e.g. 'UA-XXXXXX-XX'; string or false to disable
-defined( 'UBIK_GOOGLE_ANALYTICS' )          || define( 'UBIK_GOOGLE_ANALYTICS', false );
-
