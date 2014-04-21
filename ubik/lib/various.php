@@ -18,6 +18,15 @@ function ubik_is_post_paginated() {
 
 
 
+// Get our wp_nav_menu() fallback, wp_page_menu(), to show a home link; via _s
+function ubik_page_menu_args( $args ) {
+  $args['show_home'] = true;
+  return $args;
+}
+add_filter( 'wp_page_menu_args', 'ubik_page_menu_args' );
+
+
+
 // Remove "protected" from password-protected posts: http://www.paulund.co.uk/remove-protected-post-titles
 function ubik_strip_protected( $title ) {
   return '%s';
