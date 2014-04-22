@@ -1,7 +1,7 @@
 {
   "name": "wp-ubik",
-  "version": "0.3.0",
-  "description": "A handy set of custom functions for WordPress",
+  "version": "0.4.0",
+  "description": "A library of useful WordPress snippets, hacks, and functions",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

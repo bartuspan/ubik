@@ -9,15 +9,6 @@ if ( !is_multi_author() ) {
 
 
 
-// Quick and dirty test to see if post is paginated; source: http://tommcfarlin.com/post-is-paginated/
-// Possibly not used for anything
-function ubik_is_post_paginated() {
-  global $multipage;
-  return 0 !== $multipage;
-}
-
-
-
 // Get our wp_nav_menu() fallback, wp_page_menu(), to show a home link; via _s
 function ubik_page_menu_args( $args ) {
   $args['show_home'] = true;

@@ -8,12 +8,12 @@ var gulp      = require('gulp')
 
 var build     = "./ubik/";
 
-// Since we can't symlink plugins during development... make a copy
+// Since we can't symlink plugins during development... make a copy; @TODO: update for WordPress 3.9
 var wpdev     = "../../localhost/synaptic/wp-content/plugins/ubik/"
 
 gulp.task('styles', function() {
   return gulp.src(['assets/src/scss/*.scss', '!assets/src/scss/_*.scss'])
-  .pipe(plugins.rubySass({ compass: true })) // don't forget to `gem install sass`
+  .pipe(plugins.rubySass({ compass: false })) // don't forget to `gem install sass`
   .pipe(plugins.autoprefixer('last 2 versions', 'ie 9', 'ios 6', 'android 4'))
   .pipe(gulp.dest('assets/staging'))
   .pipe(plugins.minifyCss({ keepSpecialComments: 1 }))

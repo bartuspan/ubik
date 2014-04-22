@@ -166,5 +166,5 @@ pip-log.txt
 assets/staging
 node_modules
 ubik-config.php
-ubik-config-drumlore.php
+ubik-config-dr*.php
 bower_components

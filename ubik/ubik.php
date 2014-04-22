@@ -5,9 +5,9 @@
  * Description: A handy set of custom functions for WordPress.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.3.0
+ * Version: 0.4.0
  */
-define( 'UBIK_VERSION', '0.3.0' );
+define( 'UBIK_VERSION', '0.4.0' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -26,6 +26,7 @@ include( plugin_dir_path( __FILE__ ) . 'lib/content.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/excerpt.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/feed.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/general.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/image.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/media.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/microdata.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/search.php' );

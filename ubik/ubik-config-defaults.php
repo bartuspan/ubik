@@ -106,6 +106,9 @@ defined( 'UBIK_MEDIA_ATTACHMENT_COMMENTS' ) || define( 'UBIK_MEDIA_ATTACHMENT_CO
 // Custom gallery function
 defined( 'UBIK_MEDIA_GALLERY' )             || define( 'UBIK_MEDIA_GALLERY', false );
 
+// Remove image height and width attributes
+defined( 'UBIK_MEDIA_THUMBNAIL_ATTS' )      || define( 'UBIK_MEDIA_THUMBNAIL_ATTS', false );
+
 
 
 // == META TAGS == //
