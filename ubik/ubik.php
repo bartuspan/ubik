@@ -2,6 +2,7 @@
 /**
  * Plugin Name: Ubik
  * Plugin URI: http://github.com/synapticism/ubik
+ * GitHub Plugin URI: https://github.com/synapticism/ubik
  * Description: A handy set of custom functions for WordPress.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com

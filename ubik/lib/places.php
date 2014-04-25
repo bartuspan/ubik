@@ -50,52 +50,126 @@ add_filter( 'pendrell_sidebar', 'ubik_places_sidebar' );
 
 
 // Places widget; this isn't a true widget... but it's also not 200+ lines of code I don't need
-function ubik_places_widget( $depth = 2, $term = null ) {
+function ubik_places_widget( $term = null ) {
 
-  $tax = get_query_var( 'taxonomy' );
+  $tax = 'places';
 
   // Allows us to pass an explicit term and achieve the same functionality
   if ( empty( $term ) || $term == '' )
     $term = get_term_by( 'slug', get_query_var( 'term' ), $tax );
 
-  // Try to find ancestors of the current place
-  $ancestors = get_ancestors( $term->term_id, $tax );
+  // Check again
+  if ( !empty( $term ) ) {
 
-  // Did we find any?
-  if ( $ancestors ) {
+    $places = array();
 
-    // What we're looking for is the last element of the array; pop it off and get its info
-    $ancestor = get_term( array_pop( $ancestors ), $tax );
-    $title = sprintf( __( 'Places in %s', 'ubik' ), '<a href="' . get_term_link( $ancestor->term_id, $tax ) . '">' . $ancestor->name . '</a>' );
-    $args = array(
-      'child_of'      => $ancestor->term_id,
-      'depth'         => $depth,
-      'show_count'    => 0,
-      'taxonomy'      => $tax,
-      'title_li'      => '',
+    // Get direct descendents of the current term
+    $children = get_term_children( $term->term_id, $tax );
+
+    // Get direct descendents of the parent of the current term; get_term_children is not appropriate here
+    $siblings = get_terms( $tax, array( 'parent' => $term->parent ) );
+
+    // Get ancestors of the current term
+    $ancestors = get_ancestors( $term->term_id, $tax );
+
+    // Get the highest ancestor of the current term
+    if ( !empty( $ancestors ) ) {
+      $patriarch = get_term( end( $ancestors ), $tax );
+    } else {
+      $patriarch = $term;
+    }
+
+    // Unite the whole family (the current term plus all ancestors)
+    $family = $ancestors;
+    $family[] = $term->term_id;
+
+    // Setup children query
+    if ( !empty( $children ) ) {
+
+      // Attempt to limit terms with an abundance of children; this is pure guess work
+      if ( count( $children ) >= 25 && !empty( $ancestors) ) {
+        $depth = 1;
+      } else {
+        $depth = 2;
+      }
+
+      $places[] = array(
+        'title' => sprintf( __( 'Places in %s', 'ubik' ), $term->name ),
+        'args' => array(
+          'child_of'            => $term->term_id,
+          'depth'               => $depth,
+          'show_count'          => 1,
+          'taxonomy'            => $tax,
+          'title_li'            => '',
+          'echo'                => 0
+        )
+      );
+
+    // If there are no childen at least show the parent tree; no different than breadcrumbs, really
+    } elseif ( !empty( $ancestors ) ) {
+
+      $places[] = array(
+        'title' => sprintf( __( '%s in context', 'ubik' ), $term->name ),
+        'args' => array(
+          'depth'               => 0,
+          'taxonomy'            => $tax,
+          'title_li'            => '',
+          'include'             => $family,
+          'echo'                => 0
+        )
+      );
+
+    }
+
+    // Setup sibling query; conditions: more than 2 siblings and not a top-level place
+    if ( !empty( $siblings ) && count( $siblings ) >= 2 && !empty( $ancestors ) ) {
+
+      $places[] = array(
+        'title' => __( 'Related places', 'ubik' ),
+        'args' => array(
+          'child_of'            => $term->parent,
+          'depth'               => 1,
+          'taxonomy'            => $tax,
+          'title_li'            => '',
+          'exclude'             => $term->term_id,
+          'echo'                => 0
+        )
+      );
+
+    }
+
+    // Places index
+    $places[] = array(
+      'title' => __( 'Places index', 'ubik' ),
+      'args' => array(
+        'child_of'            => 0,
+        'depth'               => 1,
+        'show_count'          => 1,
+        'taxonomy'            => $tax,
+        'title_li'            => '',
+        //'exclude'             => $patriarch->term_id,
+        'show_option_none'    => 'There is nowhere else to go',
+        'echo'                => 0
+      )
     );
 
-  } else {
-
-    // Master list of top-level places
-    $title = __( 'Top-level places', 'ubik' );
-    $args = array(
-      'child_of'      => 0,
-      'depth'         => 1,
-      'show_count'    => 1,
-      'taxonomy'      => $tax,
-      'title_li'      => '',
-    );
   }
 
-?><div id="secondary" class="widget-area" role="complementary">
-    <aside id="places" class="widget widget_places">
-      <h3 class="widget-title"><?php echo $title; ?></a></h3>
-      <ul class="place-list"><?php
-        wp_list_categories( $args );
-      ?></ul>
-    </aside>
-  </div><!-- #secondary --><?php
+  // Only output places widget markup if we have results
+  if ( !empty( $places ) ) {
+
+    ?><div id="secondary" class="widget-area" role="complementary">
+      <aside id="places" class="widget widget_places">
+        <?php if ( !empty( $places ) ) {
+          foreach ( $places as $place ) {
+            ?><h3 class="widget-title"><?php echo $place['title']; ?></a></h3>
+            <ul class="place-list"><?php echo wp_list_categories( $place['args'] ); ?></ul><?php
+          }
+        } ?>
+      </aside>
+    </div><!-- #secondary --><?php
+
+  }
 }
 
 
@@ -147,7 +221,7 @@ function ubik_places_shortcode( $atts, $content = null ) {
 
 // == PLACES ARCHIVES == //
 
-// All of these functions depend on Pendrell but they can easily be adapted for use with other WordPress themes
+// These functions depend on Pendrell but they can easily be adapted for use with other WordPress themes
 
 // Adds places to the Pendrell archive title system
 function ubik_places_archive_title( $title ) {
@@ -158,71 +232,6 @@ function ubik_places_archive_title( $title ) {
   return $title;
 }
 add_filter( 'pendrell_archive_title', 'ubik_places_archive_title' );
-
-
-
-// A list of places; tries to list children, falls back to siblings if there are enough of them
-function ubik_places_list( $content, $term = '', $depth = 2 ) {
-
-  $tax = get_query_var( 'taxonomy' );
-
-  // Don't display on paged archives
-  if ( is_archive() && is_paged() || ( $tax !== 'places' ) )
-    return $content;
-
-  // Allows us to pass an explicit term and achieve the same functionality
-  if ( empty( $term ) || $term == '' )
-    $term = get_term_by( 'slug', get_query_var( 'term' ), $tax );
-
-  if ( $term ) {
-
-    $parent = get_term( $term->parent, $tax );
-
-    $children = get_term_children( $term->term_id, $tax );
-
-    // We can't use get_term_children for siblings as we are only interested in direct descendents of the parent term
-    $siblings = get_terms( $tax, array( 'parent' => $term->parent ) );
-
-    // Show children
-    if ( $children ) {
-
-      // Attempt to put a damper on top-level places with many children
-      if ( count( $children ) >= 25 )
-        $depth = 1;
-
-      $content .= "\n" . '<div class="archive-places-list">' . "\n";
-      $content .= '<h2>' . sprintf( __( 'Places in %s', 'ubik' ), $term->name ) . '</h2>' . "\n";
-      $content .= '<ul class="place-list">' . wp_list_categories(
-          array(
-            'child_of'      => $term->term_id,
-            'depth'         => $depth,
-            'taxonomy'      => $tax,
-            'title_li'      => '',
-            'echo'          => 0
-          )
-        ) . '</ul>' . "\n";
-      $content .= '</div>';
-
-    // If there aren't any children perhaps siblings will be useful
-    } elseif ( count( $siblings ) >= 2 ) {
-      $content .= "\n" . '<div class="archive-places-list">' . "\n";
-      $content .= '<h2>' . __( 'Related places', 'ubik' ) . '</h2>' . "\n";
-      $content .= '<ul class="place-list">' . wp_list_categories(
-          array(
-            'child_of'      => $term->parent,
-            'depth'         => 1,
-            'taxonomy'      => $tax,
-            'title_li'      => '',
-            'exclude'       => $term->term_id,
-            'echo'          => 0
-          )
-        ) . '</ul>' . "\n";
-      $content .= '</div>' . "\n";
-    }
-  }
-  return $content;
-}
-add_filter( 'pendrell_archive_term_after', 'ubik_places_list' );
 
 
 
