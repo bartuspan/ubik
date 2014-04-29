@@ -6,7 +6,7 @@
 function ubik_content_title_filter( $title = '', $sep = '-', $seplocation = 'right' ) {
 
   // Remove default seperator and add spacing
-  if ( ( trim( $sep ) === '' ) || $sep === '&raquo;' )
+  if ( ( trim( $sep ) === '' ) || $sep === '&raquo;' || $sep === '&#187;' )
     $sep = '-';
   $sep = ' ' . $sep . ' ';
 
@@ -24,8 +24,10 @@ function ubik_content_title_filter( $title = '', $sep = '-', $seplocation = 'rig
   // Apply a filter before adding the name of the blog to the title
   $title = apply_filters( 'ubik_content_title_filter', $title );
 
-  // Two scenarios for title generation: front/home page and everything else
-  if ( !is_front_page() && !is_home() ) {
+  // Three scenarios for title generation: feeds, front/home page, and everything else
+  if ( is_feed() && is_archive() ) {
+    $title = $sep . $title;
+  } elseif ( !is_front_page() && !is_home() ) {
     $title .= $sep . get_bloginfo( 'name' );
   }
 
@@ -74,9 +76,9 @@ function ubik_content_title( $sep = ' - ' ) {
     }
   }
 
-  // Is this a feed? Let's make it simple
-  if ( is_feed() )
-    $title = single_post_title( '', false );
+  // Is this a feed? Let's handle this in feed.php except if it's an archive
+  if ( is_feed() && !is_archive() )
+    $title = '';
 
   // Front or home page
   if ( is_front_page() || is_home() ) {
@@ -94,9 +96,8 @@ function ubik_content_title( $sep = ' - ' ) {
   }
 
   // Single posts, pages, and attachments
-  if ( is_singular() ) {
+  if ( is_singular() )
     $title = single_post_title( '', false );
-  }
 
   // Clean things up a bit
   $title = preg_replace('/\s+/', ' ', trim( $title) );
@@ -321,14 +322,14 @@ function ubik_content_entry_meta() {
   if ( !empty( $date_updated ) )
     $date_updated_text = '<span class="last-updated"> and updated ' . $date_updated . '</span>';
 
-  // Setup basic entry meta data; the only information we have for sure is type, date, and author
+  // Setup basic entry meta data; the only information we have for sure is type, date, and author; @TODO: make this translation-friendly
   $entry_meta = 'This ' . $type . ' was published ' . $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>. ' . "\n";
 
   if ( !empty( $parent ) )
     $entry_meta_extras[] = 'Posted under: ' . $parent . '. ';
 
   if ( !empty( $categories ) )
-    $entry_meta_extras[] = 'Categories: ' . $categories . '. ';
+    $entry_meta_extras[] = 'Category: ' . $categories . '. ';
 
   if ( !empty( $tags ) )
     $entry_meta_extras[] = 'Tags: ' . $tags . '. ';

@@ -75,6 +75,19 @@ defined( 'UBIK_EXCERPT_SHORTCODES' )        || define( 'UBIK_EXCERPT_SHORTCODES'
 
 
 
+// == FEED == //
+
+// Disable all feeds
+defined( 'UBIK_FEED_DISABLE' )              || define( 'UBIK_FEED_DISABLE', false );
+
+// Disable comments feed
+defined( 'UBIK_FEED_DISABLE_COMMENTS' )     || define( 'UBIK_FEED_DISABLE_COMMENTS', false );
+
+// Remove certain post formats from the main feed
+defined( 'UBIK_FEED_DISABLE_FORMATS' )      || define( 'UBIK_FEED_DISABLE_FORMATS', false );
+
+
+
 // == FORMATS == //
 
 // Post format rewrite; change "type/status" to "whatever/status"; string or false to disable
