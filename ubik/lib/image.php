@@ -78,9 +78,9 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
       $medium = get_option('medium_size_w');
       $large = get_option('large_size_w');
 
-      if ( $width = $medium ) {
+      if ( $width === $medium ) {
         $size = 'medium';
-      } elseif ( $width = $large ) {
+      } elseif ( $width === $large ) {
         $size = 'large';
       } else {
         $size = 'full';
