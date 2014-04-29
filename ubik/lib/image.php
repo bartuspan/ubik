@@ -52,6 +52,7 @@ add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
 // == IMAGE MARKUP == //
 
 // Generalized image markup generator; used by caption and image shortcodes
+// Known issue: this generates markup that causes feeds to not validate
 function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'alignnone', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
   // Note: the $title variable is not used at all; it's WordPress legacy code
@@ -67,15 +68,24 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
     if ( empty( $alt ) )
       $alt = esc_attr( $caption );
 
-    // Custom replacement for get_image_tag(); used in place of $html = get_image_tag( $id, $alt, $title, $align, $size );
+    // Custom replacement for get_image_tag(); roll your own instead of using $html = get_image_tag( $id, $alt, $title, $align, $size );
     list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
 
-    // If the image isn't resized then it is obviously the original; set the $size to be full
-    if ( $is_intermediate === false )
-      $size = 'full';
+    // If the image isn't resized then it is obviously the original; set $size to 'full' unless $width matches medium or large
+    if ( $is_intermediate === false ) {
 
-    // @TODO: if size is 'full' check if it matches the size of any other image size; change $size to match
-    // Why? Consistent styling
+      // Test to see whether the presumably "full" sized image matches medium or large for consistent styling
+      $medium = get_option('medium_size_w');
+      $large = get_option('large_size_w');
+
+      if ( $width = $medium ) {
+        $size = 'medium';
+      } elseif ( $width = $large ) {
+        $size = 'large';
+      } else {
+        $size = 'full';
+      }
+    }
 
     // Make the magic happen
     $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . esc_attr( $alt ) . '" />';
