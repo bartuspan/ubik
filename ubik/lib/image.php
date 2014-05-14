@@ -19,14 +19,14 @@ add_shortcode( 'image', 'ubik_image_shortcode' );
 
 
 
-// Build an image shortcode when inserting images into a post
+// Generate an image shortcode when inserting images into a post
 function ubik_image_send_to_editor( $html, $id, $caption, $title = '', $align, $url = '', $size = 'medium', $alt = '' ) {
 
   if ( !empty( $id ) )
     $content = ' id="' . esc_attr( $id ) . '"';
 
   if ( !empty( $align ) && $align !== 'none' )
-    $content .= ' align="align' . esc_attr( $align ) . '"';
+    $content .= ' align="' . esc_attr( $align ) . '"';
 
   if ( !empty( $url ) )
     $content .= ' url="' . esc_attr( $url ) . '"';
@@ -51,44 +51,56 @@ add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
 
 // == IMAGE MARKUP == //
 
-// Generalized image markup generator; used by caption and image shortcodes
-// Known issue: this generates markup that causes feeds to not validate
-function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'alignnone', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
-
-  // Note: the $title variable is not used at all; it's WordPress legacy code
+// Generalized image markup generator; used by caption and image shortcodes; alternate markup presented on feeds is meant to validate
+// Note: the $title variable is not used at all; it's WordPress legacy code; images don't need titles, just alt attributes
+function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
   // If the $html variable is empty let's generate our own markup from scratch
   if ( empty( $html ) ) {
 
-    // Responsive image size hook; see Pendrell for an example of usage
-    // Use case: you have full-width content on a blog with a sidebar but you don't want to waste bandwidth by loading those images in feeds or in the regular flow of posts; just filter this and return 'medium' when $size === 'large'
-    $size = apply_filters( 'ubik_image_markup_size', $size );
+    // No fancy business in the feed
+    if ( is_feed() ) {
 
-    // WordPress is likely to supply an alt attribute; if not, let's copy the caption, assuming there is one
-    if ( empty( $alt ) )
-      $alt = esc_attr( $caption );
+      // The get_image_tag function requires a simple alignment e.g. "none", "left", etc.
+      $align = str_replace( 'align', '', $align );
 
-    // Custom replacement for get_image_tag(); roll your own instead of using $html = get_image_tag( $id, $alt, $title, $align, $size );
-    list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
+      // Default img element generator from WordPress core
+      $html = get_image_tag( $id, $alt, $title, $align, $size );
 
-    // If the image isn't resized then it is obviously the original; set $size to 'full' unless $width matches medium or large
-    if ( $is_intermediate === false ) {
+    } else {
 
-      // Test to see whether the presumably "full" sized image matches medium or large for consistent styling
-      $medium = get_option('medium_size_w');
-      $large = get_option('large_size_w');
+      // Responsive image size hook; see Pendrell for an example of usage
+      // Use case: you have full-width content on a blog with a sidebar but you don't want to waste bandwidth by loading those images in feeds or in the regular flow of posts
+      // Just filter this and return 'medium' when $size === 'large'
+      $size = apply_filters( 'ubik_image_markup_size', $size );
 
-      if ( $width === $medium ) {
-        $size = 'medium';
-      } elseif ( $width === $large ) {
-        $size = 'large';
-      } else {
-        $size = 'full';
+      // WordPress is likely to supply an alt attribute; if not, let's copy the caption, assuming there is one
+      if ( empty( $alt ) )
+        $alt = esc_attr( $caption );
+
+      // Custom replacement for get_image_tag(); roll your own instead of using $html = get_image_tag( $id, $alt, $title, $align, $size );
+      list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
+
+      // If the image isn't resized then it is obviously the original; set $size to 'full' unless $width matches medium or large
+      if ( $is_intermediate === false ) {
+
+        // Test to see whether the presumably "full" sized image matches medium or large for consistent styling
+        $medium = get_option( 'medium_size_w' );
+        $large = get_option( 'large_size_w' );
+
+        if ( $width === $medium ) {
+          $size = 'medium';
+        } elseif ( $width === $large ) {
+          $size = 'large';
+        } else {
+          $size = 'full';
+        }
       }
-    }
 
-    // Make the magic happen
-    $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . esc_attr( $alt ) . '" />';
+      // With all the pieces in place let's generate the img element
+      $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . esc_attr( $alt ) . '" />';
+
+    }
 
     // Generate rel attribute from $rel variable; we only want this on images explicitly identified as attachments
     if ( !empty( $rel ) ) {
@@ -104,11 +116,11 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
     if ( !empty( $url ) )
       $html = '<a href="' . esc_attr( $url ) . '"' . $rel . '>' . $html . '</a>';
 
+  // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code); we don't do much here
   } else {
-    // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code); we don't do much here
-
-    // Add itemprop="contentURL" to image element when $html variable is passed to this function; ugly hack
-    $html = str_replace( '<img', '<img itemprop="contentUrl"', $html );
+    // Add itemprop="contentURL" to image element when $html variable is passed to this function; ugly hack but it works
+    if ( !is_feed() )
+      $html = str_replace( '<img', '<img itemprop="contentUrl"', $html );
   }
 
   // Sanitize $id, not that this should really be a problem
@@ -126,7 +138,8 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
     $caption = wptexturize( do_shortcode( $caption ) );
 
     // If the caption isn't empty generate wai-aria attribute for the figure element
-    $aria = 'aria-describedby="figcaption-' . $id . '" ';
+    if ( !is_feed() )
+      $aria = 'aria-describedby="figcaption-' . $id . '" ';
   } else {
     $aria = '';
   }
@@ -139,17 +152,19 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'al
   if ( !empty( $size ) )
     $size = ' size-' . esc_attr( $size );
 
-  // Image wrapper element
-  $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . ' ' . esc_attr( $align ) . $size . '" itemscope itemtype="http://schema.org/ImageObject">';
+  // Return stripped down markup for feeds
+  if ( is_feed() ) {
+    $content = $html;
+    if ( !empty( $caption ) )
+      $content .= '<br/><small>' . $caption . '</small>';
 
-  // The HTML for the link (optional) and image generated above or fed into this function from somewhere else
-  $content .= $html;
-
-  // Wraps the caption in a figcaption element with appropriate markup
-  if ( !empty( $caption ) )
-    $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
-
-  $content .= '</figure>' . "\n";
+  // Generate image wrapper markup used everywhere else
+  } else {
+    $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . ' ' . esc_attr( $align ) . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
+    if ( !empty( $caption ) )
+      $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
+    $content .= '</figure>' . "\n";
+  }
 
   return $content;
 }
