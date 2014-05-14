@@ -53,24 +53,24 @@ function ubik_content_title( $sep = ' - ' ) {
     if ( is_author() )
       $title = sprintf( __( 'Posts by %s', 'ubik' ), get_the_author_meta( 'display_name', get_query_var( 'author' ) ) );
     elseif ( is_category() )
-      $title = sprintf( __( '%s category archive', 'ubik' ), single_term_title( '', false ) );
+      $title = sprintf( __( '%s category archives', 'ubik' ), single_term_title( '', false ) );
     elseif ( is_tag() )
-      $title = sprintf( __( '%s tag archive', 'ubik' ), single_term_title( '', false ) );
+      $title = sprintf( __( '%s tag archives', 'ubik' ), single_term_title( '', false ) );
     elseif ( is_post_type_archive() )
-      $title = sprintf( __( '%s archive', 'ubik' ), post_type_archive_title( '', false ) );
+      $title = sprintf( __( '%s archives', 'ubik' ), post_type_archive_title( '', false ) );
     elseif ( is_tax() )
-      $title = sprintf( __( '%s archive', 'ubik' ), single_term_title( '', false ) );
+      $title = sprintf( __( '%s archives', 'ubik' ), single_term_title( '', false ) );
     elseif ( is_date() ) {
       if ( get_query_var( 'second' ) || get_query_var( 'minute' ) || get_query_var( 'hour' ) )
-        $title = sprintf( __( 'Archive for %s', 'ubik' ), get_the_time( __( 'g:i a', 'ubik' ) ) );
+        $title = sprintf( __( '%s archives', 'ubik' ), get_the_time( __( 'g:i a', 'ubik' ) ) );
       elseif ( is_day() )
-        $title = sprintf( __( '%s daily archive', 'ubik' ), get_the_date() );
+        $title = sprintf( __( '%s daily archives', 'ubik' ), get_the_date() );
       elseif ( get_query_var( 'w' ) )
-        $title = sprintf( __( 'Archive for week %1$s of %2$s', 'ubik' ), get_the_time( __( 'W', 'ubik' ) ), get_the_time( __( 'Y', 'ubik' ) ) );
+        $title = sprintf( __( 'Archives for week %1$s of %2$s', 'ubik' ), get_the_time( __( 'W', 'ubik' ) ), get_the_time( __( 'Y', 'ubik' ) ) );
       elseif ( is_month() )
-        $title = sprintf( __( '%s monthly archive', 'ubik' ), get_the_date( _x( 'F Y', 'monthly archives date format', 'ubik' ) ) );
+        $title = sprintf( __( '%s monthly archives', 'ubik' ), get_the_date( _x( 'F Y', 'monthly archives date format', 'ubik' ) ) );
       elseif ( is_year() )
-        $title = sprintf( __( '%s yearly archive', 'ubik' ), get_the_date( _x( 'Y', 'yearly archives date format', 'ubik' ) ) );
+        $title = sprintf( __( '%s yearly archives', 'ubik' ), get_the_date( _x( 'Y', 'yearly archives date format', 'ubik' ) ) );
       else
         $title = get_the_date();
     }
