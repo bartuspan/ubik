@@ -44,7 +44,7 @@ if ( UBIK_MEDIA_THUMBNAIL_ATTS ) {
 
 // == CAPTIONS == //
 
-// Improves the WordPress core caption shortcode with HTML5 figure & figcaption; microdata & wai-aria attributes
+// Improves the WordPress core caption shortcode with HTML5 figure & figcaption; microdata & WAI-ARIA accessibility attributes
 // Source: http://joostkiens.com/improving-wp-caption-shortcode/
 // Or perhaps: http://writings.orangegnome.com/writes/improved-html5-wordpress-captions/
 // Or was it: http://clicknathan.com/2011/10/06/convert-wordpress-default-captions-shortcode-to-html-5-figure-and-figcaption-tags/
@@ -54,16 +54,12 @@ function ubik_media_caption_shortcode( $val, $attr, $html = '' ) {
     'align'   => 'none',
     'width'   => '',
     'caption' => '',
-    'class'   => '' // New in WP 3.9; doesn't mean we need to use it
-  ), $attr));
+    'class'   => ''
+  ), $attr) );
 
-  // Fail gracefully if we aren't provided with an ID or a caption
-  if ( empty( $id ) || empty( $caption ) )
-    return $val;
-
-  // Possible unnecessary given further processing, couldn't hurt
-  if ( $id )
-    $id = esc_attr( $id );
+  // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present
+  if ( empty( $id ) || empty( $caption ) || strpos( $html, '<img' ) === false )
+    return '';
 
   // Pass whatever we have to the general image markup generator
   return ubik_image_markup( $html, $id, $caption, $title = '', $align, $url = '', $size = '', $alt = '' );
