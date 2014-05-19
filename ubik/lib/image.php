@@ -3,7 +3,7 @@
 // == IMAGE SHORTCODE == //
 
 // Create a really simple image shortcode based on HTML5 image markup requirements
-function ubik_image_shortcode( $atts, $caption = null ) {
+function ubik_image_shortcode( $atts, $caption = '' ) {
   extract( shortcode_atts( array(
     'id'            => '',
     'title'         => '',
@@ -20,7 +20,7 @@ add_shortcode( 'image', 'ubik_image_shortcode' );
 
 
 // Generate an image shortcode when inserting images into a post
-function ubik_image_send_to_editor( $html, $id, $caption, $title = '', $align, $url = '', $size = 'medium', $alt = '' ) {
+function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $align = '', $url = '', $size = 'medium', $alt = '' ) {
 
   if ( !empty( $id ) )
     $content = ' id="' . esc_attr( $id ) . '"';
@@ -28,13 +28,23 @@ function ubik_image_send_to_editor( $html, $id, $caption, $title = '', $align, $
   if ( !empty( $align ) && $align !== 'none' )
     $content .= ' align="' . esc_attr( $align ) . '"';
 
-  if ( !empty( $url ) )
-    $content .= ' url="' . esc_attr( $url ) . '"';
+  // Allows for dynamic attachment URL generation
+  if ( !empty( $url ) ) {
+    if ( strpos( $url, '?attachment_id=' ) === false ) {
+      $content .= ' url="' . esc_attr( $url ) . '"';
+    } else {
+      $content .= ' url="attachment"';
+    }
+  }
 
-  if ( !empty( $size ) )
+  if ( !empty( $size ) && $size !== 'medium' )
     $content .= ' size="' . esc_attr( $size ) . '"';
 
-  if ( !empty( $alt ) )
+  // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes and strip out any resulting markup
+  $alt = esc_attr( strip_tags( do_shortcode( $alt ) ) );
+
+  // Set the alt attribute if it isn't identical to the caption contents
+  if ( !empty( $alt ) && $alt !== $caption )
     $content .= ' alt="' . esc_attr( $alt ) . '"';
 
   if ( !empty( $caption ) ) {
@@ -51,7 +61,7 @@ add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
 
 // == IMAGE MARKUP == //
 
-// Generalized image markup generator; used by caption and image shortcodes; alternate markup presented on feeds is meant to validate
+// Generalized image markup generator; used by captioned images and image shortcodes; alternate markup presented on feeds is intended to validate
 // Note: the $title variable is not used at all; it's WordPress legacy code; images don't need titles, just alt attributes
 function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
@@ -69,14 +79,10 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
 
     } else {
 
-      // Responsive image size hook; see Pendrell for an example of usage
+      // Dynamic image size hook; see Pendrell for an example of usage
       // Use case: you have full-width content on a blog with a sidebar but you don't want to waste bandwidth by loading those images in feeds or in the regular flow of posts
       // Just filter this and return 'medium' when $size === 'large'
       $size = apply_filters( 'ubik_image_markup_size', $size );
-
-      // WordPress is likely to supply an alt attribute; if not, let's copy the caption, assuming there is one
-      if ( empty( $alt ) )
-        $alt = esc_attr( $caption );
 
       // Custom replacement for get_image_tag(); roll your own instead of using $html = get_image_tag( $id, $alt, $title, $align, $size );
       list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
@@ -102,19 +108,15 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
 
     }
 
-    // Generate rel attribute from $rel variable; we only want this on images explicitly identified as attachments
-    if ( !empty( $rel ) ) {
-      if ( $rel === 'attachment' ) {
+    // Generate a link wrapper from the $url variable; optionally generates URL and rel attribute for images explicitly identified as attachments
+    if ( !empty( $url ) ) {
+      if ( $url === 'attachment' ) {
+        $url = get_attachment_link( $id );
         $rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';
-      } else {
-        // Reset the attribute so we don't pass garbage
-        $rel = '';
       }
-    }
-
-    // Now wrap everything in a link
-    if ( !empty( $url ) )
+      // Now wrap everything in a link
       $html = '<a href="' . esc_attr( $url ) . '"' . $rel . '>' . $html . '</a>';
+    }
 
   // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code); we don't do much here
   } else {
@@ -126,29 +128,30 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
   // Sanitize $id, not that this should really be a problem
   $id = esc_attr( $id );
 
+  // Initialize ARIA attributes
+  $aria = '';
+
   // Caption processing
   if ( !empty( $caption ) ) {
     // Strip tags from captions but preserve some text formatting elements; this is mainly used to get rid of stray paragraph and break tags
     $caption = strip_tags( $caption, '<a><abbr><acronym><b><bdi><bdo><cite><code><del><em><i><ins><mark><q><rp><rt><ruby><s><small><strong><sub><sup><time><u>' );
 
-    // Get rid of excess white space and line breaks to make things neat; adds a space instead
+    // Replace excess white space and line breaks with a single space to neaten things up
     $caption = trim( str_replace( array("\r\n", "\r", "\n"), ' ', $caption ) );
 
     // Do shortcodes and texturize (since shortcode contents aren't texturized by default)
     $caption = wptexturize( do_shortcode( $caption ) );
 
-    // If the caption isn't empty generate wai-aria attribute for the figure element
+    // If the caption isn't empty generate ARIA attributes for the figure element
     if ( !is_feed() )
       $aria = 'aria-describedby="figcaption-' . $id . '" ';
-  } else {
-    $aria = '';
   }
 
-  // In case the align property arrived without being properly formed; might be unnecessary
+  // Prefix $align with "align"; saves us the trouble of writing it out all the time
   if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
     $align = 'align' . $align;
 
-  // There's a chance no $size will be passed to this function
+  // There's a chance $size will have been wiped clean by the `ubik_image_markup_size` filter
   if ( !empty( $size ) )
     $size = ' size-' . esc_attr( $size );
 

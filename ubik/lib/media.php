@@ -57,12 +57,12 @@ function ubik_media_caption_shortcode( $val, $attr, $html = '' ) {
     'class'   => ''
   ), $attr) );
 
-  // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present
+  // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present; returning '' tells the core to handle things
   if ( empty( $id ) || empty( $caption ) || strpos( $html, '<img' ) === false )
     return '';
 
   // Pass whatever we have to the general image markup generator
-  return ubik_image_markup( $html, $id, $caption, $title = '', $align, $url = '', $size = '', $alt = '' );
+  return ubik_image_markup( $html, $id, $caption, $title = '', $align );
 }
 add_filter( 'img_caption_shortcode', 'ubik_media_caption_shortcode', 10, 3 );
 
