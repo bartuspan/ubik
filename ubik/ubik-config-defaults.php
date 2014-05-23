@@ -111,6 +111,13 @@ defined( 'UBIK_GOOGLE_ANALYTICS_UA' )       || define( 'UBIK_GOOGLE_ANALYTICS_UA
 
 
 
+// == LINKS == //
+
+// Enable core WordPress links manager on new installs; true/false
+defined( 'UBIK_LINKS_MANAGER' )             || define( 'UBIK_LINKS_MANAGER', false );
+
+
+
 // == MEDIA == //
 
 // Turn comments on/off for all attachments; true for enable, false for disable
