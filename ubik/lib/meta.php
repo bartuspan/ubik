@@ -13,12 +13,13 @@ add_filter( 'language_attributes', 'ubik_meta_og_prefix' );
 
 // Meta tag generator; loosely modelled after: https://github.com/chuckreynolds/WPFBOGP
 function ubik_meta_tags() {
+
   global $post, $multipage, $wp;
 
   // Title; Twitter trims this to 70 characters, Facebook seems virtually unlimited
   $title = ubik_content_title();
 
-  // Description; Twitter trims to 200 characters, Facebook likes it long.
+  // Description; Twitter trims to 200 characters, Facebook likes it long
   $description = ubik_meta_description();
 
   // Determine the URL
@@ -28,7 +29,7 @@ function ubik_meta_tags() {
     $url = trailingslashit( home_url( add_query_arg( array(), $wp->request) ) );
   }
 
-  // Determine the canonical URL; WordPress handles is_singular(), let's try the rest; @TODO: support for paged entries and edge cases
+  // Determine the *canonical* URL; WordPress ordinarily handles is_singular(), let's try the rest; @TODO: support for paged entries and edge cases
   if ( is_archive() ) {
     if ( is_author() ) {
       $canonical = get_author_posts_url( get_the_author_meta( 'ID' ) );
@@ -47,7 +48,7 @@ function ubik_meta_tags() {
   } elseif ( is_front_page() || is_home() ) {
     $canonical = $url;
   } elseif ( is_post_type_archive() ) {
-    // ?
+    // @TODO: add something here?
   } elseif ( is_search() ) {
     $canonical = get_search_link();
   }
@@ -127,8 +128,9 @@ function ubik_meta_tags() {
     }
 
   // Everything that isn't singular is handled next
+  // @TODO: images for other forms of content e.g. author profile image, category thumbnail, or whatever else
   } else {
-    // @TODO: images for other forms of content e.g. author profile image, category thumbnail, or whatever else
+    //
   }
 
   // Additional post-specific data
@@ -147,19 +149,19 @@ function ubik_meta_tags() {
 
 
 
-  // === GENERAL === //
-
-  // Old school meta description
-  if ( !empty( $description ) )
-    echo '<meta name="description" content="' . esc_attr( $description ) . '"/>' . "\n";
+  // == GENERAL == //
 
   // Output canonical URL if it exists
   if ( !empty( $canonical ) )
     echo '<link rel="canonical" href="' . esc_url( $canonical ) . '" />' . "\n";
 
+  // Old school meta description
+  if ( !empty( $description ) )
+    echo '<meta name="description" content="' . esc_attr( $description ) . '"/>' . "\n";
 
 
-  // === FACEBOOK == //
+
+  // == FACEBOOK == //
 
   // Open Graph administration
   if ( UBIK_META_FACEBOOK_ADMINS )
@@ -231,7 +233,7 @@ function ubik_meta_tags() {
 
 
 
-  // === TWITTER === //
+  // == TWITTER == //
 
   // Twitter title, description, and URL meta tags are not required when equivalent Open Graph tags exist!
   if ( is_attachment() && wp_attachment_is_image() && !empty( $images ) ) {
@@ -255,8 +257,9 @@ function ubik_meta_tags() {
   // Twitter card images; we could fallback on Open Graph images but there are some slight differences here
   // @TODO: check to ensure all images are less than 1 Mb
   if ( !empty( $images ) ) {
+
+    // Twitter gallery cards only handle up to 4 images
     if ( $card === 'gallery' ) {
-      // Twitter gallery cards only handle up to 4 images
       for( $i = 0; $i < 4; ++$i) {
         if ( $images[$i]['url'] )
           echo '<meta property="twitter:image' . $i . ':src" content="' . esc_url( $images[$i]['url'] ) . '"/>' . "\n";
@@ -265,6 +268,8 @@ function ubik_meta_tags() {
         if ( $images[$i]['height'] )
           echo '<meta property="twitter:image' . $i . ':height" content="' . esc_attr( $images[$i]['height'] ) . '"/>' . "\n";
       }
+
+    // A single image for photo, summary, and summary_large_image cards
     } else {
       echo '<meta property="twitter:image:src" content="' . esc_url( $images[0]['url'] ) . '"/>' . "\n";
       if ( $images[0]['width'] )
@@ -276,7 +281,7 @@ function ubik_meta_tags() {
 
 
 
-  // === GOOGLE === //
+  // == GOOGLE == //
 
   // Google Plus author and publisher
   if ( !empty( $author_google ) )
@@ -313,7 +318,7 @@ function ubik_meta_description() {
 
   // Front or home page
   if ( is_front_page() || is_home() )
-    $description = get_bloginfo('description');
+    $description = get_bloginfo( 'description' );
 
   if ( UBIK_EXCERPT )
     $description = ubik_excerpt_sanitize( $description );
@@ -321,3 +326,36 @@ function ubik_meta_description() {
   // Returns a description (if one was found); be sure to handle empty/blank descriptions anywhere this is used
   return $description;
 }
+
+
+
+// Generate favicon markup; generate all necessary files with http://realfavicongenerator.net/
+function ubik_meta_favicons() {
+
+  if ( UBIK_META_FAVICONS_TILE_COLOR ) {
+    $favicons_tile_color = UBIK_META_FAVICONS_TILE_COLOR;
+  } else {
+    $favicons_tile_color = "#000000";
+  }
+
+  $favicons = '';
+  $favicons .= '<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">' . "\n";
+  $favicons .= '<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">' . "\n";
+  $favicons .= '<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">' . "\n";
+  $favicons .= '<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">' . "\n";
+  $favicons .= '<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">' . "\n";
+  $favicons .= '<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">' . "\n";
+  $favicons .= '<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">' . "\n";
+  $favicons .= '<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">' . "\n";
+  $favicons .= '<link rel="icon" type="image/png" href="/favicon-196x196.png" sizes="196x196">' . "\n";
+  $favicons .= '<link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">' . "\n";
+  $favicons .= '<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">' . "\n";
+  $favicons .= '<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">' . "\n";
+  $favicons .= '<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">' . "\n";
+  $favicons .= '<meta name="msapplication-TileColor" content="' . $favicons_tile_color . '">' . "\n";
+  $favicons .= '<meta name="msapplication-TileImage" content="/mstile-144x144.png">' . "\n";
+
+  echo $favicons;
+}
+if ( UBIK_META_FAVICONS )
+  add_action( 'wp_head', 'ubik_meta_favicons' );

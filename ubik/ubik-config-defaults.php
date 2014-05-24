@@ -139,6 +139,12 @@ defined( 'UBIK_META_FACEBOOK_ADMINS' )      || define( 'UBIK_META_FACEBOOK_ADMIN
 // Facebook publisher; only for media outlets; string or false to disable
 defined( 'UBIK_META_FACEBOOK_PUBLISHER' )   || define( 'UBIK_META_FACEBOOK_PUBLISHER', false );
 
+// Favicon markup; dependent on generated Favicons in the root of the domain; true/false
+defined( 'UBIK_META_FAVICONS' )             || define( 'UBIK_META_FAVICONS', false );
+
+// Favicon tile color; should be a hex value or false to disable
+defined( 'UBIK_META_FAVICONS_TILE_COLOR' )  || define( 'UBIK_META_FAVICONS_TILE_COLOR', false );
+
 // Google Plus page for the entire site
 defined( 'UBIK_META_GOOGLE_PUBLISHER' )     || define( 'UBIK_META_GOOGLE_PUBLISHER', false );
 
