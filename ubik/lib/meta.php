@@ -173,7 +173,7 @@ function ubik_meta_tags() {
   // Open Graph URL; @TODO: set to $canonical wherever relevant
   echo '<meta property="og:url" content="' . esc_url( $url ) . '"/>' . "\n";
 
-  // Open graph type; @TODO: investigate use of "object" type intead of "website"
+  // Open graph type
   if ( is_singular() && !is_attachment() ) {
     $type = 'article';
   } else {
@@ -181,7 +181,7 @@ function ubik_meta_tags() {
   }
   echo '<meta property="og:type" content="' . esc_attr( $type ) . '"/>' . "\n";
 
-  // Open Graph images
+  // Open Graph images; Pinterest allows up to 6
   if ( !empty( $images ) ) {
     foreach ( $images as $image ) {
       echo '<meta property="og:image" content="' . esc_url( $image['url'] ) . '"/>' . "\n";
@@ -211,9 +211,14 @@ function ubik_meta_tags() {
     echo '<meta property="article:published_time" content="' . get_post_time( 'c', true ) . '"/>' . "\n";
     echo '<meta property="article:modified_time" content="' . get_post_modified_time( 'c', true ) . '"/>' . "\n";
 
-    // Author, in profile format
-    if ( !empty( $author_facebook ) )
+    // Article author; Facebook and Pinterest use this property in mutually incompatible ways
+    // To address the conflict we will test for the Pinterest crawler user agent and serve the plaintext author name
+    // Note: this requires that caching is disabled for this user agent!
+    if ( stripos( $_SERVER['HTTP_USER_AGENT'], 'Pinterest' ) !== false ) {
+      echo '<meta property="article:author" content="' . esc_attr( $author ) . '"/>' . "\n";
+    } elseif ( !empty( $author_facebook ) ) {
       echo '<meta property="article:author" content="http://www.facebook.com/' . esc_attr( $author_facebook ) . '"/>' . "\n";
+    }
 
     // Publisher; must be a Facebook Page
     if ( UBIK_META_FACEBOOK_PUBLISHER )
@@ -332,6 +337,7 @@ function ubik_meta_description() {
 // Generate favicon markup; generate all necessary files with http://realfavicongenerator.net/
 function ubik_meta_favicons() {
 
+  // Provide an option for Windows 8 tile colour to be specified; default to black
   if ( UBIK_META_FAVICONS_TILE_COLOR ) {
     $favicons_tile_color = UBIK_META_FAVICONS_TILE_COLOR;
   } else {
