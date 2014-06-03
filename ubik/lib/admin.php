@@ -94,3 +94,6 @@ function all_settings_link() {
 if ( UBIK_ADMIN_ALL_SETTINGS )
   add_action('admin_menu', 'all_settings_link');
 
+// Show all shortcodes link
+if ( UBIK_ADMIN_ALL_SHORTCODES )
+  include( 'admin_shortcodes_view_all.php' );

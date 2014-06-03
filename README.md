@@ -37,6 +37,8 @@ Ubik is built with `gulp`.
 
 Merely a sampling, most of which can be switched on or off in the configuration file:
 
+
+
 ### Admin
 
 * Reset admin-side HTML editor to a nicer font size and stack.
@@ -46,9 +48,13 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 * System-wide shortcode viewer shows you what shortcodes are registered.
 * Rich term editor (experimental).
 
+
+
 ### Category
 
 * Test whether the blog has more than one category (via _s).
+
+
 
 ### Content
 
@@ -56,20 +62,31 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 * Human-readable dates on recent entries (e.g. posted 21 hours ago).
 * Standards-compliant structured entry metadata.
 
+
+
 ### Excerpts
 
 * Nicer, smarter excerpts with sensible defaults.
 * Most options are configurable.
 
+
+
 ### Feed
 
+* Cleaner feed content titles.
 * Downsize large photos to medium on RSS feeds (experimental).
+* Remove specified post formats from the feed (defaults to aside, link, quote, and status post formats).
+* Disable all feeds or only comments feeds (both inactive by default).
 * RSS feed publication delay (experimental).
+
+
 
 ### Formats
 
 * Post format rewrite: change the base ("type" to whatever).
 * Post format slugs: change the slug ("quote" to "quotation"). Not a great hack; you have to edit the array in `lib/formats.php`.
+
+
 
 ### General
 
@@ -77,15 +94,21 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 * Dequeues the default Open Sans stylesheet.
 * Removes the ".recentcomments" style added to the header for no good reason.
 
+
+
 ### Google Analytics
 
 * Adds Google Analytics code (universal or asynchronous) to the footer.
 
+
+
 ### Image
 
-* Nicer HTML5-friendly image markup for attachments, image format posts, and image captions. Includes wai-aria and schema.org structured data markup.
-* Image shortcode `[image/]` automatically entered in the post editor. This allows for dynamic resizing of the image to suit different contexts. (See the source for more on this.)
+* Nicer HTML5-friendly image markup for attachments, image format posts, and image captions. Includes WAI-ARIA and schema.org structured data markup.
+* Image shortcode `[image/]` automatically entered in the post editor. This allows for dynamic resizing of the image to suit different contexts. (See the source for more about this.)
 * Filter `ubik_meta_image_size` for setting image meta tags. Defaults to 'large' and falls back to the original image. See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
+
+
 
 ### Media
 
@@ -95,25 +118,36 @@ Merely a sampling, most of which can be switched on or off in the configuration 
 * Turns off comments on all attachments (optional).
 * Removes default gallery styling and style injection (possibly redundant if you use WP 3.9's new HTML5 support option).
 
+
+
 ### Meta
 
 This component is designed to be a lightweight drop-in replacement for most mainstream SEO plugins, most of which I find to be way too top-heavy. The idea here is to define just what is needed and otherwise work silently in the background without adding any cruft to the admin panel.
 
 * SEO-friendly title and description generator (based on code in the content and excerpts modules respectively).
 * Supports Facebook/Open Graph, Google+, and Twitter social media meta tags. You will need to activate/verify ownership of all three.
+* If a post has a featured image this will always be displayed *first* in the Open Graph image tags.
 * **Be sure to fill out the relevant fields in the configuration file to activate and use this component!**
+
+
 
 ### Microdata
 
 * Functions for working with microdata (experimental, inactive).
 
+
+
 ### Navigation
 
 * Numeric page navigation via bones (experimental, inactive).
 
+
+
 ### Netlabel
 
 A bunch of functions helpful for netlabels. Might be spun into its own plugin at some point. Will be documented when development matures.
+
+
 
 ### Places
 
@@ -124,10 +158,14 @@ Places is a custom taxonomy designed to act as a lightweight geographic database
 * Places sidebar when navigating within the places database (requires configuration).
 * No custom mapping function at present. Just use simple Google Maps embeds.
 
+
+
 ### Search
 
 * Singleton search results redirect to matching post in one step.
 * Specify a different number of results on search pages (defaults to 20).
+
+
 
 ### Series
 
@@ -135,6 +173,8 @@ Series is a custom taxonomy designed to link posts in a simple series. Usage is 
 
 * Inserts an ordered list of posts in the series on single post view.
 * Series archives are in chronological order (i.e. oldest first).
+
+
 
 ### Various
 
@@ -149,3 +189,4 @@ Series is a custom taxonomy designed to link posts in a simple series. Usage is 
 
 * Fill out your full user profile, blog description, and all category, tag, taxonomy, and other descriptions where available! All the SEO-friendly goodness in this plugin reads from standard WordPress data.
 * Flush your permalinks after fiddling around with anything.
+* Read the source code!
