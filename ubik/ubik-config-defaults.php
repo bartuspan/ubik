@@ -18,6 +18,9 @@ defined( 'UBIK_SERIES' )                    || define( 'UBIK_SERIES', false );
 // Switch for the magic "all settings" hack; true/false
 defined( 'UBIK_ADMIN_ALL_SETTINGS' )        || define( 'UBIK_ADMIN_ALL_SETTINGS', false );
 
+// Switch for the magic "view all shortcodes" hack; true/false
+defined( 'UBIK_ADMIN_ALL_SHORTCODES' )      || define( 'UBIK_ADMIN_ALL_SHORTCODES', false );
+
 // Additional contact methods hack; true/false
 defined( 'UBIK_ADMIN_CONTACT_METHODS' )     || define( 'UBIK_ADMIN_CONTACT_METHODS', true );
 
@@ -32,6 +35,13 @@ defined( 'UBIK_ADMIN_TERM_EDITOR' )         || define( 'UBIK_ADMIN_TERM_EDITOR',
 
 // Rich visual editor; true/false; defaults to true (e.g. visual editor is enabled)
 defined( 'UBIK_ADMIN_VISUAL_EDITOR' )       || define( 'UBIK_ADMIN_VISUAL_EDITOR', true );
+
+
+
+// == COMMENTS == //
+
+// Modify tags allowed in comments; specify allowable tags in lib/comments.php; false to disable
+defined( 'UBIK_COMMENTS_ALLOWED_TAGS' )     || define( 'UBIK_COMMENTS_ALLOWED_TAGS', false );
 
 
 

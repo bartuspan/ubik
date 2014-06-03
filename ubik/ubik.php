@@ -23,6 +23,7 @@ if ( is_readable( plugin_dir_path( __FILE__ ) . 'ubik-config.php' ) )
 require_once( plugin_dir_path( __FILE__ ) . 'ubik-config-defaults.php' );
 
 // Load ubik core library
+include( plugin_dir_path( __FILE__ ) . 'lib/comments.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/content.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/excerpt.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/feed.php' );
@@ -55,11 +56,6 @@ if ( UBIK_PLACES )
 
 if ( UBIK_SERIES )
   include( plugin_dir_path( __FILE__ ) . 'lib/series.php' );
-
-// Development mode
-if ( UBIK_DEV ) {
-  include( plugin_dir_path( __FILE__ ) . 'lib/admin_shortcodes_view_all.php' );
-}
 
 
 
