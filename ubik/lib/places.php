@@ -99,8 +99,10 @@ function ubik_places_widget( $term = null ) {
           'child_of'            => $term->term_id,
           'depth'               => $depth,
           'show_count'          => 1,
+          'hide_empty'          => 0,
           'taxonomy'            => $tax,
           'title_li'            => '',
+          'show_option_none'    => __( 'No places found', 'ubik' ),
           'echo'                => 0
         )
       );
@@ -113,8 +115,9 @@ function ubik_places_widget( $term = null ) {
         'args' => array(
           'depth'               => 0,
           'taxonomy'            => $tax,
-          'title_li'            => '',
           'include'             => $family,
+          'title_li'            => '',
+          'show_option_none'    => __( 'No places found', 'ubik' ),
           'echo'                => 0
         )
       );
@@ -130,8 +133,9 @@ function ubik_places_widget( $term = null ) {
           'child_of'            => $term->parent,
           'depth'               => 1,
           'taxonomy'            => $tax,
-          'title_li'            => '',
           'exclude'             => $term->term_id,
+          'title_li'            => '',
+          'show_option_none'    => __( 'No places found', 'ubik' ),
           'echo'                => 0
         )
       );
@@ -147,8 +151,7 @@ function ubik_places_widget( $term = null ) {
         'show_count'          => 1,
         'taxonomy'            => $tax,
         'title_li'            => '',
-        //'exclude'             => $patriarch->term_id,
-        'show_option_none'    => 'There is nowhere else to go',
+        'show_option_none'    => __( 'No places found', 'ubik' ),
         'echo'                => 0
       )
     );
