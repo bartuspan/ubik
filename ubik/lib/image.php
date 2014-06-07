@@ -159,7 +159,7 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
   if ( is_feed() ) {
     $content = $html;
     if ( !empty( $caption ) )
-      $content .= '<br/><small>' . $caption . '</small>';
+      $content .= '<br/><small>' . $caption . '</small> ';
 
   // Generate image wrapper markup used everywhere else
   } else {
