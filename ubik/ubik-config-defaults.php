@@ -168,6 +168,9 @@ defined( 'UBIK_META_TWITTER_PUBLISHER' )    || define( 'UBIK_META_TWITTER_PUBLIS
 
 // == SEARCH == //
 
+// Improved HTML5 search form; true/false
+defined( 'UBIK_SEARCH_FORM' )               || define( 'UBIK_SEARCH_FORM', true );
+
 // Posts per search page; integer or false to disable
 defined( 'UBIK_SEARCH_POSTS_PER_PAGE' )     || define( 'UBIK_SEARCH_POSTS_PER_PAGE', 20 );
 

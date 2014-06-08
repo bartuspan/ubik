@@ -1,5 +1,31 @@
 <?php // ==== SEARCH ==== //
 
+// Custom search form; easily overridden by the use of searchform.php in your theme
+if ( !function_exists( 'ubik_search_form' ) ) : function ubik_search_form( $html ) {
+
+  // Smarter search form default
+  if ( is_search() ) {
+    $value = get_search_query();
+  } else {
+    $value = '';
+  }
+
+  // Prepare the form
+  $html =  '<form role="search" method="get" class="search-form" action="' .  trailingslashit( home_url() ) . '">' . "\n";
+  $html .= '  <label>' . "\n";
+  $html .= '    <span class="screen-reader-text">' . __( 'Search for&hellip;', 'ubik' ) . '</span>' . "\n";
+  $html .= '    <input type="search" class="search-field" placeholder="' . __( 'Search for&hellip;', 'ubik' ) . '" value="' . $value . '" name="s" title="' . __( 'Search for&hellip;', 'ubik' ) . '" /> ' . "\n";
+  $html .= '  </label>' . "\n";
+  $html .= '  <input type="submit" class="search-submit button" value="' . __( 'Search', 'ubik' ) . '" />' . "\n";
+  $html .= '</form>' . "\n";
+
+  return $html;
+} endif;
+if ( UBIK_SEARCH_FORM )
+  add_action( 'get_search_form', 'ubik_search_form' );
+
+
+
 // Modify how many posts per page are displayed in different contexts
 // Source: http://wordpress.stackexchange.com/questions/21/show-a-different-number-of-posts-per-page-depending-on-context-e-g-homepage
 function ubik_search_pre_get_posts( $query ) {
