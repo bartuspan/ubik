@@ -59,10 +59,10 @@ function ubik_series_list() {
         // Display the list of posts in the series only if there is more than one post in that series
         if ( $series_query->have_posts() && ( $series_query->found_posts > 1 ) ): ?>
         <div class="entry-meta-series">
-          <h2><?php printf( __( 'This post is a part of the &#8216;<a href="%1$s">%2$s</a>&#8217; series:', 'ubik' ),
+          <p class="series-description"><?php printf( __( 'This is part of the <a href="%1$s">%2$s</a> series:', 'ubik' ),
             get_term_link( $series_term->slug, 'series' ),
             $series_term->name );
-          ?></h2>
+          ?></p>
           <ol>
           <?php while ( $series_query->have_posts() ) : $series_query->the_post(); ?>
             <li><a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a></li>
