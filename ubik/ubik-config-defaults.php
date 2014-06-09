@@ -3,7 +3,7 @@
 // == UBIK CORE SWITCHES == //
 
 // The following switches enable or disable various Ubik modules; true/false
-defined( 'UBIK_DEV' )                       || define( 'UBIK_DEV', true );
+defined( 'UBIK_DEV' )                       || define( 'UBIK_DEV', false );
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
 defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
@@ -33,7 +33,7 @@ defined( 'UBIK_ADMIN_EDITOR_FONT_STACK' )   || define( 'UBIK_ADMIN_EDITOR_FONT_S
 // Rich term editor; true/false
 defined( 'UBIK_ADMIN_TERM_EDITOR' )         || define( 'UBIK_ADMIN_TERM_EDITOR', false );
 
-// Rich visual editor; true/false; defaults to true (e.g. visual editor is enabled)
+// Master switch for the visual editor; true/false; defaults to true (e.g. visual editor is enabled)
 defined( 'UBIK_ADMIN_VISUAL_EDITOR' )       || define( 'UBIK_ADMIN_VISUAL_EDITOR', true );
 
 
@@ -132,9 +132,6 @@ defined( 'UBIK_LINKS_MANAGER' )             || define( 'UBIK_LINKS_MANAGER', fal
 
 // Turn comments on/off for all attachments; true for enable, false for disable
 defined( 'UBIK_MEDIA_ATTACHMENT_COMMENTS' ) || define( 'UBIK_MEDIA_ATTACHMENT_COMMENTS', false );
-
-// Custom gallery function
-defined( 'UBIK_MEDIA_GALLERY' )             || define( 'UBIK_MEDIA_GALLERY', false );
 
 // Remove image height and width attributes
 defined( 'UBIK_MEDIA_THUMBNAIL_ATTS' )      || define( 'UBIK_MEDIA_THUMBNAIL_ATTS', false );

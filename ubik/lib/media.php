@@ -80,16 +80,3 @@ function ubik_media_attachment_comments( $open, $post_id ) {
 }
 if ( UBIK_MEDIA_ATTACHMENT_COMMENTS === false )
   add_filter( 'comments_open', 'ubik_media_attachment_comments', 10 , 2 );
-
-
-
-// == GALLERY == //
-
-// Remove injected CSS from the default WordPress gallery shortcode if we aren't using a custom gallery shortcode
-function ubik_media_gallery_style($css) {
-  return preg_replace( "!<style type='text/css'>(.*?)</style>!s", '', $css );
-}
-add_filter( 'gallery_style', 'ubik_media_gallery_style' );
-
-// Ditch the default gallery styling no matter what, yuck
-add_filter( 'use_default_gallery_style', '__return_false' );
