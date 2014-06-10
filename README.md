@@ -1,16 +1,14 @@
 # Ubik 0.4.0
 
-Ubik is a library of theme-agnostic hacks and snippets for WordPress. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file. Most features are disabled by default---which means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik.
+Ubik is a library of theme-agnostic hacks and snippets for WordPress. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file. Most features are disabled by default which means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik.
 
 
 
 ## Installation
 
-Copy `ubik/ubik` to your plugins folder and activate. Be sure to flush your permalinks after installation.
+Copy or symlink `ubik/ubik` to your plugins folder and activate. Be sure to flush your permalinks after installation.
 
-Alternately, you can edit the `wpdev` variable specified in `gulpfile.js` and build your own copy somewhere else.
-
-Ubik is built with `gulp` and relies on `npm`. If you know your way around these tools you'll have no problem hacking on Ubik, though if you're happy with Ubik as it is there's no need to use these tools.
+Ubik requires WordPress 3.9.
 
 
 
@@ -47,6 +45,13 @@ Here are some of Ubik's features broken down by module. Most of these features a
 ### Category
 
 * Test whether the blog has more than one category (via _s).
+
+
+
+### Comments
+
+* Modify what tags are allowable in comments. WordPress ships with a lot of stuff that nobody uses (e.g. `<abbr>`). This trims the list to just those elements that are most useful.
+* Also alters the text that commonly appears below the comment entry form to match what tags are actually allowed.
 
 
 

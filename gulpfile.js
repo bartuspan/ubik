@@ -8,12 +8,9 @@ var gulp      = require('gulp')
 
 var build     = "./ubik/";
 
-// Since we can't symlink plugins during development... make a copy; @TODO: update for WordPress 3.9
-var wpdev     = "../../localhost/synaptic/wp-content/plugins/ubik/"
-
 gulp.task('styles', function() {
   return gulp.src(['assets/src/scss/*.scss', '!assets/src/scss/_*.scss'])
-  .pipe(plugins.rubySass({ compass: false })) // don't forget to `gem install sass`
+  .pipe(plugins.rubySass({ precision: 8, compass: false })) // don't forget to `gem install sass`
   .pipe(plugins.autoprefixer('last 2 versions', 'ie 9', 'ios 6', 'android 4'))
   .pipe(gulp.dest('assets/staging'))
   .pipe(plugins.minifyCss({ keepSpecialComments: 1 }))
@@ -50,11 +47,6 @@ gulp.task('images', function() {
   .pipe(gulp.dest(build + 'img/'));
 });
 
-gulp.task('devcopy', function() {
-  return gulp.src(build+'/**/*')
-  .pipe(gulp.dest(wpdev));
-});
-
 gulp.task('livereload', function() {
   // Listen on port 35729
   server.listen(35729, function (err) {
@@ -75,9 +67,6 @@ gulp.task('watch', function() {
   // Watch image files
   gulp.watch('assets/src/img/**/*', ['images']);
 
-  // Watch build folder
-  gulp.watch(build+'**/*', ['devcopy']);
-
 });
 
-gulp.task('default', ['styles', 'plugins', 'scripts', 'images', 'devcopy', 'watch']);
+gulp.task('default', ['styles', 'plugins', 'scripts', 'images', 'watch']);
