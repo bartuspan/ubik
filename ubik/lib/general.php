@@ -54,9 +54,5 @@ function ubik_enqueue_scripts() {
   // Hack: no need to load Open Sans more than once
   wp_deregister_style( 'open-sans' );
   wp_register_style( 'open-sans', false );
-
-  // Adds JavaScript to pages with the comment form to support sites with threaded comments
-  if ( is_singular() && comments_open() && get_option( 'thread_comments' ) )
-    wp_enqueue_script( 'comment-reply' );
 }
 add_action( 'wp_enqueue_scripts', 'ubik_enqueue_scripts' );

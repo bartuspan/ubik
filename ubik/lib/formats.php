@@ -29,7 +29,7 @@ function ubik_get_post_format_slugs() {
 
 
 
-// Filters post format links to use a custom slug.
+// Filters post format links to use a custom slug
 function ubik_post_format_link( $link, $term, $taxonomy ) {
   global $wp_rewrite;
 
