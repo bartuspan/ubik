@@ -17,9 +17,9 @@ Ubik requires WordPress 3.9.
 Most of Ubik's features are disabled by default to reduce collision with other plugins and themes. There are two ways to activate Ubik's features or change settings:
 
 1. Override default values in your `wp-config.php` file.
-2. Edit `ubik-config-sample.php` and rename to `ubik-config.php` to change default values.
+2. Rename `ubik-config-sample.php` to `ubik-config.php` and edit the default values.
 
-So, for instance, to activate the meta module add this line to your `wp-config.php` file:
+So, for instance, to activate the meta module add this line to your `wp-config.php` or `ubik-config.php` file:
 
 `define( 'UBIK_META', true );`
 
