@@ -1,6 +1,6 @@
-# Ubik 0.4.0
+# Ubik
 
-Ubik is a library of theme-agnostic hacks and snippets for WordPress. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file. Most features are disabled by default which means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik.
+Ubik is a library of useful theme-agnostic WordPress snippets, hacks, and functions bundled into a plugin. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file. Most features are disabled by default which means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for any number of single-use WordPress plugins.
 
 
 
