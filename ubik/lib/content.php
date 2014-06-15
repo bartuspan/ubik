@@ -350,8 +350,8 @@ function ubik_content_entry_meta() {
 // Strip paragraph tags from orphaned more tags; mainly a hack to address more tags placed next to image shortcodes
 function ubik_strip_more_tag_orphan( $content ) {
   $content = preg_replace( '/<p><span id="more-[0-9]*?"><\/span><\/p>/', '', $content );
-  $content = preg_replace( '/<p><span id="more-[0-9]*?"><\/span>(<(img|figure)[\s\S]*?)<\/p>/', '$1', $content );
-  $content = preg_replace( '/<p>(<(img|figure)[\s\S]*?)<span id="more-[0-9]*?"><\/span><\/p>/', '$1', $content );
+  $content = preg_replace( '/<p><span id="more-[0-9]*?"><\/span>(<(div|img|figure)[\s\S]*?)<\/p>/', '$1', $content );
+  $content = preg_replace( '/<p>(<(div|img|figure)[\s\S]*?)<span id="more-[0-9]*?"><\/span><\/p>/', '$1', $content );
   return $content;
 }
 add_filter( 'the_content', 'ubik_strip_more_tag_orphan', 99 );

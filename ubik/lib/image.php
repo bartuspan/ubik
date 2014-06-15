@@ -40,13 +40,13 @@ function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $ali
   if ( !empty( $align ) && $align !== 'none' )
     $content .= ' align="' . esc_attr( $align ) . '"';
 
-  // Allows for dynamic attachment URL generation
+  // URL is left blank for attachments; only specified in the event of a custom URL, media object link, or when "none" is selected
   if ( !empty( $url ) ) {
-    if ( strpos( $url, '?attachment_id=' ) === false ) {
+    if ( !( strpos( $url, 'attachment_id' ) || get_attachment_link( $id ) == $url ) ) {
       $content .= ' url="' . esc_attr( $url ) . '"';
-    } else {
-      $content .= ' url="attachment"';
     }
+  } else {
+    $content .= ' url="none"';
   }
 
   if ( !empty( $size ) && $size !== 'medium' )
@@ -55,9 +55,9 @@ function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $ali
   // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes and strip out any resulting markup
   $alt = esc_attr( strip_tags( do_shortcode( $alt ) ) );
 
-  // Set the alt attribute if it isn't identical to the caption contents
+  // Only set the alt attribute if it isn't identical to the caption
   if ( !empty( $alt ) && $alt !== $caption )
-    $content .= ' alt="' . esc_attr( $alt ) . '"';
+    $content .= ' alt="' . $alt . '"';
 
   if ( !empty( $caption ) ) {
     $content = '[image' . $content . ']' . $caption . '[/image]';
@@ -78,8 +78,23 @@ if ( UBIK_IMAGE_SHORTCODE )
 // Note: the $title variable is not used at all; it's WordPress legacy code; images don't need titles, just alt attributes
 function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
+  // Sanitize $id, not that this should really be a problem, and then ensure that the attachment exists, otherwise bail early
+  $id = (int) esc_attr( $id );
+
+  $post = get_post( $id );
+  if ( empty( $post ) )
+    return;
+
+  if ( $post->post_type !== 'attachment' )
+    return;
+
   // If the $html variable is empty let's generate our own markup from scratch
   if ( empty( $html ) ) {
+
+    // Default back to post title if alt attribute is empty
+    if ( empty( $alt ) ) {
+      $alt = $post->post_title;
+    }
 
     // No fancy business in the feed
     if ( is_feed() ) {
@@ -120,25 +135,33 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
       $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . esc_attr( $alt ) . '" />';
     }
 
-    // Generate a link wrapper from the $url variable; optionally generates URL and rel attribute for images explicitly identified as attachments
+    // If no URL is set let's default back to an attachment link; for no URL use url="none"
+    if ( empty( $url ) ) {
+      $url = 'attachment';
+    }
+
+    // Generate the link from the contents of the $url variable; optionally generates URL and rel attribute for images explicitly identified as attachments
     if ( !empty( $url ) ) {
       if ( $url === 'attachment' ) {
         $url = get_attachment_link( $id );
         $rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';
+      } elseif ( $url === 'none' ) {
+        $url = '';
       }
-      // Now wrap everything in a link
+    }
+
+    // Now wrap everything in a link
+    if ( !empty( $url ) ) {
       $html = '<a href="' . esc_attr( $url ) . '"' . $rel . '>' . $html . '</a>';
     }
 
   // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code); we don't do much here
   } else {
+
     // Add itemprop="contentURL" to image element when $html variable is passed to this function; ugly hack but it works
     if ( !is_feed() )
       $html = str_replace( '<img', '<img itemprop="contentUrl"', $html );
   }
-
-  // Sanitize $id, not that this should really be a problem
-  $id = esc_attr( $id );
 
   // Initialize ARIA attributes
   $aria = '';
