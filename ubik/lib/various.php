@@ -1,5 +1,4 @@
 <?php // ==== VARIOUS ==== //
-// A collection of theme-agnostic snippets
 
 // Allow HTML in author descriptions on single user blogs
 // Careful: might be stripped out anyway (e.g. when making meta descriptions) so don't put anything essential in there

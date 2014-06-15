@@ -22,5 +22,7 @@ define( 'UBIK_FEED_DISABLE_FORMATS', true );
 
 define( 'UBIK_FORMAT_SLUG', true );
 
+define( 'UBIK_IMAGE_SHORTCODE', true );
+
 define( 'UBIK_META_FAVICONS', true );
 define( 'UBIK_META_FAVICONS_TILE_COLOR', '#00aba9' );

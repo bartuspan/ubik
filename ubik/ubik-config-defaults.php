@@ -121,6 +121,13 @@ defined( 'UBIK_GOOGLE_ANALYTICS_UA' )       || define( 'UBIK_GOOGLE_ANALYTICS_UA
 
 
 
+// == IMAGE == //
+
+// Enable image shortcode; true/false
+defined( 'UBIK_IMAGE_SHORTCODE' )           || define( 'UBIK_IMAGE_SHORTCODE', false );
+
+
+
 // == LINKS == //
 
 // Enable core WordPress links manager on new installs; true/false

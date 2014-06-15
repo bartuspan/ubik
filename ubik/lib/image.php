@@ -2,7 +2,7 @@
 
 // == IMAGE SHORTCODE == //
 
-// Create a really simple image shortcode based on HTML5 image markup requirements
+// Create a really simple image shortcode based on HTML5 image markup standards
 function ubik_image_shortcode( $atts, $caption = '' ) {
   extract( shortcode_atts( array(
     'id'            => '',
@@ -15,7 +15,19 @@ function ubik_image_shortcode( $atts, $caption = '' ) {
 
   return apply_filters( 'ubik_image_shortcode', ubik_image_markup( $html = '', $id, $caption, $title, $align, $url, $size, $alt ) );
 }
-add_shortcode( 'image', 'ubik_image_shortcode' );
+if ( UBIK_IMAGE_SHORTCODE )
+  add_shortcode( 'image', 'ubik_image_shortcode' );
+
+
+
+// A simple shortcode designed to group images; see Pendrell for an example of usage: https://github.com/synapticism/pendrell
+// Removes paragraph and break elements inserted by wpautop function; easier and more reliable than messing around with the order of filters
+// Core function shortcode_unautop doesn't work here because the wpautop filter has already run
+function ubik_group_shortcode( $atts, $content ) {
+  return '<div class="image-group">' . str_replace( array('<p>', '</p>', '<br>', '<br/>'), '', do_shortcode( $content ) ) . '</div>';
+}
+if ( UBIK_IMAGE_SHORTCODE )
+  add_shortcode( 'group', 'ubik_group_shortcode' );
 
 
 
@@ -55,7 +67,8 @@ function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $ali
 
   return $content;
 }
-add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
+if ( UBIK_IMAGE_SHORTCODE )
+  add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
 
 
 
@@ -105,7 +118,6 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
 
       // With all the pieces in place let's generate the img element
       $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . esc_attr( $alt ) . '" />';
-
     }
 
     // Generate a link wrapper from the $url variable; optionally generates URL and rel attribute for images explicitly identified as attachments
