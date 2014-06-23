@@ -52,8 +52,8 @@ function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $ali
   if ( !empty( $size ) && $size !== 'medium' )
     $content .= ' size="' . esc_attr( $size ) . '"';
 
-  // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes and strip out any resulting markup
-  $alt = esc_attr( strip_tags( do_shortcode( $alt ) ) );
+  // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes and let the image shortcode do the rest
+  $alt = do_shortcode( $alt );
 
   // Only set the alt attribute if it isn't identical to the caption
   if ( !empty( $alt ) && $alt !== $caption )
@@ -92,9 +92,11 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
   if ( empty( $html ) ) {
 
     // Default back to post title if alt attribute is empty
-    if ( empty( $alt ) ) {
+    if ( empty( $alt ) )
       $alt = $post->post_title;
-    }
+
+    // Clean up the alt attribute; it may contain HTML and other things
+    $alt = esc_attr( strip_tags( $alt ) );
 
     // No fancy business in the feed
     if ( is_feed() ) {
@@ -132,7 +134,7 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
       }
 
       // With all the pieces in place let's generate the img element
-      $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . esc_attr( $alt ) . '" />';
+      $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . $alt . '" />';
     }
 
     // If no URL is set let's default back to an attachment link; for no URL use url="none"
