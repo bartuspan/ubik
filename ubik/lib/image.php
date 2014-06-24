@@ -1,6 +1,6 @@
 <?php // ==== IMAGES ==== //
 
-// == IMAGE SHORTCODE == //
+// == SHORTCODES == //
 
 // Create a really simple image shortcode based on HTML5 image markup standards
 function ubik_image_shortcode( $atts, $caption = '' ) {
@@ -17,6 +17,30 @@ function ubik_image_shortcode( $atts, $caption = '' ) {
 }
 if ( UBIK_IMAGE_SHORTCODE )
   add_shortcode( 'image', 'ubik_image_shortcode' );
+
+
+
+// Improves the WordPress core caption shortcode with HTML5 figure & figcaption; microdata & WAI-ARIA accessibility attributes
+// Source: http://joostkiens.com/improving-wp-caption-shortcode/
+// Or perhaps: http://writings.orangegnome.com/writes/improved-html5-wordpress-captions/
+// Or was it: http://clicknathan.com/2011/10/06/convert-wordpress-default-captions-shortcode-to-html-5-figure-and-figcaption-tags/
+function ubik_media_caption_shortcode( $val, $attr, $html = '' ) {
+  extract( shortcode_atts( array(
+    'id'      => '',
+    'align'   => 'none',
+    'width'   => '',
+    'caption' => '',
+    'class'   => ''
+  ), $attr) );
+
+  // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present; returning '' tells the core to handle things
+  if ( empty( $id ) || empty( $caption ) || strpos( $html, '<img' ) === false )
+    return '';
+
+  // Pass whatever we have to the general image markup generator
+  return ubik_image_markup( $html, $id, $caption, $title = '', $align );
+}
+add_filter( 'img_caption_shortcode', 'ubik_media_caption_shortcode', 10, 3 );
 
 
 
@@ -52,7 +76,7 @@ function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $ali
   if ( !empty( $size ) && $size !== 'medium' )
     $content .= ' size="' . esc_attr( $size ) . '"';
 
-  // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes and let the image shortcode do the rest
+  // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes here and let the image shortcode do the rest
   $alt = do_shortcode( $alt );
 
   // Only set the alt attribute if it isn't identical to the caption
@@ -76,23 +100,24 @@ if ( UBIK_IMAGE_SHORTCODE )
 
 // Generalized image markup generator; used by captioned images and image shortcodes; alternate markup presented on feeds is intended to validate
 // Note: the $title variable is not used at all; it's WordPress legacy code; images don't need titles, just alt attributes
-function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
+function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
-  // Sanitize $id, not that this should really be a problem, and then ensure that the attachment exists, otherwise bail early
+  // Sanitize $id and ensure it points to an existing attachment
   $id = (int) esc_attr( $id );
 
-  $post = get_post( $id );
-  if ( empty( $post ) )
-    return;
-
-  if ( $post->post_type !== 'attachment' )
-    return;
+  if ( !empty( $id ) ) {
+    $post = get_post( $id );
+    if ( empty( $post ) )
+      return;
+    if ( $post->post_type !== 'attachment' )
+      return;
+  }
 
   // If the $html variable is empty let's generate our own markup from scratch
-  if ( empty( $html ) ) {
+  if ( empty( $html ) && !empty( $id ) ) {
 
     // Default back to post title if alt attribute is empty
-    if ( empty( $alt ) )
+    if ( empty( $alt ) && !empty( $post ) )
       $alt = $post->post_title;
 
     // Clean up the alt attribute; it may contain HTML and other things
@@ -157,7 +182,7 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
       $html = '<a href="' . esc_attr( $url ) . '"' . $rel . '>' . $html . '</a>';
     }
 
-  // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code); we don't do much here
+  // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code) we don't do much here
   } else {
 
     // Add itemprop="contentURL" to image element when $html variable is passed to this function; ugly hack but it works
@@ -179,14 +204,14 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
     // Do shortcodes and texturize (since shortcode contents aren't texturized by default)
     $caption = wptexturize( do_shortcode( $caption ) );
 
-    // If the caption isn't empty generate ARIA attributes for the figure element
-    if ( !is_feed() )
+    // Generate ARIA attributes for the figure element if the ID isn't empty and this isn't a feed
+    if ( !is_feed() && !empty( $id ) )
       $aria = 'aria-describedby="figcaption-' . $id . '" ';
   }
 
   // Prefix $align with "align"; saves us the trouble of writing it out all the time
   if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
-    $align = 'align' . $align;
+    $align = ' align' . esc_attr( $align );
 
   // There's a chance $size will have been wiped clean by the `ubik_image_markup_size` filter
   if ( !empty( $size ) )
@@ -196,13 +221,23 @@ function ubik_image_markup( $html = '', $id, $caption, $title = '', $align = 'no
   if ( is_feed() ) {
     $content = $html;
     if ( !empty( $caption ) )
-      $content .= '<br/><small>' . $caption . '</small> ';
+      $content .= '<br/><small>' . $caption . '</small> '; // Note the space
 
   // Generate image wrapper markup used everywhere else
   } else {
-    $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . ' ' . esc_attr( $align ) . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
-    if ( !empty( $caption ) )
-      $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
+
+    // Edge case where $id is not set
+    if ( empty( $id ) ) {
+      $content = '<figure class="wp-caption ' . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
+      if ( !empty( $caption ) )
+        $content .= '<figcaption class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
+
+    // Regular output
+    } else {
+      $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
+      if ( !empty( $caption ) )
+        $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
+    }
     $content .= '</figure>' . "\n";
   }
 

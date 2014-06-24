@@ -14,6 +14,8 @@ define( 'UBIK_SERIES', true );
 define( 'UBIK_ADMIN_TERM_EDITOR', true );
 define( 'UBIK_ADMIN_VISUAL_EDITOR', false );
 
+define( 'UBIK_ATTACHMENT_COMMENTS', false );
+
 define( 'UBIK_COMMENTS_ALLOWED_TAGS', true );
 
 define( 'UBIK_CONTENT_SLUG_STRICT', true );

@@ -38,6 +38,13 @@ defined( 'UBIK_ADMIN_VISUAL_EDITOR' )       || define( 'UBIK_ADMIN_VISUAL_EDITOR
 
 
 
+// == ATTACHMENTS == //
+
+// Turn comments on/off for all attachments; true for enable comments (WordPress default), false for disable comments
+defined( 'UBIK_ATTACHMENT_COMMENTS' )       || define( 'UBIK_ATTACHMENT_COMMENTS', true );
+
+
+
 // == COMMENTS == //
 
 // Modify tags allowed in comments; specify allowable tags in lib/comments.php; false to disable
@@ -135,16 +142,6 @@ defined( 'UBIK_LINKS_MANAGER' )             || define( 'UBIK_LINKS_MANAGER', fal
 
 
 
-// == MEDIA == //
-
-// Turn comments on/off for all attachments; true for enable, false for disable
-defined( 'UBIK_MEDIA_ATTACHMENT_COMMENTS' ) || define( 'UBIK_MEDIA_ATTACHMENT_COMMENTS', false );
-
-// Remove image height and width attributes
-defined( 'UBIK_MEDIA_THUMBNAIL_ATTS' )      || define( 'UBIK_MEDIA_THUMBNAIL_ATTS', false );
-
-
-
 // == META TAGS == //
 
 // Facebook admin value for page insights; can be a single ID or comma-separated series of IDs; string or false to disable
@@ -187,3 +184,15 @@ defined( 'UBIK_SEARCH_REDIRECT' )           || define( 'UBIK_SEARCH_REDIRECT', t
 
 // Post series order; chronological by default; string or false to disable
 defined( 'UBIK_SERIES_ORDER' )              || define( 'UBIK_SERIES_ORDER', 'ASC' );
+
+
+
+// == THUMBNAILS == //
+
+// Default thumbnail; must be an attachment ID (integer) or false to disable
+defined( 'UBIK_THUMBNAIL_DEFAULT' )         || define( 'UBIK_THUMBNAIL_DEFAULT', false );
+
+// Image height and width attributes; true by default, false to remove dimensions for most images
+defined( 'UBIK_THUMBNAIL_DIMENSIONS' )      || define( 'UBIK_THUMBNAIL_DIMENSIONS', true );
+
+

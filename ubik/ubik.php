@@ -6,9 +6,9 @@
  * Description: A library of useful theme-agnostic WordPress snippets, hacks, and functions.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.4.0
+ * Version: 0.4.1
  */
-define( 'UBIK_VERSION', '0.4.0' );
+define( 'UBIK_VERSION', '0.4.1' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -23,15 +23,16 @@ if ( is_readable( plugin_dir_path( __FILE__ ) . 'ubik-config.php' ) )
 require_once( plugin_dir_path( __FILE__ ) . 'ubik-config-defaults.php' );
 
 // Load ubik core library
+include( plugin_dir_path( __FILE__ ) . 'lib/attachments.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/comments.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/content.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/excerpt.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/feed.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/general.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/image.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/media.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/microdata.php' );
+// include( plugin_dir_path( __FILE__ ) . 'lib/microdata.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/search.php' );
+include( plugin_dir_path( __FILE__ ) . 'lib/thumbnails.php' );
 include( plugin_dir_path( __FILE__ ) . 'lib/various.php' );
 
 if ( is_admin() ) {
@@ -60,7 +61,6 @@ if ( UBIK_SERIES )
 
 
 function ubik_activate() {
-  // Refresh permalinks on plugin activation
-  flush_rewrite_rules();
+  flush_rewrite_rules(); // Refresh permalinks on plugin activation; @TODO: make sure this works
 }
 register_activation_hook( __FILE__, 'ubik_activate' );
