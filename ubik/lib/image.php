@@ -228,7 +228,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
 
     // Edge case where $id is not set
     if ( empty( $id ) ) {
-      $content = '<figure class="wp-caption ' . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
+      $content = '<figure class="wp-caption' . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
       if ( !empty( $caption ) )
         $content .= '<figcaption class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
 

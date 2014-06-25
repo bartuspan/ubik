@@ -21,7 +21,11 @@ add_filter( 'post_thumbnail_html', 'ubik_thumbnail', 11, 5 );
 
 
 // Utility function to return just the ID of a thumbnail associated with a post or a fallback image specified in the configuration
-function ubik_thumbnail_id( $post_id = '', $fallback_id = UBIK_THUMBNAIL_DEFAULT ) {
+function ubik_thumbnail_id( $post_id = null, $fallback_id = null ) {
+
+  // Try to get the current post ID if one was not passed
+  if ( $post_id === null )
+    $post_id = get_the_ID();
 
   if ( empty( $post_id ) )
     return false;
@@ -43,6 +47,9 @@ function ubik_thumbnail_id( $post_id = '', $fallback_id = UBIK_THUMBNAIL_DEFAULT
     return current( array_keys( $attachments ) );
 
   // Default image fallback; double check it is an existing image attachment first
+  if ( $fallback_id === null && is_int( UBIK_THUMBNAIL_DEFAULT ) )
+    $fallback_id = UBIK_THUMBNAIL_DEFAULT;
+
   if ( !empty( $fallback_id ) ) {
     $fallback_id = (int) $fallback_id;
     $post = get_post( $fallback_id );
@@ -51,6 +58,8 @@ function ubik_thumbnail_id( $post_id = '', $fallback_id = UBIK_THUMBNAIL_DEFAULT
         return $fallback_id;
     }
   }
+
+  // No thumbnail, attachment, or fallback image was found
   return false;
 }
 
