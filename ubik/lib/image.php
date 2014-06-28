@@ -2,20 +2,6 @@
 
 // == IMAGE MARKUP == //
 
-function ubik_is_image_attachment( $id = null ) {
-  if ( empty( $id ) )
-    get_the_ID();
-
-  if ( !empty( $id ) ) {
-    $post = get_post( $id );
-    if ( empty( $post ) )
-      return false;
-    if ( $post->post_type == 'attachment' && wp_match_mime_types( 'image', $post->post_mime_type ) )
-      return true;
-  }
-  return false;
-}
-
 // Generalized image markup generator; used by captioned images and image shortcodes; alternate markup presented on feeds is intended to validate
 // Note: the $title variable is not used at all; it's WordPress legacy code; images don't need titles, just alt attributes
 function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
