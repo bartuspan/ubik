@@ -1,115 +1,32 @@
 <?php // ==== IMAGES ==== //
 
-// == SHORTCODES == //
-
-// Create a really simple image shortcode based on HTML5 image markup standards
-function ubik_image_shortcode( $atts, $caption = '' ) {
-  extract( shortcode_atts( array(
-    'id'            => '',
-    'title'         => '',
-    'align'         => 'none',
-    'url'           => '',
-    'size'          => 'medium',
-    'alt'           => ''
-  ), $atts ) );
-
-  return apply_filters( 'ubik_image_shortcode', ubik_image_markup( $html = '', $id, $caption, $title, $align, $url, $size, $alt ) );
-}
-if ( UBIK_IMAGE_SHORTCODE )
-  add_shortcode( 'image', 'ubik_image_shortcode' );
-
-
-
-// Improves the WordPress core caption shortcode with HTML5 figure & figcaption; microdata & WAI-ARIA accessibility attributes
-// Source: http://joostkiens.com/improving-wp-caption-shortcode/
-// Or perhaps: http://writings.orangegnome.com/writes/improved-html5-wordpress-captions/
-// Or was it: http://clicknathan.com/2011/10/06/convert-wordpress-default-captions-shortcode-to-html-5-figure-and-figcaption-tags/
-function ubik_media_caption_shortcode( $val, $attr, $html = '' ) {
-  extract( shortcode_atts( array(
-    'id'      => '',
-    'align'   => 'none',
-    'width'   => '',
-    'caption' => '',
-    'class'   => ''
-  ), $attr) );
-
-  // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present; returning '' tells the core to handle things
-  if ( empty( $id ) || empty( $caption ) || strpos( $html, '<img' ) === false )
-    return '';
-
-  // Pass whatever we have to the general image markup generator
-  return ubik_image_markup( $html, $id, $caption, $title = '', $align );
-}
-add_filter( 'img_caption_shortcode', 'ubik_media_caption_shortcode', 10, 3 );
-
-
-
-// A simple shortcode designed to group images; see Pendrell for an example of usage: https://github.com/synapticism/pendrell
-// Removes paragraph and break elements inserted by wpautop function; easier and more reliable than messing around with the order of filters
-// Core function shortcode_unautop doesn't work here because the wpautop filter has already run
-function ubik_group_shortcode( $atts, $content ) {
-  return '<div class="image-group">' . str_replace( array('<p>', '</p>', '<br>', '<br/>'), '', do_shortcode( $content ) ) . '</div>';
-}
-if ( UBIK_IMAGE_SHORTCODE )
-  add_shortcode( 'group', 'ubik_group_shortcode' );
-
-
-
-// Generate an image shortcode when inserting images into a post
-function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $align = '', $url = '', $size = 'medium', $alt = '' ) {
-
-  if ( !empty( $id ) )
-    $content = ' id="' . esc_attr( $id ) . '"';
-
-  if ( !empty( $align ) && $align !== 'none' )
-    $content .= ' align="' . esc_attr( $align ) . '"';
-
-  // URL is left blank for attachments; only specified in the event of a custom URL, media object link, or when "none" is selected
-  if ( !empty( $url ) ) {
-    if ( !( strpos( $url, 'attachment_id' ) || get_attachment_link( $id ) == $url ) ) {
-      $content .= ' url="' . esc_attr( $url ) . '"';
-    }
-  } else {
-    $content .= ' url="none"';
-  }
-
-  if ( !empty( $size ) && $size !== 'medium' )
-    $content .= ' size="' . esc_attr( $size ) . '"';
-
-  // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes here and let the image shortcode do the rest
-  $alt = do_shortcode( $alt );
-
-  // Only set the alt attribute if it isn't identical to the caption
-  if ( !empty( $alt ) && $alt !== $caption )
-    $content .= ' alt="' . $alt . '"';
-
-  if ( !empty( $caption ) ) {
-    $content = '[image' . $content . ']' . $caption . '[/image]';
-  } else {
-    $content = '[image' . $content . '/]';
-  }
-
-  return $content;
-}
-if ( UBIK_IMAGE_SHORTCODE )
-  add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
-
-
-
 // == IMAGE MARKUP == //
+
+function ubik_is_image_attachment( $id = null ) {
+  if ( empty( $id ) )
+    get_the_ID();
+
+  if ( !empty( $id ) ) {
+    $post = get_post( $id );
+    if ( empty( $post ) )
+      return false;
+    if ( $post->post_type == 'attachment' && wp_match_mime_types( 'image', $post->post_mime_type ) )
+      return true;
+  }
+  return false;
+}
 
 // Generalized image markup generator; used by captioned images and image shortcodes; alternate markup presented on feeds is intended to validate
 // Note: the $title variable is not used at all; it's WordPress legacy code; images don't need titles, just alt attributes
 function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
-  // Sanitize $id and ensure it points to an existing attachment
+  // Sanitize $id and ensure it points to an existing image attachment
   $id = (int) esc_attr( $id );
-
   if ( !empty( $id ) ) {
     $post = get_post( $id );
     if ( empty( $post ) )
       return;
-    if ( $post->post_type !== 'attachment' )
+    if ( !ubik_is_image_attachment( $id ) )
       return;
   }
 
@@ -211,7 +128,8 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
 
   // Prefix $align with "align"; saves us the trouble of writing it out all the time
   if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
-    $align = ' align' . esc_attr( $align );
+    $align = 'align' . esc_attr( $align );
+  $align = ' ' . $align;
 
   // There's a chance $size will have been wiped clean by the `ubik_image_markup_size` filter
   if ( !empty( $size ) )
@@ -243,3 +161,102 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
 
   return $content;
 }
+
+
+
+// == SHORTCODES == //
+
+// Create a really simple image shortcode based on HTML5 image markup standards
+function ubik_image_shortcode( $atts, $caption = '' ) {
+  extract( shortcode_atts( array(
+    'id'            => '',
+    'title'         => '',
+    'align'         => 'none',
+    'url'           => '',
+    'size'          => 'medium',
+    'alt'           => ''
+  ), $atts ) );
+
+  return apply_filters( 'ubik_image_shortcode', ubik_image_markup( $html = '', $id, $caption, $title, $align, $url, $size, $alt ) );
+}
+if ( UBIK_IMAGE_SHORTCODE )
+  add_shortcode( 'image', 'ubik_image_shortcode' );
+
+
+
+// A simple shortcode designed to group images; see Pendrell for an example of usage: https://github.com/synapticism/pendrell
+// Removes paragraph and break elements inserted by wpautop function; easier and more reliable than messing around with the order of filters
+// Core function shortcode_unautop doesn't work here because the wpautop filter has already run
+function ubik_image_group_shortcode( $atts, $content ) {
+  return '<div class="image-group">' . str_replace( array('<p>', '</p>', '<br>', '<br/>'), '', do_shortcode( $content ) ) . '</div>';
+}
+if ( UBIK_IMAGE_SHORTCODE )
+  add_shortcode( 'group', 'ubik_image_group_shortcode' );
+
+
+
+// Improves the WordPress core caption shortcode with HTML5 figure & figcaption; microdata & WAI-ARIA accessibility attributes
+// Source: http://joostkiens.com/improving-wp-caption-shortcode/
+// Or perhaps: http://writings.orangegnome.com/writes/improved-html5-wordpress-captions/
+// Or was it: http://clicknathan.com/2011/10/06/convert-wordpress-default-captions-shortcode-to-html-5-figure-and-figcaption-tags/
+function ubik_caption_shortcode( $val, $attr, $html = '' ) {
+  extract( shortcode_atts( array(
+    'id'      => '',
+    'align'   => 'none',
+    'width'   => '',
+    'caption' => '',
+    'class'   => ''
+  ), $attr) );
+
+  // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present; returning '' tells the core to handle things
+  if ( empty( $id ) || empty( $caption ) || strpos( $html, '<img' ) === false )
+    return '';
+
+  // Pass whatever we have to the general image markup generator
+  return ubik_image_markup( $html, $id, $caption, $title = '', $align );
+}
+add_filter( 'img_caption_shortcode', 'ubik_caption_shortcode', 10, 3 );
+
+
+
+// == ADMIN == //
+
+// Generate an image shortcode when inserting images into a post
+function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $align = '', $url = '', $size = 'medium', $alt = '' ) {
+
+  if ( !empty( $id ) )
+    $content = ' id="' . esc_attr( $id ) . '"';
+
+  if ( !empty( $align ) && $align !== 'none' )
+    $content .= ' align="' . esc_attr( $align ) . '"';
+
+  // URL is left blank for attachments; only specified in the event of a custom URL, media object link, or when "none" is selected
+  if ( !empty( $url ) ) {
+    if ( !( strpos( $url, 'attachment_id' ) || get_attachment_link( $id ) == $url ) ) {
+      $content .= ' url="' . esc_attr( $url ) . '"';
+    }
+  } else {
+    $content .= ' url="none"';
+  }
+
+  // Default size: medium
+  if ( !empty( $size ) && $size !== 'medium' )
+    $content .= ' size="' . esc_attr( $size ) . '"';
+
+  // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes here and let the image shortcode do the rest
+  $alt = do_shortcode( $alt );
+
+  // Only set the alt attribute if it isn't identical to the caption
+  if ( !empty( $alt ) && $alt !== $caption )
+    $content .= ' alt="' . $alt . '"';
+
+  if ( !empty( $caption ) ) {
+    $content = '[image' . $content . ']' . $caption . '[/image]';
+  } else {
+    $content = '[image' . $content . '/]';
+  }
+
+  return $content;
+}
+if ( UBIK_IMAGE_SHORTCODE )
+  add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
