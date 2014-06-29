@@ -54,7 +54,7 @@ function ubik_thumbnail_id( $post_id = null, $fallback_id = null ) {
     $fallback_id = (int) $fallback_id;
     $post = get_post( $fallback_id );
     if ( !empty( $post ) ) {
-      if ( ubik_is_image_attachment( $fallback_id ) )
+      if ( wp_attachment_is_image( $fallback_id ) )
         return $fallback_id;
     }
   }

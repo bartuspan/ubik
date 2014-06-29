@@ -249,7 +249,7 @@ function ubik_content_entry_meta() {
   // Parent link for pages, images, attachments, and places
   global $post;
   if ( $post->post_parent ) {
-    if ( is_attachment() && wp_attachment_is_image() ) {
+    if ( wp_attachment_is_image() ) {
       $parent_rel = 'gallery';
     } else {
       $parent_rel = 'parent';

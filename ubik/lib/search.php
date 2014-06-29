@@ -32,7 +32,7 @@ function ubik_search_pre_get_posts( $query ) {
   if (
     is_search()
     && $query->is_main_query()
-    && UBIK_SEARCH_POSTS_PER_PAGE
+    && is_int( UBIK_SEARCH_POSTS_PER_PAGE )
   ) {
     $query->set( 'posts_per_page', UBIK_SEARCH_POSTS_PER_PAGE );
   }

@@ -7,12 +7,12 @@
 function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
   // Sanitize $id and ensure it points to an existing image attachment
-  $id = (int) esc_attr( $id );
+  $id = (int) $id;
   if ( !empty( $id ) ) {
     $post = get_post( $id );
     if ( empty( $post ) )
       return;
-    if ( !ubik_is_image_attachment( $id ) )
+    if ( !wp_attachment_is_image( $id ) )
       return;
   }
 

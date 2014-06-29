@@ -64,7 +64,7 @@ function ubik_meta_tags() {
   if ( is_singular() ) {
 
     // Are we are dealing with an image attachment page?
-    if ( is_attachment() && wp_attachment_is_image() ) {
+    if ( wp_attachment_is_image() ) {
 
       // Get all metadata (includes mime type) and image source in the usual way
       $attachment = wp_get_attachment_metadata( $post->ID );
@@ -241,7 +241,7 @@ function ubik_meta_tags() {
   // == TWITTER == //
 
   // Twitter title, description, and URL meta tags are not required when equivalent Open Graph tags exist!
-  if ( is_attachment() && wp_attachment_is_image() && !empty( $images ) ) {
+  if ( wp_attachment_is_image() && !empty( $images ) ) {
     $card = 'photo';
   } elseif ( is_singular() && !is_attachment() && !empty( $images ) && count( $images ) > 2 ) {
     $card = 'gallery';
