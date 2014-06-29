@@ -7,7 +7,7 @@ function ubik_thumbnail( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
   if ( empty( $html ) && !empty( $post_id ) )
     $post_thumbnail_id = ubik_thumbnail_id( $post_id );
 
-  // Attempt to beautify thumbnail markup
+  // Attempt to beautify thumbnail markup; note: this means that you shouldn't wrap post thumbnails in additional image markup
   if ( function_exists( 'ubik_image_markup' ) && !empty( $post_thumbnail_id ) ) {
     $html = ubik_image_markup( '', $post_thumbnail_id, '', '', 'none', get_permalink( $post_id ), $size );
   } else {
@@ -20,7 +20,7 @@ add_filter( 'post_thumbnail_html', 'ubik_thumbnail', 11, 5 );
 
 
 
-// Utility function to return just the ID of a thumbnail associated with a post or a fallback image specified in the configuration
+// Return the ID of a post's thumbnail, the first attached image, or a fallback image specified in ubik-config.php
 function ubik_thumbnail_id( $post_id = null, $fallback_id = null ) {
 
   // Try to get the current post ID if one was not passed
@@ -54,7 +54,7 @@ function ubik_thumbnail_id( $post_id = null, $fallback_id = null ) {
     $fallback_id = (int) $fallback_id;
     $post = get_post( $fallback_id );
     if ( !empty( $post ) ) {
-      if ( ubik_is_image_attachment() )
+      if ( ubik_is_image_attachment( $fallback_id ) )
         return $fallback_id;
     }
   }

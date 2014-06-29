@@ -93,56 +93,60 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       $html = str_replace( '<img', '<img itemprop="contentUrl"', $html );
   }
 
-  // Initialize ARIA attributes
-  $aria = '';
+  // Don't generate double the markup; deals with edge cases in which content is fed through this function twice
+  if ( !strpos( $html, '<figure class="wp-caption' ) ) {
 
-  // Caption processing
-  if ( !empty( $caption ) ) {
-    // Strip tags from captions but preserve some text formatting elements; this is mainly used to get rid of stray paragraph and break tags
-    $caption = strip_tags( $caption, '<a><abbr><acronym><b><bdi><bdo><cite><code><del><em><i><ins><mark><q><rp><rt><ruby><s><small><strong><sub><sup><time><u>' );
+    // Initialize ARIA attributes
+    $aria = '';
 
-    // Replace excess white space and line breaks with a single space to neaten things up
-    $caption = trim( str_replace( array("\r\n", "\r", "\n"), ' ', $caption ) );
+    // Caption processing
+    if ( !empty( $caption ) ) {
+      // Strip tags from captions but preserve some text formatting elements; this is mainly used to get rid of stray paragraph and break tags
+      $caption = strip_tags( $caption, '<a><abbr><acronym><b><bdi><bdo><cite><code><del><em><i><ins><mark><q><rp><rt><ruby><s><small><strong><sub><sup><time><u>' );
 
-    // Do shortcodes and texturize (since shortcode contents aren't texturized by default)
-    $caption = wptexturize( do_shortcode( $caption ) );
+      // Replace excess white space and line breaks with a single space to neaten things up
+      $caption = trim( str_replace( array("\r\n", "\r", "\n"), ' ', $caption ) );
 
-    // Generate ARIA attributes for the figure element if the ID isn't empty and this isn't a feed
-    if ( !is_feed() && !empty( $id ) )
-      $aria = 'aria-describedby="figcaption-' . $id . '" ';
-  }
+      // Do shortcodes and texturize (since shortcode contents aren't texturized by default)
+      $caption = wptexturize( do_shortcode( $caption ) );
 
-  // Prefix $align with "align"; saves us the trouble of writing it out all the time
-  if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
-    $align = 'align' . esc_attr( $align );
-  $align = ' ' . $align;
-
-  // There's a chance $size will have been wiped clean by the `ubik_image_markup_size` filter
-  if ( !empty( $size ) )
-    $size = ' size-' . esc_attr( $size );
-
-  // Return stripped down markup for feeds
-  if ( is_feed() ) {
-    $content = $html;
-    if ( !empty( $caption ) )
-      $content .= '<br/><small>' . $caption . '</small> '; // Note the space
-
-  // Generate image wrapper markup used everywhere else
-  } else {
-
-    // Edge case where $id is not set
-    if ( empty( $id ) ) {
-      $content = '<figure class="wp-caption' . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
-      if ( !empty( $caption ) )
-        $content .= '<figcaption class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
-
-    // Regular output
-    } else {
-      $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
-      if ( !empty( $caption ) )
-        $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
+      // Generate ARIA attributes for the figure element if the ID isn't empty and this isn't a feed
+      if ( !is_feed() && !empty( $id ) )
+        $aria = 'aria-describedby="figcaption-' . $id . '" ';
     }
-    $content .= '</figure>' . "\n";
+
+    // Prefix $align with "align"; saves us the trouble of writing it out all the time
+    if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
+      $align = 'align' . esc_attr( $align );
+    $align = ' ' . $align;
+
+    // There's a chance $size will have been wiped clean by the `ubik_image_markup_size` filter
+    if ( !empty( $size ) )
+      $size = ' size-' . esc_attr( $size );
+
+    // Return stripped down markup for feeds
+    if ( is_feed() ) {
+      $content = $html;
+      if ( !empty( $caption ) )
+        $content .= '<br/><small>' . $caption . '</small> '; // Note the space
+
+    // Generate image wrapper markup used everywhere else
+    } else {
+
+      // Edge case where $id is not set
+      if ( empty( $id ) ) {
+        $content = '<figure class="wp-caption' . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
+        if ( !empty( $caption ) )
+          $content .= '<figcaption class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
+
+      // Regular output
+      } else {
+        $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
+        if ( !empty( $caption ) )
+          $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
+      }
+      $content .= '</figure>' . "\n";
+    }
   }
 
   return $content;
@@ -174,7 +178,10 @@ if ( UBIK_IMAGE_SHORTCODE )
 // Removes paragraph and break elements inserted by wpautop function; easier and more reliable than messing around with the order of filters
 // Core function shortcode_unautop doesn't work here because the wpautop filter has already run
 function ubik_image_group_shortcode( $atts, $content ) {
-  return '<div class="image-group">' . str_replace( array('<p>', '</p>', '<br>', '<br/>'), '', do_shortcode( $content ) ) . '</div>';
+  $content = str_replace( array('<p>', '</p>', '<br>', '<br/>'), '', do_shortcode( $content ) );
+  if ( !empty( $content ) )
+    $content = '<div class="image-group">' . $content . '</div>';
+  return $content;
 }
 if ( UBIK_IMAGE_SHORTCODE )
   add_shortcode( 'group', 'ubik_image_group_shortcode' );
