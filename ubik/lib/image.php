@@ -6,21 +6,19 @@
 // Note: the $title variable is not used at all; it's WordPress legacy code; images don't need titles, just alt attributes
 function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
 
-  // Sanitize $id and ensure it points to an existing image attachment
+  // Sanitize $id and ensure it points to an existing image attachment; if not, spit out $html
   $id = (int) $id;
   if ( !empty( $id ) ) {
     $post = get_post( $id );
-    if ( empty( $post ) )
-      return;
-    if ( !wp_attachment_is_image( $id ) )
-      return;
+    if ( empty( $post ) || !wp_attachment_is_image( $id ) )
+      return $html;
   }
 
   // If the $html variable is empty let's generate our own markup from scratch
   if ( empty( $html ) && !empty( $id ) ) {
 
     // Default back to post title if alt attribute is empty
-    if ( empty( $alt ) && !empty( $post ) )
+    if ( empty( $alt ) )
       $alt = $post->post_title;
 
     // Clean up the alt attribute; it may contain HTML and other things
@@ -65,10 +63,9 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . $alt . '" />';
     }
 
-    // If no URL is set let's default back to an attachment link; for no URL use url="none"
-    if ( empty( $url ) ) {
+    // If no URL is set let's default back to an attachment link (unless we're dealing with an attachment already); for no URL use url="none"
+    if ( empty( $url ) && !wp_attachment_is_image() )
       $url = 'attachment';
-    }
 
     // Generate the link from the contents of the $url variable; optionally generates URL and rel attribute for images explicitly identified as attachments
     if ( !empty( $url ) ) {
@@ -133,7 +130,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
     // Generate image wrapper markup used everywhere else
     } else {
 
-      // Edge case where $id is not set
+      // Edge case where ID is not set
       if ( empty( $id ) ) {
         $content = '<figure class="wp-caption' . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
         if ( !empty( $caption ) )
@@ -148,7 +145,6 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       $content .= '</figure>' . "\n";
     }
   }
-
   return $content;
 }
 
