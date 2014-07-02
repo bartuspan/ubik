@@ -133,6 +133,9 @@ defined( 'UBIK_GOOGLE_ANALYTICS_UA' )       || define( 'UBIK_GOOGLE_ANALYTICS_UA
 // Enable image shortcode; true/false
 defined( 'UBIK_IMAGE_SHORTCODE' )           || define( 'UBIK_IMAGE_SHORTCODE', false );
 
+// Enable image shortcode; true/false
+defined( 'UBIK_IMAGE_SHORTCODE_COLUMNS' )   || define( 'UBIK_IMAGE_SHORTCODE_COLUMNS', 2 );
+
 
 
 // == LINKS == //

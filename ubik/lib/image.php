@@ -60,7 +60,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       }
 
       // With all the pieces in place let's generate the img element
-      $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . esc_attr( $id ) . ' size-' . esc_attr( $size ) . '" alt="' . $alt . '" />';
+      $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . $id . ' size-' . esc_attr( $size ) . '" alt="' . $alt . '" />';
     }
 
     // If no URL is set let's default back to an attachment link (unless we're dealing with an attachment already); for no URL use url="none"
@@ -71,7 +71,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
     if ( !empty( $url ) ) {
       if ( $url === 'attachment' ) {
         $url = get_attachment_link( $id );
-        $rel = ' rel="attachment wp-att-' . esc_attr( $id ) . '"';
+        $rel = ' rel="attachment wp-att-' . $id . '"';
       } elseif ( $url === 'none' ) {
         $url = '';
       }
@@ -79,7 +79,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
 
     // Now wrap everything in a link
     if ( !empty( $url ) ) {
-      $html = '<a href="' . esc_attr( $url ) . '"' . $rel . '>' . $html . '</a>';
+      $html = '<a href="' . $url . '"' . $rel . '>' . $html . '</a>';
     }
 
   // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code) we don't do much here
@@ -107,8 +107,8 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       // Do shortcodes and texturize (since shortcode contents aren't texturized by default)
       $caption = wptexturize( do_shortcode( $caption ) );
 
-      // Generate ARIA attributes for the figure element if the ID isn't empty and this isn't a feed
-      if ( !is_feed() && !empty( $id ) )
+      // Conditionally generate ARIA attributes for the figure element
+      if ( !empty( $id ) )
         $aria = 'aria-describedby="figcaption-' . $id . '" ';
     }
 
@@ -125,7 +125,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
     if ( is_feed() ) {
       $content = $html;
       if ( !empty( $caption ) )
-        $content .= '<br/><small>' . $caption . '</small> '; // Note the space
+        $content .= '<br/><small>' . $caption . '</small> '; // Note the trailing space
 
     // Generate image wrapper markup used everywhere else
     } else {
@@ -153,7 +153,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
 // == SHORTCODES == //
 
 // Create a really simple image shortcode based on HTML5 image markup standards
-function ubik_image_shortcode( $atts, $caption = '' ) {
+function ubik_image_shortcode( $attr, $caption = '' ) {
   extract( shortcode_atts( array(
     'id'            => '',
     'title'         => '',
@@ -161,7 +161,7 @@ function ubik_image_shortcode( $atts, $caption = '' ) {
     'url'           => '',
     'size'          => 'medium',
     'alt'           => ''
-  ), $atts ) );
+  ), $attr ) );
 
   return apply_filters( 'ubik_image_shortcode', ubik_image_markup( $html = '', $id, $caption, $title, $align, $url, $size, $alt ) );
 }
@@ -171,12 +171,33 @@ if ( UBIK_IMAGE_SHORTCODE )
 
 
 // A simple shortcode designed to group images; see Pendrell for an example of usage: https://github.com/synapticism/pendrell
-// Removes paragraph and break elements inserted by wpautop function; easier and more reliable than messing around with the order of filters
-// Core function shortcode_unautop doesn't work here because the wpautop filter has already run
 function ubik_image_group_shortcode( $atts, $content ) {
-  $content = str_replace( array('<p>', '</p>', '<br>', '<br/>'), '', do_shortcode( $content ) );
+
+  // Default values
+  extract( shortcode_atts( array(
+    'columns'   => UBIK_IMAGE_SHORTCODE_COLUMNS,
+    'size'      => ''
+  ), $atts) );
+
+  // Force an image size if one has not been set
+  if ( !strpos( 'size="', $content ) )
+    $content = str_replace( '[image ', '[image size="' . $size . '" ', $content );
+
+  // Removes paragraph and break elements inserted by wpautop function; easier and more reliable than messing around with the order of filters
+  $content = str_replace( array('<p>', '</p>', '<br>', '<br/>', '<br />'), '', do_shortcode( $content ) );
+
+  // Cast the columns attribute; keep the number under 6; prepare the columns class
+  $columns = (int) $columns;
+  if ( $columns >= 6 )
+    $columns = 5;
+  if ( $columns > 1 ) {
+    $column_class = ' image-group-columns-' . $columns;
+  } else {
+    $column_class = '';
+  }
+
   if ( !empty( $content ) )
-    $content = '<div class="image-group">' . $content . '</div>';
+    $content = '<div class="image-group' . $column_class . '">' . $content . '</div>';
   return $content;
 }
 if ( UBIK_IMAGE_SHORTCODE )
