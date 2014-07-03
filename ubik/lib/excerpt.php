@@ -95,3 +95,13 @@ function ubik_excerpt_shortcode_handler( $text ) {
     return strip_shortcodes( $text );
   }
 }
+
+
+
+// Strip opening asides from excerpts; this way you can introduce posts with <aside>This post is a continuation of...</aside> without having this dominate search engine results and such
+function ubik_excerpt_strip_asides( $content ) {
+  if ( strpos( $content, '<aside' ) < 10 )
+    $content = preg_replace( '/<aside>(.*?)<\/aside>/si', '', $content, 1 );
+  return $content;
+}
+add_filter( 'ubik_excerpt_content', 'ubik_excerpt_strip_asides' );
