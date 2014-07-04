@@ -34,7 +34,6 @@ function ubik_meta_tags() {
     if ( is_author() ) {
       $canonical = get_author_posts_url( get_the_author_meta( 'ID' ) );
     } elseif ( is_category() || is_tag() || is_tax() ) {
-      //$term = get_queried_object();
       $canonical = get_term_link( get_queried_object() );
     } elseif ( is_date() ) {
       if ( is_day() ) {
@@ -128,9 +127,8 @@ function ubik_meta_tags() {
     }
 
   // Everything that isn't singular is handled next
-  // @TODO: images for other forms of content e.g. author profile image, category thumbnail, or whatever else
   } else {
-    //
+    // @TODO: images for other forms of content e.g. author profile image, category thumbnail, or whatever else
   }
 
   // Additional post-specific data
@@ -224,8 +222,8 @@ function ubik_meta_tags() {
     if ( UBIK_META_FACEBOOK_PUBLISHER )
       echo '<meta property="article:publisher" content="http://www.facebook.com/' . UBIK_META_FACEBOOK_PUBLISHER . '"/>' . "\n";
 
-    // Category, but only one... @TODO: custom usort() function to select category by count or something
-    if ( !empty( $category ) )
+    // Category, but only one; relies on ubik_categorized_blog in categories.php; @TODO: custom usort() function to select category by count or something
+    if ( !empty( $category ) && ubik_categorized_blog() )
       echo '<meta property="article:section" content="' . esc_attr( $category[0]->cat_name ) . '"/>' . "\n";
 
     // Tags, as many as you like...

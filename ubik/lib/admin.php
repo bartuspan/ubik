@@ -27,20 +27,59 @@ if ( UBIK_ADMIN_VISUAL_EDITOR === false )
 
 
 
-// Remove all characters that are not the separator, a-z, 0-9, or whitespace; mainly for use with bilingual English/Chinese post titles
-function ubik_slug_strict( $title ) {
-  // Lifted from http://wordpress.org/plugins/strings-sanitizer/
-  $strict_title = preg_replace('![^'.preg_quote('-').'a-z0-_9\s]+!', '', strtolower( $title ) );
+// == POST LIST FILTERS == //
 
-  // Only return the strict title if there is something left
-  if ( !empty( $strict_title ) ) {
-    return $strict_title;
-  } else {
-    return $title;
+// Add a tags filter to post list; adapted from https://wordpress.stackexchange.com/questions/578/adding-a-taxonomy-filter-to-admin-list-for-a-custom-post-type
+function ubik_admin_tag_filter() {
+  global $typenow, $wp_query;
+
+  if ( $typenow == 'post' ) {
+    $taxonomy = 'post_tag';
+    if ( isset( $wp_query->query['term'] ) ) {
+      $term = $wp_query->query['term'];
+    } else {
+      $term = '';
+    }
+    $dropdown_options = array(
+      'show_option_all'   => __( 'View all tags', 'ubik' ),
+      'hide_empty'        => 1,
+      'hierarchical'      => 0,
+      'show_count'        => 0,
+      'orderby'           => 'name',
+      'name'              => 'tag',
+      'taxonomy'          => $taxonomy,
+      'selected'          => $term
+    );
+    wp_dropdown_categories( $dropdown_options );
+  }
+
+}
+add_action( 'restrict_manage_posts', 'ubik_admin_tag_filter' );
+
+function ubik_admin_tag_convert_id_to_term( $query ) {
+  global $pagenow;
+  $qv = &$query->query_vars;
+  if ( $pagenow == 'edit.php'
+    && isset( $qv['tag'] )
+    && is_numeric( $qv['tag'] )
+  ) {
+    $term = get_term_by( 'id', $qv['tag'], 'post_tag' );
+    $qv['tag'] = $term->slug;
   }
 }
-if ( UBIK_CONTENT_SLUG_STRICT )
-  add_filter( 'sanitize_title', 'ubik_slug_strict', 1 );
+add_filter( 'parse_query', 'ubik_admin_tag_convert_id_to_term');
+
+
+
+// Hide categories filter on uncategorized blogs
+function ubik_admin_category_filter_hide() {
+  ?><style type="text/css">
+      select#cat { display: none; }
+    }
+  </style><?php
+}
+if ( !ubik_categorized_blog() )
+  add_action( 'admin_head-edit.php', 'ubik_admin_category_filter_hide' );
 
 
 
@@ -96,4 +135,4 @@ if ( UBIK_ADMIN_ALL_SETTINGS )
 
 // Show all shortcodes link
 if ( UBIK_ADMIN_ALL_SHORTCODES )
-  include( 'admin_shortcodes_view_all.php' );
+  include_once( 'admin-shortcodes.php' );

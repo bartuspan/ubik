@@ -150,123 +150,83 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
 
 
 
-// == SHORTCODES == //
+// == THUMBNAILS == //
 
-// Create a really simple image shortcode based on HTML5 image markup standards
-function ubik_image_shortcode( $attr, $caption = '' ) {
-  extract( shortcode_atts( array(
-    'id'            => '',
-    'title'         => '',
-    'align'         => 'none',
-    'url'           => '',
-    'size'          => 'medium',
-    'alt'           => ''
-  ), $attr ) );
+// Default thumbnail taken from first attached image; adapted from: http://wpengineer.com/1735/easier-better-solutions-to-get-pictures-on-your-posts/
+function ubik_thumbnail( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
 
-  return apply_filters( 'ubik_image_shortcode', ubik_image_markup( $html = '', $id, $caption, $title, $align, $url, $size, $alt ) );
-}
-if ( UBIK_IMAGE_SHORTCODE )
-  add_shortcode( 'image', 'ubik_image_shortcode' );
+  // If this post doesn't already have a thumbnail
+  if ( empty( $html ) && !empty( $post_id ) )
+    $post_thumbnail_id = ubik_thumbnail_id( $post_id );
 
-
-
-// A simple shortcode designed to group images; see Pendrell for an example of usage: https://github.com/synapticism/pendrell
-function ubik_image_group_shortcode( $atts, $content ) {
-
-  // Default values
-  extract( shortcode_atts( array(
-    'columns'   => UBIK_IMAGE_SHORTCODE_COLUMNS,
-    'size'      => ''
-  ), $atts) );
-
-  // Force an image size if one has not been set
-  if ( !strpos( 'size="', $content ) )
-    $content = str_replace( '[image ', '[image size="' . $size . '" ', $content );
-
-  // Removes paragraph and break elements inserted by wpautop function; easier and more reliable than messing around with the order of filters
-  $content = str_replace( array('<p>', '</p>', '<br>', '<br/>', '<br />'), '', do_shortcode( $content ) );
-
-  // Cast the columns attribute; keep the number under 6; prepare the columns class
-  $columns = (int) $columns;
-  if ( $columns >= 6 )
-    $columns = 5;
-  if ( $columns > 1 ) {
-    $column_class = ' image-group-columns-' . $columns;
+  // Attempt to beautify thumbnail markup; note: this means that you shouldn't wrap post thumbnails in additional image markup
+  if ( function_exists( 'ubik_image_markup' ) && !empty( $post_thumbnail_id ) ) {
+    $html = ubik_image_markup( '', $post_thumbnail_id, '', '', 'none', get_permalink( $post_id ), $size );
   } else {
-    $column_class = '';
+    $html = wp_get_attachment_image( $post_thumbnail_id, $size, false, $attr );
   }
 
-  if ( !empty( $content ) )
-    $content = '<div class="image-group' . $column_class . '">' . $content . '</div>';
-  return $content;
+  return $html;
 }
-if ( UBIK_IMAGE_SHORTCODE )
-  add_shortcode( 'group', 'ubik_image_group_shortcode' );
+add_filter( 'post_thumbnail_html', 'ubik_thumbnail', 11, 5 );
 
 
 
-// Improves the WordPress core caption shortcode with HTML5 figure & figcaption; microdata & WAI-ARIA accessibility attributes
-// Source: http://joostkiens.com/improving-wp-caption-shortcode/
-// Or perhaps: http://writings.orangegnome.com/writes/improved-html5-wordpress-captions/
-// Or was it: http://clicknathan.com/2011/10/06/convert-wordpress-default-captions-shortcode-to-html-5-figure-and-figcaption-tags/
-function ubik_caption_shortcode( $val, $attr, $html = '' ) {
-  extract( shortcode_atts( array(
-    'id'      => '',
-    'align'   => 'none',
-    'width'   => '',
-    'caption' => '',
-    'class'   => ''
-  ), $attr) );
+// Return the ID of a post's thumbnail, the first attached image, or a fallback image specified in ubik-config.php
+function ubik_thumbnail_id( $post_id = null, $fallback_id = null ) {
 
-  // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present; returning '' tells the core to handle things
-  if ( empty( $id ) || empty( $caption ) || strpos( $html, '<img' ) === false )
-    return '';
+  // Try to get the current post ID if one was not passed
+  if ( $post_id === null )
+    $post_id = get_the_ID();
 
-  // Pass whatever we have to the general image markup generator
-  return ubik_image_markup( $html, $id, $caption, $title = '', $align );
-}
-add_filter( 'img_caption_shortcode', 'ubik_caption_shortcode', 10, 3 );
+  if ( empty( $post_id ) )
+    return false;
 
+  // Check for attachments and return the first of the lot
+  $attachments = get_children( array(
+    'numberposts'    => 1,
+    'order'          => 'ASC',
+    'orderby'        => 'menu_order ASC',
+    'post_parent'    => $post_id,
+    'post_mime_type' => 'image',
+    'post_status'    => 'inherit',
+    'post_type'      => 'attachment'
+    )
+  );
 
+  // Fetch the first attachment if it exists
+  if ( !empty( $attachments ) )
+    return current( array_keys( $attachments ) );
 
-// == ADMIN == //
+  // Default image fallback; double check it is an existing image attachment first
+  if ( $fallback_id === null && is_int( UBIK_THUMBNAIL_DEFAULT ) )
+    $fallback_id = UBIK_THUMBNAIL_DEFAULT;
 
-// Generate an image shortcode when inserting images into a post
-function ubik_image_send_to_editor( $html, $id, $caption = '', $title = '', $align = '', $url = '', $size = 'medium', $alt = '' ) {
-
-  if ( !empty( $id ) )
-    $content = ' id="' . esc_attr( $id ) . '"';
-
-  if ( !empty( $align ) && $align !== 'none' )
-    $content .= ' align="' . esc_attr( $align ) . '"';
-
-  // URL is left blank for attachments; only specified in the event of a custom URL, media object link, or when "none" is selected
-  if ( !empty( $url ) ) {
-    if ( !( strpos( $url, 'attachment_id' ) || get_attachment_link( $id ) == $url ) ) {
-      $content .= ' url="' . esc_attr( $url ) . '"';
+  if ( !empty( $fallback_id ) ) {
+    $fallback_id = (int) $fallback_id;
+    $post = get_post( $fallback_id );
+    if ( !empty( $post ) ) {
+      if ( wp_attachment_is_image( $fallback_id ) )
+        return $fallback_id;
     }
-  } else {
-    $content .= ' url="none"';
   }
 
-  // Default size: medium
-  if ( !empty( $size ) && $size !== 'medium' )
-    $content .= ' size="' . esc_attr( $size ) . '"';
-
-  // Alt attribute defaults to caption contents which may contain shortcodes and markup; process shortcodes here and let the image shortcode do the rest
-  $alt = do_shortcode( $alt );
-
-  // Only set the alt attribute if it isn't identical to the caption
-  if ( !empty( $alt ) && $alt !== $caption )
-    $content .= ' alt="' . $alt . '"';
-
-  if ( !empty( $caption ) ) {
-    $content = '[image' . $content . ']' . $caption . '[/image]';
-  } else {
-    $content = '[image' . $content . '/]';
-  }
-
-  return $content;
+  // No thumbnail, attachment, or fallback image was found
+  return false;
 }
-if ( UBIK_IMAGE_SHORTCODE )
-  add_filter( 'image_send_to_editor', 'ubik_image_send_to_editor', 10, 9 );
+
+
+
+// Remove image width and height attributes from most images; via https://gist.github.com/miklb/2919525
+function ubik_thumbnail_dimensions( $html ) {
+  $html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
+  $html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
+  return $html;
+}
+if ( UBIK_THUMBNAIL_DIMENSIONS === false ) {
+  add_filter( 'post_thumbnail_html', 'ubik_thumbnail_dimensions', 10 );
+  add_filter( 'img_caption_shortcode', 'ubik_thumbnail_dimensions' );
+  add_filter( 'wp_caption', 'ubik_thumbnail_dimensions', 10 );
+  add_filter( 'caption', 'ubik_thumbnail_dimensions', 10 );
+  add_filter( 'ubik_image_shortcode', 'ubik_thumbnail_dimensions', 10);
+}

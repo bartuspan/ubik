@@ -3,6 +3,7 @@
 // == UBIK CORE SWITCHES == //
 
 // The following switches enable or disable various Ubik modules; true/false
+defined( 'UBIK_CHINESE' )                   || define( 'UBIK_CHINESE', false );
 defined( 'UBIK_DEV' )                       || define( 'UBIK_DEV', false );
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
@@ -65,9 +66,6 @@ defined( 'UBIK_CONTENT_DATE_HUMAN' )        || define( 'UBIK_CONTENT_DATE_HUMAN'
 
 // Human-readable time span; integer or false to disable and use default (4838000; one week = 604800)
 defined( 'UBIK_CONTENT_DATE_HUMAN_SPAN' )   || define( 'UBIK_CONTENT_DATE_HUMAN_SPAN', false);
-
-// Strict titles; removes non-standard characters; true/false
-defined( 'UBIK_CONTENT_SLUG_STRICT' )       || define( 'UBIK_CONTENT_SLUG_STRICT', false );
 
 // Switch for wp_title filter; disable if you use some sort of SEO plugin; true/false
 defined( 'UBIK_CONTENT_TITLE' )             || define( 'UBIK_CONTENT_TITLE', true );

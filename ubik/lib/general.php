@@ -56,3 +56,34 @@ function ubik_enqueue_scripts() {
   wp_register_style( 'open-sans', false );
 }
 add_action( 'wp_enqueue_scripts', 'ubik_enqueue_scripts' );
+
+
+
+// Remove "protected" from password-protected posts: http://www.paulund.co.uk/remove-protected-post-titles
+function ubik_strip_protected( $title ) {
+  return '%s';
+}
+add_filter( 'protected_title_format', 'ubik_strip_protected' );
+
+
+
+// Get our wp_nav_menu() fallback, wp_page_menu(), to show a home link; via _s
+function ubik_page_menu_args( $args ) {
+  $args['show_home'] = true;
+  return $args;
+}
+add_filter( 'wp_page_menu_args', 'ubik_page_menu_args' );
+
+
+
+// Enable WordPress links manager on new installs; a copy of http://wordpress.org/plugins/link-manager/
+if ( UBIK_LINKS_MANAGER )
+  add_filter( 'pre_option_link_manager_enabled', '__return_true' );
+
+
+
+// Allow HTML in author descriptions on single user blogs
+// Careful: might be stripped out anyway (e.g. when making meta descriptions) so don't put anything essential in there
+if ( !is_multi_author() ) {
+  remove_filter( 'pre_user_description', 'wp_filter_kses' );
+}

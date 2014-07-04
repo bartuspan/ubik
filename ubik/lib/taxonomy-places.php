@@ -94,7 +94,7 @@ function ubik_places_widget( $term = null ) {
       }
 
       $places[] = array(
-        'title' => sprintf( __( 'Places in %s', 'ubik' ), $term->name ),
+        'title' => sprintf( __( 'Places in %s', 'ubik' ), apply_filters( 'ubik_places_title', $term->name ) ),
         'args' => array(
           'child_of'            => $term->term_id,
           'depth'               => $depth,
@@ -111,7 +111,7 @@ function ubik_places_widget( $term = null ) {
     } elseif ( !empty( $ancestors ) ) {
 
       $places[] = array(
-        'title' => sprintf( __( '%s in context', 'ubik' ), $term->name ),
+        'title' => sprintf( __( '%s in context', 'ubik' ), apply_filters( 'ubik_places_title', $term->name ) ),
         'args' => array(
           'depth'               => 0,
           'taxonomy'            => $tax,
@@ -230,7 +230,7 @@ function ubik_places_shortcode( $atts, $content = null ) {
 function ubik_places_archive_title( $title ) {
   if ( is_tax( 'places' ) ) {
     $term = get_term_by( 'slug', get_query_var( 'term' ), 'places' );
-    $title = sprintf( __( '%s archives', 'pendrell' ), '<span>' . $term->name . '</span>' );
+    $title = sprintf( __( '%s archives', 'pendrell' ), '<span>' . apply_filters( 'ubik_places_title', $term->name ) . '</span>' );
   }
   return $title;
 }
@@ -296,7 +296,7 @@ function ubik_places_entry_meta( $meta ) {
     $meta .= 'Places: ' . get_the_term_list( $post->ID, 'places', '', ', ', '. ' );
   return $meta;
 }
-add_filter( 'ubik_content_meta_taxonomies', 'ubik_places_entry_meta' );
+add_filter( 'ubik_entry_meta_taxonomies', 'ubik_places_entry_meta' );
 
 
 

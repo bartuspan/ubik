@@ -93,5 +93,5 @@ if ( UBIK_FORMAT_SLUG ) {
   add_filter( 'request', 'ubik_post_format_request' );
 
   // Hook our custom entry meta function to change the display name
-  add_filter( 'ubik_content_meta_format', 'ubik_post_format_entry_meta' );
+  add_filter( 'ubik_entry_meta_format', 'ubik_post_format_entry_meta' );
 }

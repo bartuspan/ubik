@@ -6,9 +6,9 @@
  * Description: A library of useful theme-agnostic WordPress snippets, hacks, and functions.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.4.1
+ * Version: 0.4.2
  */
-define( 'UBIK_VERSION', '0.4.1' );
+define( 'UBIK_VERSION', '0.4.2' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -16,47 +16,49 @@ if ( !defined( 'WPINC' ) ) {
 }
 
 // Ubik configuration file loading: first we try to grab user-defined settings
-if ( is_readable( plugin_dir_path( __FILE__ ) . 'ubik-config.php' ) )
-  require_once( plugin_dir_path( __FILE__ ) . 'ubik-config.php' );
+if ( is_readable( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config.php' ) )
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config.php' );
 
 // Ubik configuration file loading: now load the defaults
-require_once( plugin_dir_path( __FILE__ ) . 'ubik-config-defaults.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config-defaults.php' );
 
 // Load ubik core library
-include( plugin_dir_path( __FILE__ ) . 'lib/attachments.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/comments.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/content.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/excerpt.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/feed.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/general.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/image.php' );
-// include( plugin_dir_path( __FILE__ ) . 'lib/microdata.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/search.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/thumbnails.php' );
-include( plugin_dir_path( __FILE__ ) . 'lib/various.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/attachments.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/categories.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/comments.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/content.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/excerpt.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/feed.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/general.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/image.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/image-shortcodes.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/search.php' );
 
 if ( is_admin() ) {
-  include( plugin_dir_path( __FILE__ ) . 'lib/admin.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/admin.php' );
 }
 
 // Load optional Ubik modules; set these in your `ubik-config.php`
+if ( UBIK_CHINESE )
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/chinese.php' );
+
 if ( UBIK_FORMAT )
-  include( plugin_dir_path( __FILE__ ) . 'lib/formats.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/formats.php' );
 
 if ( UBIK_GOOGLE_ANALYTICS )
-  include( plugin_dir_path( __FILE__ ) . 'lib/google_analytics.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/google-analytics.php' );
 
 if ( UBIK_META )
-  include( plugin_dir_path( __FILE__ ) . 'lib/meta.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/meta.php' );
 
 if ( UBIK_NETLABEL )
-  include( plugin_dir_path( __FILE__ ) . 'lib/netlabel.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/taxonomy-netlabel.php' );
 
 if ( UBIK_PLACES )
-  include( plugin_dir_path( __FILE__ ) . 'lib/places.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/taxonomy-places.php' );
 
 if ( UBIK_SERIES )
-  include( plugin_dir_path( __FILE__ ) . 'lib/series.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/taxonomy-series.php' );
 
 
 

@@ -18,8 +18,6 @@ define( 'UBIK_ATTACHMENT_COMMENTS', false );
 
 define( 'UBIK_COMMENTS_ALLOWED_TAGS', true );
 
-define( 'UBIK_CONTENT_SLUG_STRICT', true );
-
 define( 'UBIK_FEED_DISABLE_FORMATS', true );
 
 define( 'UBIK_FORMAT_SLUG', true );

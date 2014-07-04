@@ -34,7 +34,6 @@ Here are some of Ubik's features broken down by module. Most of these features a
 ### Admin
 
 * Reset admin-side HTML editor to a nicer font size and stack.
-* "Strict" slugs; removes non-Latin characters (designed for use with bilingual English/Chinese post titles).
 * Adds Facebook, Flickr, GitHub, Google+, Instagram, and Twitter to user contact methods; removes AIM, Jabber, and Yahoo.
 * Switch for the magic "all settings" hack.
 * System-wide shortcode viewer shows you what shortcodes are registered (useful in development).
@@ -42,9 +41,21 @@ Here are some of Ubik's features broken down by module. Most of these features a
 
 
 
-### Category
+### Attachments
+
+* Turns off comments on all attachments (optional).
+
+
+
+### Categories
 
 * Test whether the blog has more than one category (via _s).
+
+
+
+### Chinese
+
+* "Strict" slugs; removes non-Latin characters (designed for use with bilingual English/Chinese post titles).
 
 
 
@@ -78,7 +89,6 @@ Here are some of Ubik's features broken down by module. Most of these features a
 * Downsize large photos to medium on RSS feeds (for use with Ubik's image shortcode).
 * Remove specified post formats from the feed (defaults to aside, link, quote, and status post formats).
 * Disable all feeds or only comments feeds (both inactive by default).
-* RSS feed publication delay (experimental, in development).
 
 
 
@@ -94,6 +104,9 @@ Here are some of Ubik's features broken down by module. Most of these features a
 * Head cleaner; removes a lot of junk from the page header, a common feature of most starter themes.
 * Dequeues the default Open Sans stylesheet.
 * Removes the `.recentcomments` style injected into the header.
+* Allow HTML in author descriptions on single user blogs.
+* Page list fallback adds home to the list (via _s).
+* Strips "protected" out of protected post titles.
 
 
 
@@ -105,19 +118,19 @@ Here are some of Ubik's features broken down by module. Most of these features a
 
 ### Image
 
-* This module introduces an image shortcode, one of Ubik's most powerful and convenient features. An image shortcode allows for dynamic resizing of images to suit different contexts (e.g. regular versus full-width view). Using a shortcode also means you never have to change URLs again. Read the source to find out more about this feature or [check out this post on my blog](http://synapticism.com/experimenting-with-html5-image-markup-and-shortcodes-in-wordpress/).
-* Image shortcode `[image/]` automatically entered in the post editor with minimal markup. Note: presently image shortcodes are not compatible with the visual editor!
 * Nicer HTML5-friendly image markup for attachments, image format posts, and image captions. Includes WAI-ARIA and schema.org structured data markup.
 * Filter `ubik_meta_image_size` to set image size for meta tags (e.g. for Facebook and Twitter). Defaults to 'large' and falls back to the original image. See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
-
-
-
-### Media
-
 * Thumbnail fallback: if a featured image isn't set the appropriately-sized thumbnail of the first image attached to the post will be displayed.
 * Removes image height and width attributes from many different places for greater responsivity (optional).
+
+
+
+### Image shortcodes
+
+* This module introduces an image shortcode, one of Ubik's most powerful and convenient features. An image shortcode allows for dynamic resizing of images to suit different contexts (e.g. regular versus full-width view). Using a shortcode also means you never have to change URLs again. Read the source to find out more about this feature or [check out this post on my blog](http://synapticism.com/experimenting-with-html5-image-markup-and-shortcodes-in-wordpress/).
+* Image shortcode `[image/]` automatically entered in the post editor with minimal markup. Note: presently image shortcodes are not compatible with the visual editor!
+* Image group shortcode `[group][/group]` with optional parameter `columns` for control of image layout.
 * Filters caption shortcode, spitting out better markup using code in the image module (above).
-* Turns off comments on all attachments (optional).
 
 
 
@@ -164,14 +177,6 @@ This component is designed to be a lightweight drop-in replacement for most main
 * A lightweight implementation of a post series taxonomy. Designed to easily link posts together in a series.
 * Inserts an ordered list of posts in a given series at the bottom of posts when viewed individually.
 * Series archives themselves are in chronological order (i.e. oldest first).
-
-
-
-### Various
-
-* Allow HTML in author descriptions on single user blogs.
-* Page list fallback adds home to the list (via _s).
-* Strips "protected" out of protected post titles.
 
 
 

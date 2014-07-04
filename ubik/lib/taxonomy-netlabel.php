@@ -147,7 +147,7 @@ function ubik_netlabel_entry_meta( $meta ) {
     $meta .= 'Styles: ' . get_the_term_list( $post->ID, 'styles', '', ', ', '. ' );
   return $meta;
 }
-add_filter( 'ubik_content_meta_taxonomies', 'ubik_netlabel_entry_meta' );
+add_filter( 'ubik_entry_meta_taxonomies', 'ubik_netlabel_entry_meta' );
 
 
 

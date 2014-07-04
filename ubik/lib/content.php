@@ -1,5 +1,10 @@
 <?php // ==== CONTENT ==== //
 
+// - Title
+// - Date
+// - Entry meta
+// - Content filters
+
 // == TITLE == //
 
 // Dynamic page titles; hooks into wp_title to improve search engine ranking without making a mess
@@ -22,7 +27,7 @@ function ubik_content_title_filter( $title = '', $sep = '-', $seplocation = 'rig
   $title = ubik_content_title( $sep );
 
   // Apply a filter before adding the name of the blog to the title
-  $title = apply_filters( 'ubik_content_title_filter', $title );
+  $title = apply_filters( 'ubik_content_title', $title );
 
   // Three scenarios for title generation: feeds, front/home page, and everything else
   if ( is_feed() && is_archive() ) {
@@ -148,18 +153,19 @@ if ( UBIK_CONTENT_DATE )
 // == ENTRY META == //
 
 // Output entry metadata: date, author, category, tags, etc.
-function ubik_content_entry_meta() {
+function ubik_entry_meta() {
 
   // FILTERS
-  // ubik_content_meta_format
-  // ubik_content_meta_type
-  // ubik_content_meta_date_published
-  // ubik_content_meta_date_updated
-  // ubik_content_meta_date_parent
-  // ubik_content_meta_categories
-  // ubik_content_meta_tags
-  // ubik_content_meta_taxonomies
-  // ubik_content_meta_author
+  // ubik_entry_meta_format
+  // ubik_entry_meta_type
+  // ubik_entry_meta_date_published
+  // ubik_entry_meta_date_updated
+  // ubik_entry_meta_date_parent
+  // ubik_entry_meta_categories
+  // ubik_entry_meta_tags
+  // ubik_entry_meta_taxonomies
+  // ubik_entry_meta_author
+  // ubik_entry_meta
 
   $type = '';
   $post_format = '';
@@ -172,6 +178,8 @@ function ubik_content_entry_meta() {
   $categories = '';
   $tags = '';
   $author = '';
+
+
 
   // Content type
   if ( is_attachment() ) {
@@ -187,15 +195,19 @@ function ubik_content_entry_meta() {
     $type = __( 'entry', 'ubik' );
   }
 
+
+
   // Post format voodoo
   $post_format = get_post_format();
   if ( $post_format ) {
-    $post_format_name = apply_filters( 'ubik_content_meta_format', get_post_format_string( $post_format ) );
+    $post_format_name = apply_filters( 'ubik_entry_meta_format', get_post_format_string( $post_format ) );
     $type = sprintf( '<a href="%1$s">%2$s</a>',
       esc_url( get_post_format_link( $post_format ) ),
       esc_attr( strtolower( $post_format_name ) )
     );
   }
+
+
 
   // Post type voodoo; get all post types that aren't built-in and cycle through to see if we have a match
   $custom_post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
@@ -211,8 +223,7 @@ function ubik_content_entry_meta() {
       }
     }
   }
-
-  $type = apply_filters( 'ubik_content_meta_type', $type );
+  $type = apply_filters( 'ubik_entry_meta_type', $type );
 
 
 
@@ -241,8 +252,8 @@ function ubik_content_entry_meta() {
     $date_published
   );
 
-  apply_filters( 'ubik_content_meta_date_published', $date_published );
-  apply_filters( 'ubik_content_meta_date_updated', $date_updated );
+  apply_filters( 'ubik_entry_meta_date_published', $date_published );
+  apply_filters( 'ubik_entry_meta_date_updated', $date_updated );
 
 
 
@@ -260,24 +271,25 @@ function ubik_content_entry_meta() {
       get_the_title( $post->post_parent )
     );
   }
-  $parent = apply_filters( 'ubik_content_meta_parent', $parent );
+  $parent = apply_filters( 'ubik_entry_meta_parent', $parent );
 
 
 
   // Category
-  $categories = get_the_category_list( __( ', ', 'ubik' ) );
-  $categories = apply_filters( 'ubik_content_meta_categories', $categories );
+  if ( ubik_categorized_blog() )
+    $categories = get_the_category_list( __( ', ', 'ubik' ) );
+  $categories = apply_filters( 'ubik_entry_meta_categories', $categories );
 
 
 
   // Tags
   $tags = get_the_tag_list( '', __( ', ', 'ubik' ) );
-  $tags = apply_filters( 'ubik_content_meta_tags', $tags );
+  $tags = apply_filters( 'ubik_entry_meta_tags', $tags );
 
 
 
   // Taxonomies; allows plugins and other code to hook into this function to add entry metadata
-  $taxonomies = apply_filters( 'ubik_content_meta_taxonomies', $taxonomies = '' );
+  $taxonomies = apply_filters( 'ubik_entry_meta_taxonomies', $taxonomies = '' );
 
 
 
@@ -286,43 +298,18 @@ function ubik_content_entry_meta() {
     esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
     get_the_author()
   );
-
-  $author = apply_filters( 'ubik_content_meta_author', $author );
-
+  $author = apply_filters( 'ubik_entry_meta_author', $author );
 
 
-  //Published X; last updated Y; in Category; under Parent; tagged X, y, z; at Geolocation; by author.
-  // Nightmare logic; it's the best we can do if we want to be able to translate the string
-  if ( !empty( $parent ) ) {
-    if ( !empty( $categories ) ) {
-      if ( !empty( $tags ) ) {
-        $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>. Filed under %3$s, in %4$s, and tagged %5$s.%7$s', 'ubik' );
-      } else {
-        $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span> iled under %3$s, and in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
-      }
-    } elseif ( !empty( $tags ) ) {
-      $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>, under %3$s and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
-    } else {
-      $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>, under %3$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
-    }
-  } elseif ( !empty( $categories ) ) {
-    if ( !empty( $tags ) ) {
-      $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>, in %4$s, and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
-    } else {
-      $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span> in %4$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
-    }
-  } elseif ( !empty( $tags ) ) {
-    $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span> and tagged %5$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
-  } else {
-    $entry_meta = __( 'This %1$s was published on %2$s<span class="by-author"> by %6$s</span>.%7$s', 'ubik' );
-  }
 
   // Has this post been updated?
   $date_updated_text = '';
   if ( !empty( $date_updated ) )
     $date_updated_text = '<span class="last-updated"> and updated ' . $date_updated . '</span>';
 
-  // Setup basic entry meta data; the only information we have for sure is type, date, and author; @TODO: make this translation-friendly
+
+
+  // Setup entry meta data; the only information we have for sure is type, date, and author; @TODO: make this translation-friendly
   $entry_meta = 'This ' . $type . ' was published ' . $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>. ' . "\n";
 
   if ( !empty( $parent ) )
@@ -340,7 +327,7 @@ function ubik_content_entry_meta() {
   if ( !empty( $entry_meta_extras ) )
     $entry_meta .= implode( $entry_meta_extras );
 
-  echo $entry_meta;
+  echo apply_filters( 'ubik_entry_meta', $entry_meta );
 }
 
 
