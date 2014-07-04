@@ -54,8 +54,6 @@ function ubik_admin_tag_filter() {
   }
 
 }
-add_action( 'restrict_manage_posts', 'ubik_admin_tag_filter' );
-
 function ubik_admin_tag_convert_id_to_term( $query ) {
   global $pagenow;
   $qv = &$query->query_vars;
@@ -67,7 +65,10 @@ function ubik_admin_tag_convert_id_to_term( $query ) {
     $qv['tag'] = $term->slug;
   }
 }
-add_filter( 'parse_query', 'ubik_admin_tag_convert_id_to_term');
+if ( UBIK_ADMIN_TAG_FILTER ) {
+  add_action( 'restrict_manage_posts', 'ubik_admin_tag_filter' );
+  add_filter( 'parse_query', 'ubik_admin_tag_convert_id_to_term');
+}
 
 
 

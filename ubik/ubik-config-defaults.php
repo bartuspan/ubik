@@ -31,6 +31,9 @@ defined( 'UBIK_ADMIN_EDITOR_FONT_SIZE' )    || define( 'UBIK_ADMIN_EDITOR_FONT_S
 // Admin HTML editor font stack; string or false to disable
 defined( 'UBIK_ADMIN_EDITOR_FONT_STACK' )   || define( 'UBIK_ADMIN_EDITOR_FONT_STACK', 'Georgia, "Palatino Linotype", Palatino, "URW Palladio L", "Book Antiqua", "Times New Roman", serif;' );
 
+// Filter posts by tags; true/false
+defined( 'UBIK_ADMIN_TAG_FILTER' )          || define( 'UBIK_ADMIN_TAG_FILTER', false );
+
 // Rich term editor; true/false
 defined( 'UBIK_ADMIN_TERM_EDITOR' )         || define( 'UBIK_ADMIN_TERM_EDITOR', false );
 
