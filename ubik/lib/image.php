@@ -17,6 +17,10 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
   // If the $html variable is empty let's generate our own markup from scratch
   if ( empty( $html ) && !empty( $id ) ) {
 
+    // Default alignment
+    if ( empty( $align ) )
+      $align = 'none';
+
     // Default back to post title if alt attribute is empty
     if ( empty( $alt ) )
       $alt = $post->post_title;
