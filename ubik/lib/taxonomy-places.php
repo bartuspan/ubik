@@ -39,7 +39,7 @@ add_action( 'init', 'ubik_places_init' );
 
 // Don't display regular sidebar on portfolio items
 function ubik_places_sidebar( $sidebar ) {
-  if ( is_tax( 'places' ) ) {
+  if ( is_tax( 'places' ) && !pendrell_is_full_width() ) {
     ubik_places_widget();
     $sidebar = false;
   }
@@ -304,13 +304,13 @@ add_filter( 'ubik_entry_meta_taxonomies', 'ubik_places_entry_meta' );
 
 // Removes description from places admin
 function ubik_places_admin_columns( $theme_columns ) {
-    $new_columns = array(
-        'cb' => '<input type="checkbox" />',
-        'name' => __('Name'),
-        'slug' => __('Slug'),
-        'posts' => __('Posts')
-        );
-    return $new_columns;
+  $new_columns = array(
+    'cb' => '<input type="checkbox" />',
+    'name' => __('Name'),
+    'slug' => __('Slug'),
+    'posts' => __('Posts')
+  );
+  return $new_columns;
 }
 if ( UBIK_ADMIN_TERM_EDITOR )
   add_filter( 'manage_edit-places_columns', 'ubik_places_admin_columns' );
