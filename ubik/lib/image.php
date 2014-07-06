@@ -164,7 +164,7 @@ function ubik_thumbnail( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
     $post_thumbnail_id = ubik_thumbnail_id( $post_id );
 
   // Attempt to beautify thumbnail markup; note: this means that you shouldn't wrap post thumbnails in additional image markup
-  if ( function_exists( 'ubik_image_markup' ) && !empty( $post_thumbnail_id ) ) {
+  if ( function_exists( 'ubik_image_markup' ) && !empty( $post_thumbnail_id ) && UBIK_THUMBNAIL_MARKUP ) {
     $html = ubik_image_markup( '', $post_thumbnail_id, '', '', 'none', get_permalink( $post_id ), $size );
   } else {
     $html = wp_get_attachment_image( $post_thumbnail_id, $size, false, $attr );

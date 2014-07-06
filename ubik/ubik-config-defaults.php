@@ -31,6 +31,9 @@ defined( 'UBIK_ADMIN_EDITOR_FONT_SIZE' )    || define( 'UBIK_ADMIN_EDITOR_FONT_S
 // Admin HTML editor font stack; string or false to disable
 defined( 'UBIK_ADMIN_EDITOR_FONT_STACK' )   || define( 'UBIK_ADMIN_EDITOR_FONT_STACK', 'Georgia, "Palatino Linotype", Palatino, "URW Palladio L", "Book Antiqua", "Times New Roman", serif;' );
 
+// Featured image/post thumbnail column in post list; true/false
+defined( 'UBIK_ADMIN_POST_LIST_THUMBS' )    || define( 'UBIK_ADMIN_POST_LIST_THUMBS', false );
+
 // Filter posts by tags; true/false
 defined( 'UBIK_ADMIN_TAG_FILTER' )          || define( 'UBIK_ADMIN_TAG_FILTER', false );
 
@@ -199,4 +202,5 @@ defined( 'UBIK_THUMBNAIL_DEFAULT' )         || define( 'UBIK_THUMBNAIL_DEFAULT',
 // Image height and width attributes; true by default, false to remove dimensions for most images
 defined( 'UBIK_THUMBNAIL_DIMENSIONS' )      || define( 'UBIK_THUMBNAIL_DIMENSIONS', true );
 
-
+// Wrap post_thumbnail output in nicer image markup; use with caution; true/false
+defined( 'UBIK_THUMBNAIL_MARKUP' )          || define( 'UBIK_THUMBNAIL_MARKUP', false );

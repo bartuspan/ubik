@@ -27,6 +27,25 @@ if ( UBIK_ADMIN_VISUAL_EDITOR === false )
 
 
 
+// == POST LIST COLUMNS == //
+
+// Featured image/post thumbnail column in post list; adapted from http://www.rektproductions.com/display-featured-images-in-admin-post-list/
+function ubik_admin_posts_columns( $defaults ) {
+  $defaults['featured_image'] = __( 'Thumbnails', 'ubik' );
+  return $defaults;
+}
+
+function ubik_admin_posts_custom_columns( $column_name, $id ) {
+  if ( $column_name === 'featured_image' )
+    echo the_post_thumbnail( 'thumbnail' );
+}
+if ( UBIK_ADMIN_POST_LIST_THUMBS ) {
+  add_filter( 'manage_posts_columns', 'ubik_admin_posts_columns', 5);
+  add_action( 'manage_posts_custom_column', 'ubik_admin_posts_custom_columns', 5, 2);
+}
+
+
+
 // == POST LIST FILTERS == //
 
 // Add a tags filter to post list; adapted from https://wordpress.stackexchange.com/questions/578/adding-a-taxonomy-filter-to-admin-list-for-a-custom-post-type
