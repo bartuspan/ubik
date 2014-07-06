@@ -14,12 +14,16 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       return $html;
   }
 
+  // Default alignment
+  if ( empty( $align ) )
+    $align = 'none';
+
+  // Default size
+  if ( empty( $size ) )
+    $size = 'medium';
+
   // If the $html variable is empty let's generate our own markup from scratch
   if ( empty( $html ) && !empty( $id ) ) {
-
-    // Default alignment
-    if ( empty( $align ) )
-      $align = 'none';
 
     // Default back to post title if alt attribute is empty
     if ( empty( $alt ) )
@@ -48,7 +52,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
 
       // If the image isn't resized then it is obviously the original; set $size to 'full' unless $width matches medium or large
-      if ( $is_intermediate === false ) {
+      if ( !$is_intermediate ) {
 
         // Check if the size requested is a hard-cropped square
         $size_metadata = ubik_get_image_sizes( $size );
