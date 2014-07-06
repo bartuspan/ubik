@@ -37,7 +37,7 @@ function ubik_admin_posts_columns( $defaults ) {
 
 function ubik_admin_posts_custom_columns( $column_name, $id ) {
   if ( $column_name === 'featured_image' )
-    echo the_post_thumbnail( 'thumbnail' );
+    echo the_post_thumbnail( array( 60, 60 ) );
 }
 if ( UBIK_ADMIN_POST_LIST_THUMBS ) {
   add_filter( 'manage_posts_columns', 'ubik_admin_posts_columns', 5);
