@@ -37,7 +37,7 @@ add_action( 'init', 'ubik_places_init' );
 
 // == SIDEBAR == //
 
-// Don't display regular sidebar on portfolio items
+// Don't display regular sidebar on portfolio items; assumes Pendrell is in use, otherwise adapt this function to suit your theme
 function ubik_places_sidebar( $sidebar ) {
   if ( is_tax( 'places' ) && !pendrell_is_full_width() ) {
     ubik_places_widget();
