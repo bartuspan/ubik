@@ -301,6 +301,8 @@ add_action( 'wp_head', 'ubik_meta_tags' );
 function ubik_meta_description() {
   global $post;
 
+  $description = '';
+
   // Single posts, pages, and attachments
   if ( is_singular() )
     return get_the_excerpt();
@@ -310,14 +312,12 @@ function ubik_meta_description() {
     return '';
 
   // Now match other possibilities...
-  if ( is_author() ) {
+  if ( is_author() )
     $description = get_the_author_meta( 'description' );
-  }
 
   // Check to see if we have a description for this category, tag, or taxonomy
-  if ( is_category() || is_tag() || is_tax() ) {
+  if ( is_category() || is_tag() || is_tax() )
     $description = term_description();
-  }
 
   // Front or home page
   if ( is_front_page() || is_home() )
