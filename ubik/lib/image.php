@@ -101,6 +101,12 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
     }
 
   // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code) we don't do much here
+  } elseif ( empty( $html ) && empty( $id ) ) {
+
+    $size = apply_filters( 'ubik_image_markup_size', $size );
+
+    $html = '<div class="no-image size-' . esc_attr( $size ) . '"></div>';
+
   } else {
 
     // Add itemprop="contentURL" to image element when $html variable is passed to this function; ugly hack but it works
