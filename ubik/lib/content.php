@@ -153,7 +153,7 @@ if ( UBIK_CONTENT_DATE )
 // == ENTRY META == //
 
 // Output entry metadata: date, author, category, tags, etc.
-function ubik_entry_meta() {
+function ubik_entry_meta( $mode = 'full' ) {
 
   // FILTERS
   // ubik_entry_meta_format
@@ -309,23 +309,41 @@ function ubik_entry_meta() {
 
 
 
-  // Setup entry meta data; the only information we have for sure is type, date, and author; @TODO: make this translation-friendly
-  $entry_meta = 'This ' . $type . ' was published ' . $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>. ' . "\n";
+  // A concise version of the entry metadata; @TODO: needs a lot of work
+  if ( $mode == 'concise' ) {
 
-  if ( !empty( $parent ) )
-    $entry_meta_extras[] = 'Posted under: ' . $parent . '. ';
+    $entry_meta = $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>';
 
-  if ( !empty( $categories ) )
-    $entry_meta_extras[] = 'Category: ' . $categories . '. ';
+    if ( !empty( $categories ) )
+      $entry_meta_extras[] = ' &middot; ' . $categories;
 
-  if ( !empty( $tags ) )
-    $entry_meta_extras[] = 'Tags: ' . $tags . '. ';
+    if ( !empty( $tags ) )
+      $entry_meta_extras[] = ' &middot; ' . $tags;
 
-  if ( !empty( $taxonomies ) )
-    $entry_meta_extras[] = $taxonomies;
+    if ( !empty( $entry_meta_extras ) )
+      $entry_meta .= implode( $entry_meta_extras ) . "\n";
 
-  if ( !empty( $entry_meta_extras ) )
-    $entry_meta .= implode( $entry_meta_extras );
+  // Entry metadata in full
+  } else {
+
+    // Setup entry meta data; the only information we have for sure is type, date, and author; @TODO: make this translation-friendly
+    $entry_meta = 'This ' . $type . ' was published ' . $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>. ' . "\n";
+
+    if ( !empty( $parent ) )
+      $entry_meta_extras[] = 'Posted under: ' . $parent . '. ';
+
+    if ( !empty( $categories ) )
+      $entry_meta_extras[] = 'Category: ' . $categories . '. ';
+
+    if ( !empty( $tags ) )
+      $entry_meta_extras[] = 'Tags: ' . $tags . '. ';
+
+    if ( !empty( $taxonomies ) )
+      $entry_meta_extras[] = $taxonomies;
+
+    if ( !empty( $entry_meta_extras ) )
+      $entry_meta .= implode( $entry_meta_extras ) . "\n";
+  }
 
   echo apply_filters( 'ubik_entry_meta', $entry_meta );
 }
@@ -350,3 +368,11 @@ function ubik_strip_media_p( $content ) {
   return $content;
 }
 add_filter( 'the_content', 'ubik_strip_media_p' );
+
+// Add 'markdown="1"' to asides, automatically enabling Markdown within aside tags
+function ubik_markdown_asides( $content ) {
+  //$content = preg_replace( '/<(aside|div)>/', '<$1 markdown="1">', $content );
+  $content = str_replace( '<aside>', '<aside markdown="1">', $content );
+  return $content;
+}
+add_filter( 'the_content', 'ubik_markdown_asides' );
