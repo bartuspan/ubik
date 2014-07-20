@@ -4,7 +4,7 @@
 
 // Generalized image markup generator; used by captioned images and image shortcodes; alternate markup presented on feeds is intended to validate
 // Note: the $title variable is not used at all; it's WordPress legacy code; images don't need titles, just alt attributes
-function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '' ) {
+function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $align = 'none', $url = '', $size = 'medium', $alt = '', $rel = '', $class = '' ) {
 
   // Sanitize $id and ensure it points to an existing image attachment; if not, spit out $html
   $id = (int) $id;
@@ -136,14 +136,23 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
         $aria = 'aria-describedby="figcaption-' . $id . '" ';
     }
 
+    // Initialize class array
+    if ( empty( $class ) || !is_array( $class ) )
+      $class = (array) $class;
+
     // Prefix $align with "align"; saves us the trouble of writing it out all the time
-    if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' )
-      $align = 'align' . esc_attr( $align );
-    $align = ' ' . $align;
+    if ( $align === 'none' || $align === 'left' || $align === 'right' || $align === 'center' ) {
+      $class[] = 'align' . $align;
+    } else {
+      $class[] = $align;
+    }
 
     // There's a chance $size will have been wiped clean by the `ubik_image_markup_size` filter
     if ( !empty( $size ) )
-      $size = ' size-' . esc_attr( $size );
+      $class[] = 'size-' . $size;
+
+    // Create class string
+    $class = ' ' . esc_attr( implode( ' ', $class ) );
 
     // Return stripped down markup for feeds
     if ( is_feed() ) {
@@ -156,13 +165,13 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
 
       // Edge case where ID is not set
       if ( empty( $id ) ) {
-        $content = '<figure class="wp-caption' . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
+        $content = '<figure class="wp-caption' . $class . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
         if ( !empty( $caption ) )
           $content .= '<figcaption class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
 
       // Regular output
       } else {
-        $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . $align . $size . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
+        $content = '<figure id="attachment-' . $id . '" ' . $aria . 'class="wp-caption wp-caption-' . $id . $class . '" itemscope itemtype="http://schema.org/ImageObject">' . $html;
         if ( !empty( $caption ) )
           $content .= '<figcaption id="figcaption-' . $id . '" class="wp-caption-text" itemprop="caption">' . $caption . '</figcaption>';
       }

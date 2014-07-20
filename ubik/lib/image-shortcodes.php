@@ -39,13 +39,13 @@ function ubik_image_group_shortcode( $atts, $content ) {
   if ( $columns >= 6 )
     $columns = 5;
   if ( $columns > 1 ) {
-    $column_class = ' image-group-columns-' . $columns;
+    $column_class = ' img-group-' . $columns;
   } else {
     $column_class = '';
   }
 
   if ( !empty( $content ) )
-    $content = '<div class="image-group' . $column_class . '">' . $content . '</div>';
+    $content = '<div class="img-group' . $column_class . '">' . $content . '</div>';
   return $content;
 }
 if ( UBIK_IMAGE_SHORTCODE )
