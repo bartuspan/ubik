@@ -368,11 +368,3 @@ function ubik_strip_media_p( $content ) {
   return $content;
 }
 add_filter( 'the_content', 'ubik_strip_media_p' );
-
-// Add 'markdown="1"' to asides, automatically enabling Markdown within aside tags
-function ubik_markdown_asides( $content ) {
-  //$content = preg_replace( '/<(aside|div)>/', '<$1 markdown="1">', $content );
-  $content = str_replace( '<aside>', '<aside markdown="1">', $content );
-  return $content;
-}
-add_filter( 'the_content', 'ubik_markdown_asides' );

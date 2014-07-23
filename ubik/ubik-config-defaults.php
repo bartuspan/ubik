@@ -7,6 +7,7 @@ defined( 'UBIK_CHINESE' )                   || define( 'UBIK_CHINESE', false );
 defined( 'UBIK_DEV' )                       || define( 'UBIK_DEV', false );
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
+defined( 'UBIK_MARKDOWN' )                  || define( 'UBIK_MARKDOWN', false );
 defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
 defined( 'UBIK_NETLABEL' )                  || define( 'UBIK_NETLABEL', false );
 defined( 'UBIK_PLACES' )                    || define( 'UBIK_PLACES', false );

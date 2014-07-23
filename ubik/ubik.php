@@ -48,6 +48,9 @@ if ( UBIK_FORMAT )
 if ( UBIK_GOOGLE_ANALYTICS )
   require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/google-analytics.php' );
 
+if ( UBIK_MARKDOWN )
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/markdown.php' );
+
 if ( UBIK_META )
   require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/meta.php' );
 

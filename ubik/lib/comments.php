@@ -23,10 +23,3 @@ function ubik_comments_allowed_tags() {
 }
 if ( UBIK_COMMENTS_ALLOWED_TAGS )
   add_action( 'init', 'ubik_comments_allowed_tags', 11 );
-
-
-
-// Check whether Markdown is enabled in comments (set by Jetpack and Jetpack Markdown plugins among others)
-function ubik_comments_markdown_enabled() {
-  return (bool) get_option( 'wpcom_publish_comments_with_markdown' );
-}
