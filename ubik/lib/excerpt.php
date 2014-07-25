@@ -62,10 +62,23 @@ function ubik_excerpt_sanitize( $text ) {
 
 // Custom excerpt length
 function ubik_excerpt_length( $length ) {
-  return UBIK_EXCERPT_LENGTH;
+
+  // Override default value with custom setting if it exists
+  if ( ( ( empty( $length ) ) || ( $length == 55 ) ) && UBIK_EXCERPT_LENGTH )
+    $length = UBIK_EXCERPT_LENGTH;
+
+  return intval( $length );
 }
 if ( UBIK_EXCERPT_LENGTH )
-  add_filter( 'excerpt_length', 'ubik_excerpt_length' );
+  add_filter( 'excerpt_length', 'ubik_excerpt_length', 13 );
+
+
+
+// One-off excerpts; set this in your code and the excerpt will bounce back to the default after one use; via https://gist.github.com/sanchothefat/3181655
+function ubik_excerpt_length_transient( $length = 50 ) {
+  add_filter( 'excerpt_length', create_function( '$l', 'return ' . intval( $length ) . ';' ), 13 );
+  add_filter( 'the_excerpt', create_function( '$e', 'remove_all_filters( "excerpt_length", 13 ); return $e;' ), 13 );
+}
 
 
 
