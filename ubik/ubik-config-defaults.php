@@ -4,7 +4,6 @@
 
 // The following switches enable or disable various Ubik modules; true/false
 defined( 'UBIK_CHINESE' )                   || define( 'UBIK_CHINESE', false );
-defined( 'UBIK_DEV' )                       || define( 'UBIK_DEV', false );
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
 defined( 'UBIK_MARKDOWN' )                  || define( 'UBIK_MARKDOWN', false );
