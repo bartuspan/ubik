@@ -183,9 +183,11 @@ function ubik_places_widget( $term = null ) {
 function ubik_places_shortcode( $atts, $content = null ) {
 
   // Extract attributes
-  extract( shortcode_atts( array(
+  $args = shortcode_atts( array(
     'slug' => ''
-  ), $atts ) );
+  ), $atts );
+
+  $slug = $args['slug'];
 
   // Guess the slug if we have content but no slug attribute
   if ( empty( $slug ) && !empty( $content ) ) {

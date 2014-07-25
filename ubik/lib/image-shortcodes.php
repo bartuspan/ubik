@@ -1,15 +1,22 @@
 <?php // ==== IMAGE SHORTCODES ==== //
 
 // Create a really simple image shortcode based on HTML5 image markup standards
-function ubik_image_shortcode( $attr, $caption = '' ) {
-  extract( shortcode_atts( array(
+function ubik_image_shortcode( $atts, $caption = '' ) {
+  $args = shortcode_atts( array(
     'id'            => '',
     'title'         => '',
     'align'         => 'none',
     'url'           => '',
     'size'          => 'medium',
     'alt'           => ''
-  ), $attr ) );
+  ), $atts );
+
+  $id = $args['id'];
+  $title = $args['title'];
+  $align = $args['align'];
+  $url = $args['url'];
+  $size = $args['size'];
+  $alt = $args['alt'];
 
   return apply_filters( 'ubik_image_shortcode', ubik_image_markup( $html = '', $id, $caption, $title, $align, $url, $size, $alt ) );
 }
@@ -22,10 +29,13 @@ if ( UBIK_IMAGE_SHORTCODE )
 function ubik_image_group_shortcode( $atts, $content ) {
 
   // Default values
-  extract( shortcode_atts( array(
+  $args = shortcode_atts( array(
     'columns'   => UBIK_IMAGE_SHORTCODE_COLUMNS,
     'size'      => ''
-  ), $atts) );
+  ), $atts );
+
+  $columns = $args['columns'];
+  $size = $args['size'];
 
   // Force an image size if one has not been set
   if ( !strpos( 'size="', $content ) )
@@ -57,14 +67,20 @@ if ( UBIK_IMAGE_SHORTCODE )
 // Source: http://joostkiens.com/improving-wp-caption-shortcode/
 // Or perhaps: http://writings.orangegnome.com/writes/improved-html5-wordpress-captions/
 // Or was it: http://clicknathan.com/2011/10/06/convert-wordpress-default-captions-shortcode-to-html-5-figure-and-figcaption-tags/
-function ubik_caption_shortcode( $val, $attr, $html = '' ) {
-  extract( shortcode_atts( array(
+function ubik_caption_shortcode( $val, $atts, $html = '' ) {
+  $args = shortcode_atts( array(
     'id'      => '',
     'align'   => 'none',
     'width'   => '',
     'caption' => '',
     'class'   => ''
-  ), $attr) );
+  ), $atts );
+
+  $id = $args['id'];
+  $align = $args['align'];
+  $width = $args['width'];
+  $caption = $args['caption'];
+  $class = $args['class'];
 
   // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present; returning '' tells the core to handle things
   if ( empty( $id ) || empty( $caption ) || strpos( $html, '<img' ) === false )

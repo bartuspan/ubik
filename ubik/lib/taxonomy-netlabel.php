@@ -65,12 +65,17 @@ function ubik_discography_shortcode( $atts, $content = null ) {
   $slug = $post->post_name;
 
   // Extract attributes
-  extract( shortcode_atts( array(
+  $args = shortcode_atts( array(
     'slug'    => $slug,                     // Pass a slug if you need to
     'type'    => '',                        // A category slug
     'format'  => 'text',                    // How to display the discography: 'text' or 'thumbnails'
-    'size'    => 'medium-third-cropped'     // Size of the thumbnail
-  ), $atts ) );
+    'size'    => 'third-square'             // Size of the thumbnail
+  ), $atts );
+
+  $slug = $args['slug'];
+  $type = $args['type'];
+  $format = $args['format'];
+  $size = $args['size'];
 
   // If $type isn't empty let's limit results by category
   if ( !empty( $type ) ) {
