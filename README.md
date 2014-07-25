@@ -80,6 +80,7 @@ Here are some of Ubik's features broken down by module. Most of these features a
 * Nicer, smarter excerpts with sensible defaults.
 * Also used to generate meta description tag content for SEO.
 * Several user-configurable options including excerpt length, `<!--more-->` tag string, whether shortcodes are processed, etc.
+* Strip opening `<aside>` tags from post contents; this way you can open a post with an aside (e.g. "This post was originally written three years ago...") without it dominating SEO.
 
 
 
