@@ -72,10 +72,10 @@ function ubik_discography_shortcode( $atts, $content = null ) {
     'size'    => 'third-square'             // Size of the thumbnail
   ), $atts );
 
-  $slug = $args['slug'];
-  $type = $args['type'];
-  $format = $args['format'];
-  $size = $args['size'];
+  $slug     = (string) $args['slug'];
+  $type     = (string) $args['type'];
+  $format   = (string) $args['format'];
+  $size     = (string) $args['size'];
 
   // If $type isn't empty let's limit results by category
   if ( !empty( $type ) ) {

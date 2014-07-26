@@ -23,14 +23,14 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
     $size = 'medium';
 
   // If the $html variable is empty let's generate our own markup from scratch
-  if ( empty( $html ) && !empty( $id ) ) {
-
-    // Default back to post title if alt attribute is empty
-    if ( empty( $alt ) )
-      $alt = $post->post_title;
+  if ( empty( $html ) ) {
 
     // Clean up the alt attribute; it may contain HTML and other things
     $alt = esc_attr( strip_tags( $alt ) );
+
+    // Default back to post title if alt attribute is empty
+    if ( empty( $alt ) && !empty( $post ) )
+      $alt = $post->post_title;
 
     // No fancy business in the feed
     if ( is_feed() ) {
@@ -48,37 +48,45 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       // Just filter this and return 'medium' when $size === 'large'
       $size = apply_filters( 'ubik_image_markup_size', $size );
 
-      // Custom replacement for get_image_tag(); roll your own instead of using $html = get_image_tag( $id, $alt, $title, $align, $size );
-      list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
+      // If we have an ID to work with we can roll our own image element...
+      if ( !empty( $id ) ) {
 
-      // If the image isn't resized then it is obviously the original; set $size to 'full' unless $width matches medium or large
-      if ( !$is_intermediate ) {
+        // Custom replacement for get_image_tag(); roll your own instead of using $html = get_image_tag( $id, $alt, $title, $align, $size );
+        list( $src, $width, $height, $is_intermediate ) = image_downsize( $id, $size );
 
-        // Check if the size requested is a hard-cropped square
-        $size_metadata = ubik_get_image_sizes( $size );
-        if ( $size_metadata['width'] == $size_metadata['height'] && $size_metadata['crop'] == true ) {
-          // Now check if the original image is square; if not, return a thumbnail, which is definitely square (but low quality)
-          if ( $width != $height ) {
-            $size = 'thumbnail';
-            list( $src, $width, $height ) = image_downsize( $id, $size );
-          }
+        // If the image isn't resized then it is obviously the original; set $size to 'full' unless $width matches medium or large
+        if ( !$is_intermediate ) {
 
-        // Test to see whether the presumably "full" sized image matches medium or large for consistent styling
-        } else {
-          $medium = get_option( 'medium_size_w' );
-          $large = get_option( 'large_size_w' );
-          if ( $width === $medium ) {
-            $size = 'medium';
-          } elseif ( $width === $large ) {
-            $size = 'large';
+          // Check if the size requested is a hard-cropped square
+          $size_metadata = ubik_get_image_sizes( $size );
+          if ( $size_metadata['width'] == $size_metadata['height'] && $size_metadata['crop'] == true ) {
+            // Now check if the original image is square; if not, return a thumbnail, which is definitely square (but low quality)
+            if ( $width != $height ) {
+              $size = 'thumbnail';
+              list( $src, $width, $height ) = image_downsize( $id, $size );
+            }
+
+          // Test to see whether the presumably "full" sized image matches medium or large for consistent styling
           } else {
-            $size = 'full';
+            $medium = get_option( 'medium_size_w' );
+            $large = get_option( 'large_size_w' );
+            if ( $width === $medium ) {
+              $size = 'medium';
+            } elseif ( $width === $large ) {
+              $size = 'large';
+            } else {
+              $size = 'full';
+            }
           }
         }
-      }
 
-      // With all the pieces in place let's generate the img element
-      $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . $id . ' size-' . esc_attr( $size ) . '" alt="' . $alt . '" />';
+        // With all the pieces in place let's generate the img element
+        $html = '<img itemprop="contentUrl" src="' . esc_attr( $src ) . '" ' . image_hwstring( $width, $height ) . 'class="wp-image-' . $id . ' size-' . esc_attr( $size ) . '" alt="' . $alt . '" />';
+
+      // No ID was passed; let's make a placeholder...
+      } else {
+        $html = '<div class="no-image size-' . esc_attr( $size ) . '"></div>';
+      }
     }
 
     // If no URL is set let's default back to an attachment link (unless we're dealing with an attachment already); for no URL use url="none"
@@ -95,18 +103,12 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       }
     }
 
-    // Now wrap everything in a link
+    // Now wrap everything in a link (whether it's an actual image element or just a div placeholder)
     if ( !empty( $url ) ) {
       $html = '<a href="' . $url . '"' . $rel . '>' . $html . '</a>';
     }
 
-  // If the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code) we don't do much here
-  } elseif ( empty( $html ) && empty( $id ) ) {
-
-    $size = apply_filters( 'ubik_image_markup_size', $size );
-
-    $html = '<div class="no-image size-' . esc_attr( $size ) . '"></div>';
-
+  // But if the $html variable has been passed (e.g. from caption shortcode, post thumbnail functions, or legacy code) we don't do much...
   } else {
 
     // Add itemprop="contentURL" to image element when $html variable is passed to this function; ugly hack but it works
@@ -152,7 +154,7 @@ function ubik_image_markup( $html = '', $id = '', $caption = '', $title = '', $a
       $class[] = 'size-' . $size;
 
     // Create class string
-    $class = ' ' . esc_attr( implode( ' ', $class ) );
+    $class = ' ' . esc_attr( trim( implode( ' ', $class ) ) );
 
     // Return stripped down markup for feeds
     if ( is_feed() ) {

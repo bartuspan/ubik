@@ -187,7 +187,7 @@ function ubik_places_shortcode( $atts, $content = null ) {
     'slug' => ''
   ), $atts );
 
-  $slug = $args['slug'];
+  $slug = (string) $args['slug'];
 
   // Guess the slug if we have content but no slug attribute
   if ( empty( $slug ) && !empty( $content ) ) {

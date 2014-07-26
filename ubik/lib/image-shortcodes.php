@@ -11,12 +11,12 @@ function ubik_image_shortcode( $atts, $caption = '' ) {
     'alt'           => ''
   ), $atts );
 
-  $id = $args['id'];
-  $title = $args['title'];
-  $align = $args['align'];
-  $url = $args['url'];
-  $size = $args['size'];
-  $alt = $args['alt'];
+  $id     = (int) $args['id'];
+  $title  = (string) $args['title'];
+  $align  = (string) $args['align'];
+  $url    = (string) $args['url'];
+  $size   = (string) $args['size'];
+  $alt    = (string) $args['alt'];
 
   return apply_filters( 'ubik_image_shortcode', ubik_image_markup( $html = '', $id, $caption, $title, $align, $url, $size, $alt ) );
 }
@@ -34,8 +34,8 @@ function ubik_image_group_shortcode( $atts, $content ) {
     'size'      => ''
   ), $atts );
 
-  $columns = $args['columns'];
-  $size = $args['size'];
+  $columns  = (int) $args['columns'];
+  $size     = (string) $args['size'];
 
   // Force an image size if one has not been set
   if ( !strpos( 'size="', $content ) )
@@ -71,16 +71,15 @@ function ubik_caption_shortcode( $val, $atts, $html = '' ) {
   $args = shortcode_atts( array(
     'id'      => '',
     'align'   => 'none',
-    'width'   => '',
+    'width'   => '', // Not needed
     'caption' => '',
     'class'   => ''
   ), $atts );
 
-  $id = $args['id'];
-  $align = $args['align'];
-  $width = $args['width'];
-  $caption = $args['caption'];
-  $class = $args['class'];
+  $id       = (int) $args['id'];
+  $align    = (string) $args['align'];
+  $caption  = (string) $args['caption'];
+  $class    = (string) $args['class'];
 
   // Default back to WordPress core if we aren't provided with an ID, a caption, or if no img element is present; returning '' tells the core to handle things
   if ( empty( $id ) || empty( $caption ) || strpos( $html, '<img' ) === false )
