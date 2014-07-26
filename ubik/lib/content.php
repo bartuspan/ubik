@@ -153,7 +153,7 @@ if ( UBIK_CONTENT_DATE )
 // == ENTRY META == //
 
 // Output entry metadata: date, author, category, tags, etc.
-function ubik_entry_meta( $mode = 'full' ) {
+function ubik_entry_meta() {
 
   // FILTERS
   // ubik_entry_meta_format
@@ -277,13 +277,13 @@ function ubik_entry_meta( $mode = 'full' ) {
 
   // Category
   if ( ubik_categorized_blog() )
-    $categories = get_the_category_list( __( ', ', 'ubik' ) );
+    $categories = ubik_get_the_popular_term_list( $post->ID, 'category', '', ', ', '', 0 ); // Show all categories by popularity
   $categories = apply_filters( 'ubik_entry_meta_categories', $categories );
 
 
 
   // Tags
-  $tags = get_the_tag_list( '', __( ', ', 'ubik' ) );
+  $tags = ubik_get_the_popular_term_list( $post->ID, 'post_tag', '', ', ' );
   $tags = apply_filters( 'ubik_entry_meta_tags', $tags );
 
 
@@ -309,43 +309,25 @@ function ubik_entry_meta( $mode = 'full' ) {
 
 
 
-  // A concise version of the entry metadata; @TODO: needs a lot of work
-  if ( $mode == 'concise' ) {
+  // Setup entry meta data; the only information we have for sure is type, date, and author; @TODO: make this translation-friendly
+  $entry_meta = 'This ' . $type . ' was published ' . $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>. ' . "\n";
 
-    $entry_meta = $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>';
+  if ( !empty( $parent ) )
+    $entry_meta_extras[] = 'Posted under: ' . $parent . '. ';
 
-    if ( !empty( $categories ) )
-      $entry_meta_extras[] = ' &middot; ' . $categories;
+  if ( !empty( $categories ) )
+    $entry_meta_extras[] = 'Category: ' . $categories . '. ';
 
-    if ( !empty( $tags ) )
-      $entry_meta_extras[] = ' &middot; ' . $tags;
+  if ( !empty( $tags ) )
+    $entry_meta_extras[] = 'Tags: ' . $tags . '. ';
 
-    if ( !empty( $entry_meta_extras ) )
-      $entry_meta .= implode( $entry_meta_extras ) . "\n";
+  if ( !empty( $taxonomies ) )
+    $entry_meta_extras[] = $taxonomies;
 
-  // Entry metadata in full
-  } else {
+  if ( !empty( $entry_meta_extras ) )
+    $entry_meta .= implode( $entry_meta_extras ) . "\n";
 
-    // Setup entry meta data; the only information we have for sure is type, date, and author; @TODO: make this translation-friendly
-    $entry_meta = 'This ' . $type . ' was published ' . $date_published . $date_updated_text . '<span class="by-author"> by ' . $author . '</span>. ' . "\n";
-
-    if ( !empty( $parent ) )
-      $entry_meta_extras[] = 'Posted under: ' . $parent . '. ';
-
-    if ( !empty( $categories ) )
-      $entry_meta_extras[] = 'Category: ' . $categories . '. ';
-
-    if ( !empty( $tags ) )
-      $entry_meta_extras[] = 'Tags: ' . $tags . '. ';
-
-    if ( !empty( $taxonomies ) )
-      $entry_meta_extras[] = $taxonomies;
-
-    if ( !empty( $entry_meta_extras ) )
-      $entry_meta .= implode( $entry_meta_extras ) . "\n";
-  }
-
-  echo apply_filters( 'ubik_entry_meta', $entry_meta );
+  return apply_filters( 'ubik_entry_meta', $entry_meta );
 }
 
 

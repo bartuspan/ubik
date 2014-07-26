@@ -24,7 +24,6 @@ require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config-defa
 
 // Load ubik core library
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/attachments.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/categories.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/comments.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/content.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/excerpt.php' );
@@ -33,6 +32,7 @@ require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/general.php'
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/image.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/image-shortcodes.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/search.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/terms.php' );
 
 if ( is_admin() ) {
   require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/admin.php' );

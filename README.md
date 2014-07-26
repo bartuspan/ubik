@@ -8,7 +8,7 @@ Ubik is a library of useful theme-agnostic WordPress snippets, hacks, and functi
 
 Copy or symlink `ubik/ubik` to your plugins folder and activate. Be sure to flush your permalinks after installation.
 
-Ubik requires WordPress 3.9.
+Ubik requires WordPress 3.9 and PHP 5.3.
 
 
 

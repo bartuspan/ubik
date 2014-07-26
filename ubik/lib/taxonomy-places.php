@@ -295,7 +295,7 @@ add_filter( 'pendrell_archive_term_before', 'ubik_places_breadcrumb' );
 function ubik_places_entry_meta( $meta ) {
   global $post;
   if ( has_term( '', 'places' ) )
-    $meta .= 'Places: ' . get_the_term_list( $post->ID, 'places', '', ', ', '. ' );
+    $meta .= ubik_get_the_popular_term_list( $post->ID, 'places', 'Places: ', ', ', '. ' );
   return $meta;
 }
 add_filter( 'ubik_entry_meta_taxonomies', 'ubik_places_entry_meta' );

@@ -147,9 +147,9 @@ function ubik_discography_shortcode( $atts, $content = null ) {
 function ubik_netlabel_entry_meta( $meta ) {
   global $post;
   if ( has_term( '', 'artists' ) )
-    $meta .= 'Artists: ' . get_the_term_list( $post->ID, 'artists', '', ', ', '. ' );
+    $meta .= ubik_get_the_popular_term_list( $post->ID, 'artists', 'Artists: ', ', ', '. ' );
   if ( has_term( '', 'styles' ) )
-    $meta .= 'Styles: ' . get_the_term_list( $post->ID, 'styles', '', ', ', '. ' );
+    $meta .= ubik_get_the_popular_term_list( $post->ID, 'styles', 'Styles: ', ', ', '. ' );
   return $meta;
 }
 add_filter( 'ubik_entry_meta_taxonomies', 'ubik_netlabel_entry_meta' );
