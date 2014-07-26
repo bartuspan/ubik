@@ -118,3 +118,11 @@ function ubik_excerpt_strip_asides( $content ) {
   return $content;
 }
 add_filter( 'ubik_excerpt_content', 'ubik_excerpt_strip_asides' );
+
+
+
+// Add excerpts to pages
+function ubik_excerpt_pages() {
+  add_post_type_support( 'page', 'excerpt' );
+}
+add_action( 'init', 'ubik_excerpt_pages' );
