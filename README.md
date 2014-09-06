@@ -56,6 +56,7 @@ Here are some of Ubik's features broken down by module. Most of these features a
 ### Chinese
 
 * "Strict" slugs; removes non-Latin characters (designed for use with bilingual English/Chinese post titles).
+* "Unpinyin" function; converts accented characters to their non-accented equivalents.
 
 
 
