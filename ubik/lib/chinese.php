@@ -1,13 +1,14 @@
 <?php // ==== CHINESE ==== //
 
-// Several simple functions for use with Chinese characters and various Romanizations
+// Several simple functions for use with Chinese characters, pinyin, etc.
 
-// Remove all characters that are not the separator, a-z, 0-9, or whitespace; mainly for use with bilingual English/Chinese post titles
+// Remove all characters that are not the separator, a-z, 0-9, or whitespace
+// Remove all characters that are not a separator, a-z, 0-9, or whitespace
 function ubik_slug_strict( $title ) {
   // Lifted from http://wordpress.org/plugins/strings-sanitizer/
   $strict_title = preg_replace('![^'.preg_quote('-').'a-z0-_9\s]+!', '', strtolower( $title ) );
 
-  // Only return the strict title if there is something left
+  // Only return the strict title if there is something left; passes Chinese characters when there's no Latin characters to fall back on
   if ( !empty( $strict_title ) ) {
     return $strict_title;
   } else {
@@ -30,6 +31,7 @@ function ubik_unpinyin( $string ) {
   $string = str_replace( array( 'Ē', 'É', 'Ě', 'È' ), 'E', $string );
   return $string;
 }
+// Add filters as needed
 add_filter( 'pendrell_entry_title', 'ubik_unpinyin' );
 add_filter( 'ubik_content_title', 'ubik_unpinyin' );
 add_filter( 'ubik_places_title', 'ubik_unpinyin' );
