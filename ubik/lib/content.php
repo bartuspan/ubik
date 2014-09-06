@@ -59,12 +59,10 @@ function ubik_content_title( $sep = ' - ' ) {
       $title = sprintf( __( 'Posts by %s', 'ubik' ), get_the_author_meta( 'display_name', get_query_var( 'author' ) ) );
     elseif ( is_category() )
       $title = sprintf( __( '%s category archives', 'ubik' ), single_term_title( '', false ) );
-    elseif ( is_tag() )
-      $title = sprintf( __( '%s tag archives', 'ubik' ), single_term_title( '', false ) );
+    elseif ( is_tag() || is_tax() )
+      $title = sprintf( __( '%s archives', 'ubik' ), single_term_title( '', false ) );
     elseif ( is_post_type_archive() )
       $title = sprintf( __( '%s archives', 'ubik' ), post_type_archive_title( '', false ) );
-    elseif ( is_tax() )
-      $title = sprintf( __( '%s archives', 'ubik' ), single_term_title( '', false ) );
     elseif ( is_date() ) {
       if ( get_query_var( 'second' ) || get_query_var( 'minute' ) || get_query_var( 'hour' ) )
         $title = sprintf( __( '%s archives', 'ubik' ), get_the_time( __( 'g:i a', 'ubik' ) ) );
