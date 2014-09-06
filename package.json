@@ -1,6 +1,6 @@
 {
   "name": "ubik",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A library of useful theme-agnostic WordPress snippets, hacks, and functions bundled into a plugin.",
   "homepage": "https://github.com/synapticism/ubik",
   "repository": {
@@ -15,23 +15,6 @@
   ],
   "main": "index.js",
   "author": "Alexander Synaptic",
-  "license": "BSD",
-  "private": true,
-  "devDependencies": {
-    "gulp": "^3.8.0",
-    "gulp-autoprefixer": "0.0.6",
-    "gulp-cache": "^0.1.11",
-    "gulp-clean": "^0.3.0",
-    "gulp-concat": "^2.1.7",
-    "gulp-imagemin": "^0.1.5",
-    "gulp-jshint": "^1.4.2",
-    "gulp-livereload": "^1.5.0",
-    "gulp-load-plugins": "^0.3.0",
-    "gulp-minify-css": "^0.3.4",
-    "gulp-rename": "^1.1.0",
-    "gulp-ruby-sass": "^0.3.1",
-    "gulp-uglify": "^0.2.1",
-    "gulp-util": "^2.2.17",
-    "tiny-lr": "0.0.5"
-  }
+  "license": "MIT",
+  "private": true
 }

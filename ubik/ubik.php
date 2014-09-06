@@ -6,9 +6,9 @@
  * Description: A library of useful theme-agnostic WordPress snippets, hacks, and functions.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.4.2
+ * Version: 0.4.3
  */
-define( 'UBIK_VERSION', '0.4.2' );
+define( 'UBIK_VERSION', '0.4.3' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
