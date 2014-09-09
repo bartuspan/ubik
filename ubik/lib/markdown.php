@@ -14,3 +14,17 @@ function ubik_markdown_asides( $content ) {
   return $content;
 }
 add_filter( 'content_save_pre', 'ubik_markdown_asides' );
+
+
+
+// Make footnote links absolute; a hack to avoid problems with the use of Markdown Extra footnotes and the <!--more--> tag
+function ubik_markdown_more_footnotes( $content ) {
+  if ( !is_singular() ) {
+    if ( strpos( $content, 'class="more-link' ) && strpos( $content, 'href="#fn' ) ) {
+      global $post;
+      $content = str_replace( 'href="#fn', 'href="' . get_permalink() . '#fn', $content );
+    }
+  }
+  return $content;
+}
+add_filter( 'the_content', 'ubik_markdown_more_footnotes' );
