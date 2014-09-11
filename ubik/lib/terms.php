@@ -36,12 +36,6 @@ add_action( 'save_post',     'ubik_category_transient_flusher' );
 
 
 
-// == TAGS == //
-
-// Nothing yet!
-
-
-
 // == TERMS == //
 
 // Return terms ordered by count without singletons by default; requires PHP 5.3

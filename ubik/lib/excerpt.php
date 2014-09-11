@@ -12,6 +12,7 @@ function ubik_excerpt( $text = '' ) {
     if ( post_password_required( $post->ID ) )
       return;
 
+    // Ubik-specific excerpt content filter
     $content = apply_filters( 'ubik_excerpt_content', $post->post_content );
 
     // Regular content filter
@@ -36,7 +37,11 @@ function ubik_excerpt_sanitize( $text ) {
     return;
 
   // Shortcode handler
-  $text = ubik_excerpt_shortcode_handler( $text );
+  if ( UBIK_EXCERPT_SHORTCODES ) {
+    $text = do_shortcode( $text );
+  } else {
+    $text = strip_shortcodes( $text );
+  }
 
   // Strip any remaining tags
   $text = str_replace( ']]>', ']]&gt;', $text );
@@ -100,18 +105,7 @@ if ( UBIK_EXCERPT_MORE_LINK )
 
 
 
-// Shortcode handler
-function ubik_excerpt_shortcode_handler( $text ) {
-  if ( UBIK_EXCERPT_SHORTCODES ) {
-    return do_shortcode( $text );
-  } else {
-    return strip_shortcodes( $text );
-  }
-}
-
-
-
-// Strip opening asides from excerpts; this way you can introduce posts with <aside>This post is a continuation of...</aside> without having this dominate search engine results and such
+// Strip opening asides from excerpts; this way you can introduce posts with <aside>This post is a continuation of...</aside> without having this dominate search engine results and social media blurbs
 function ubik_excerpt_strip_asides( $content ) {
   if ( strpos( $content, '<aside' ) < 10 )
     $content = preg_replace( '/<aside>(.*?)<\/aside>/si', '', $content, 1 );

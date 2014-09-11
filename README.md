@@ -37,7 +37,9 @@ Here are some of Ubik's features broken down by module. Most of these features a
 * Adds Facebook, Flickr, GitHub, Google+, Instagram, and Twitter to user contact methods; removes AIM, Jabber, and Yahoo.
 * Switch for the magic "all settings" hack.
 * System-wide shortcode viewer shows you what shortcodes are registered (useful in development).
-* Rich term editor (experimental).
+* Adds term descriptions to the quick edit box for post tags and categories. Easily extensible. Also compatible with HTML, Markdown, shortcodes, etc.
+* "Clean" term descriptions: strig tags from descriptions in the edit tags view.
+* Optional re-arrangement of some elements on the edit tags view.
 
 
 
@@ -133,6 +135,14 @@ Here are some of Ubik's features broken down by module. Most of these features a
 * Image shortcode `[image/]` automatically entered in the post editor with minimal markup. Note: presently image shortcodes are not compatible with the visual editor!
 * Image group shortcode `[group][/group]` with optional parameter `columns` for control of image layout.
 * Filters caption shortcode, spitting out better markup using code in the image module (above).
+
+
+
+### Markdown
+
+* Automatically add `markdown="1"` to `aside` elements in posts. This way you can use Markdown in `aside` elements without second thought.
+* A hack to fix an edge case where a footnote is above the `<!--more-->` tag.
+* Enable Markdown in term descriptions.
 
 
 

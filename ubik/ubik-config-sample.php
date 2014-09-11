@@ -11,7 +11,6 @@ define( 'UBIK_SERIES', true );
 
 // == USER DEFINITIONS == //
 
-define( 'UBIK_ADMIN_TERM_EDITOR', true );
 define( 'UBIK_ADMIN_VISUAL_EDITOR', false );
 
 define( 'UBIK_ATTACHMENT_COMMENTS', false );

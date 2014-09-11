@@ -6,9 +6,9 @@
  * Description: A library of useful theme-agnostic WordPress snippets, hacks, and functions.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.4.3
+ * Version: 0.4.4
  */
-define( 'UBIK_VERSION', '0.4.3' );
+define( 'UBIK_VERSION', '0.4.4' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -34,9 +34,8 @@ require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/image-shortc
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/search.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/terms.php' );
 
-if ( is_admin() ) {
+if ( is_admin() )
   require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/admin.php' );
-}
 
 // Load optional Ubik modules; set these in your `ubik-config.php`
 if ( UBIK_CHINESE )

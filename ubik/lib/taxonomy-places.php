@@ -302,17 +302,12 @@ add_filter( 'ubik_entry_meta_taxonomies', 'ubik_places_entry_meta' );
 
 
 
-// == PLACES ADMIN == //
+// == PLACES QUICK EDIT == //
 
-// Removes description from places admin
-function ubik_places_admin_columns( $theme_columns ) {
-  $new_columns = array(
-    'cb' => '<input type="checkbox" />',
-    'name' => __('Name'),
-    'slug' => __('Slug'),
-    'posts' => __('Posts')
-  );
-  return $new_columns;
+// Adds place descriptions to the quick edit box
+function ubik_places_quick_edit( $taxonomies ) {
+  $taxonomies[] = 'places';
+  return $taxonomies;
 }
-if ( UBIK_ADMIN_TERM_EDITOR )
-  add_filter( 'manage_edit-places_columns', 'ubik_places_admin_columns' );
+if ( UBIK_ADMIN_TERM_DESC_QUICK )
+  add_filter( 'ubik_term_description_taxonomies', 'ubik_places_quick_edit' );

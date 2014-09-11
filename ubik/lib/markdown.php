@@ -28,3 +28,19 @@ function ubik_markdown_more_footnotes( $content ) {
   return $content;
 }
 add_filter( 'the_content', 'ubik_markdown_more_footnotes' );
+
+
+
+// A simple hack for using Markdown in term descriptions
+// Requires: Jetpack or JP Markdown
+// Warning 1: Markdown is left as raw text in the database; conversion only happens when `term_description` filter runs so you're effectively locked in once you start using this!
+// Warning 2: this is also a major security risk on multi-user blogs where other people can edit term descriptions!
+function ubik_markdown_term_description( $description ) {
+  if ( class_exists( 'WPCom_Markdown' ) ) {
+    $markdown = WPCom_Markdown::get_instance();
+    $description = $markdown->transform( $description, array( 'unslash' => false ) );
+  }
+  return $description;
+}
+if ( UBIK_MARKDOWN_TERM_DESCRIPTION )
+  add_filter( 'term_description', 'ubik_markdown_term_description' );

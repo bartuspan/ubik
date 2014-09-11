@@ -19,9 +19,7 @@ if ( UBIK_ADMIN_EDITOR_FONT_SIZE || UBIK_ADMIN_EDITOR_FONT_STACK ) {
   add_action( 'admin_head-post-new.php', 'ubik_html_editor_fontstack' );
 }
 
-
-
-// Disable the visual editor
+// Disable the visual editor altogether
 if ( UBIK_ADMIN_VISUAL_EDITOR === false )
   add_filter( 'user_can_richedit' , '__return_false', 50 );
 
@@ -48,7 +46,7 @@ function ubik_admin_posts_columns_style() { // This is a bit of a cheap hack but
     }
   </style><?php
 }
-if ( UBIK_ADMIN_POST_LIST_THUMBS ) {
+if ( UBIK_ADMIN_POST_LIST_THUMB ) {
   add_filter( 'manage_posts_columns', 'ubik_admin_posts_columns', 5);
   add_action( 'manage_posts_custom_column', 'ubik_admin_posts_custom_columns', 5, 2);
   add_action( 'admin_head-edit.php', 'ubik_admin_posts_columns_style' );
@@ -103,6 +101,46 @@ if ( !ubik_categorized_blog() )
 
 
 
+// == TERMS == //
+
+// Only show sanitized term descriptions in the admin; removes all HTML formatting, leaving just text
+function ubik_term_description_admin_clean( $description ) {
+  if ( is_admin() ) {
+    $description = strip_tags( $description );
+  }
+  return $description;
+}
+add_filter( 'term_description', 'ubik_term_description_admin_clean', 99 );
+
+
+
+// Hack: re-arrange the edit-tags.php file; makes working with terms a little easier
+function ubik_term_edit_style() {
+  ?><style type="text/css">
+    #col-left {
+      float: right;
+      padding-left: 2%;
+      width: 30%;
+    }
+    #col-right {
+      float: left;
+      width: 68%;
+    }
+    .col-wrap {
+      padding: 0;
+    }
+    /* Hide popular tags and add term help; this stuff is superfluous if you work with terms a lot */
+    .tagcloud,
+    #addtag .form-field p {
+      display: none;
+    }
+  </style><?php
+}
+if ( UBIK_ADMIN_TERM_EDIT_STYLE )
+  add_action( 'admin_head-edit-tags.php', 'ubik_term_edit_style' );
+
+
+
 // == USERS == //
 
 // Change user contact methods
@@ -153,6 +191,14 @@ function all_settings_link() {
 if ( UBIK_ADMIN_ALL_SETTINGS )
   add_action('admin_menu', 'all_settings_link');
 
+
+
+// == MODULES == //
+
+// Add term descriptions to the quick edit box
+if ( UBIK_ADMIN_TERM_DESC_QUICK )
+  require_once( 'admin-quick-term-descriptions.php' );
+
 // Show all shortcodes link
 if ( UBIK_ADMIN_ALL_SHORTCODES )
-  include_once( 'admin-shortcodes.php' );
+  require_once( 'admin-shortcodes.php' );

@@ -32,13 +32,16 @@ defined( 'UBIK_ADMIN_EDITOR_FONT_SIZE' )    || define( 'UBIK_ADMIN_EDITOR_FONT_S
 defined( 'UBIK_ADMIN_EDITOR_FONT_STACK' )   || define( 'UBIK_ADMIN_EDITOR_FONT_STACK', 'Georgia, "Palatino Linotype", Palatino, "URW Palladio L", "Book Antiqua", "Times New Roman", serif;' );
 
 // Featured image/post thumbnail column in post list; true/false
-defined( 'UBIK_ADMIN_POST_LIST_THUMBS' )    || define( 'UBIK_ADMIN_POST_LIST_THUMBS', false );
+defined( 'UBIK_ADMIN_POST_LIST_THUMB' )     || define( 'UBIK_ADMIN_POST_LIST_THUMB', false );
 
 // Filter posts by tags; true/false
 defined( 'UBIK_ADMIN_TAG_FILTER' )          || define( 'UBIK_ADMIN_TAG_FILTER', false );
 
-// Rich term editor; true/false
-defined( 'UBIK_ADMIN_TERM_EDITOR' )         || define( 'UBIK_ADMIN_TERM_EDITOR', false );
+// Add term descriptions to the quick edit box for post tags and categories; true/false
+defined( 'UBIK_ADMIN_TERM_DESC_QUICK' )     || define( 'UBIK_ADMIN_TERM_DESC_QUICK', false );
+
+// Inject some CSS to re-arrange the edit-tags.php template for term power users; true/false
+defined( 'UBIK_ADMIN_TERM_EDIT_STYLE' )     || define( 'UBIK_ADMIN_TERM_EDIT_STYLE', false );
 
 // Master switch for the visual editor; true/false; defaults to true (e.g. visual editor is enabled)
 defined( 'UBIK_ADMIN_VISUAL_EDITOR' )       || define( 'UBIK_ADMIN_VISUAL_EDITOR', true );
@@ -146,6 +149,13 @@ defined( 'UBIK_IMAGE_SHORTCODE_COLUMNS' )   || define( 'UBIK_IMAGE_SHORTCODE_COL
 
 // Enable core WordPress links manager on new installs; true/false
 defined( 'UBIK_LINKS_MANAGER' )             || define( 'UBIK_LINKS_MANAGER', false );
+
+
+
+// == MARKDOWN == //
+
+// Convert Markdown in term descriptions when displayed on the front-end; true/false
+defined( 'UBIK_MARKDOWN_TERM_DESCRIPTION' ) || define( 'UBIK_MARKDOWN_TERM_DESCRIPTION', false );
 
 
 
