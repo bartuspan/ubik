@@ -105,9 +105,8 @@ if ( !ubik_categorized_blog() )
 
 // Only show sanitized term descriptions in the admin; removes all HTML formatting, leaving just text
 function ubik_term_description_admin_clean( $description ) {
-  if ( is_admin() ) {
+  if ( is_admin() )
     $description = strip_tags( $description );
-  }
   return $description;
 }
 add_filter( 'term_description', 'ubik_term_description_admin_clean', 99 );

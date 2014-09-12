@@ -15,21 +15,27 @@
 
 // This code is adapted from: https://wordpress.stackexchange.com/questions/139663/add-description-to-taxonomy-quick-edit
 // Full credit goes to G.M. @ http://gm.zoomlab.it/
-// I also worked from this (now obsolete) tutorial: http://code.tutsplus.com/articles/extending-the-quick-edit-tool-for-taxonomy-terms--wp-20495
+// For a walk-through of this code check out: http://synapticism.com/adding-term-descriptions-to-the-quick-edit-box-in-wordpress/
 
-// Edit term descriptions in quick edit mode
-function ubik_quick_term_description_edit( $column, $screen, $taxonomy ) {
-  if ( $screen !== 'edit-tags' ) return;
+// Add term descriptions to the quick edit box
+function ubik_quick_term_description_edit( $column, $screen, $taxonomy = '' ) {
+
+  // Check to see if we're in the right place; this function is called on any view where a custom column is registered (including views for which the $taxonomy is undefined)
+  if ( empty( $taxonomy ) || $screen !== 'edit-tags' || $column !== '_description' )
+    return;
+
+  // Fetch the target taxonomy and ensure the current user can edit terms
   $tax = get_taxonomy( $taxonomy );
-  if ( ! current_user_can( $tax->cap->edit_terms ) ) return;
-  if ( $column !== '_description' ) return;
-?>
-  <fieldset>
+  if ( ! current_user_can( $tax->cap->edit_terms ) )
+    return;
+
+  // Output the necessary HTML and JavaScript...
+  ?><fieldset>
     <div class="inline-edit-col">
     <label>
       <span class="title"><?php _e( 'Description', 'ubik' ); ?></span>
       <span class="input-text-wrap">
-      <textarea id="inline-desc" name="description" rows="5" class="ptitle"></textarea>
+      <textarea id="inline-desc" name="description" rows="3" class="ptitle"></textarea>
       </span>
     </label>
     </div>
@@ -37,10 +43,10 @@ function ubik_quick_term_description_edit( $column, $screen, $taxonomy ) {
   <script>
   jQuery('#the-list').on('click', 'a.editinline', function(){
     var now = jQuery(this).closest('tr').find('td.column-_description').text();
-    jQuery('#inline-desc').text( now );
+    jQuery('#inline-desc').text(now);
   });
-  </script>
-  <?php
+  </script><?php
+  // The jQuery snippet above finds the contents of the hidden column and copies this to the inline description field after the user clicks on the quick edit link
 }
 add_action( 'quick_edit_custom_box', 'ubik_quick_term_description_edit', 10, 3 );
 
@@ -57,9 +63,15 @@ function ubik_quick_term_description_save( $term_id ) {
   }
 }
 
-// Hidden column hack to enable `quick_box_custom_column` action
+// Create a custom column to trigger the `quick_box_custom_column` action
 function ubik_quick_term_hidden_column( $columns ) {
   $columns['_description'] = '';
+  return $columns;
+}
+
+// Hide the custom column from view
+function ubik_quick_term_hidden_column_visibility( $columns ) {
+  $columns[] = '_description';
   return $columns;
 }
 
@@ -69,27 +81,26 @@ function ubik_quick_term_hidden_column_contents( $_, $column_name, $term_id ) {
 
     // Get current screen, if available
     $screen = get_current_screen();
+
+    // Set the taxonomy from the current screen; if this is unavailable, try the request (after saving the quick edit box `get_current_screen` returns `null`)
     if ( !empty( $screen ) ) {
-      // Set the taxonomy from the current screen
       $taxonomy = $screen->taxonomy;
-    } else {
-      // Set the taxonomy from the request (after saving the quick edit box `get_current_screen` is null)
+    } elseif ( !empty( $_REQUEST['taxonomy'] ) ) {
       $taxonomy = sanitize_text_field( $_REQUEST['taxonomy'] );
+    } else {
+      $taxonomy = '';
     }
 
-    // If we have something, let's roll
-    if ( !empty( $term_id ) && !empty( $taxonomy ) )
-      echo get_term( $term_id, $taxonomy )->description;
+    // Output the raw term description if there is one to be found
+    if ( !empty( $term_id ) && !empty( $taxonomy ) ) {
+      $term = get_term( $term_id, $taxonomy );
+      if ( !empty( $term ) )
+        echo $term->description;
+    }
   }
 }
 
-// Hide the column it from view completely
-function ubik_quick_term_hidden_column_visibility( $columns ) {
-  $columns[] = '_description';
-  return $columns;
-}
-
-// Pull it all together
+// Initialize quick edit functionality
 function ubik_quick_term_init() {
 
   // Filter this to add or subtract taxonomies
