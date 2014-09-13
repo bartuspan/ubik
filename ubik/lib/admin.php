@@ -113,7 +113,7 @@ add_filter( 'term_description', 'ubik_term_description_admin_clean', 99 );
 
 
 
-// Hack: re-arrange the edit-tags.php file; makes working with terms a little easier
+// Hack: re-arrange the edit-tags.php file; makes working with terms a little easier but there are better ways of doing this
 function ubik_term_edit_style() {
   ?><style type="text/css">
     #col-left {
