@@ -35,7 +35,7 @@ function ubik_quick_term_description_edit( $column, $screen, $taxonomy = '' ) {
     <label>
       <span class="title"><?php _e( 'Description', 'ubik' ); ?></span>
       <span class="input-text-wrap">
-      <textarea id="inline-desc" name="description" rows="3" class="ptitle"></textarea>
+      <textarea name="description" rows="3" class="ptitle"></textarea>
       </span>
     </label>
     </div>
@@ -43,7 +43,7 @@ function ubik_quick_term_description_edit( $column, $screen, $taxonomy = '' ) {
   <script>
   jQuery('#the-list').on('click', 'a.editinline', function(){
     var now = jQuery(this).closest('tr').find('td.column-_description').text();
-    jQuery('#inline-desc').text(now);
+    jQuery(':input[name="description"]').text(now);
   });
   </script><?php
   // The jQuery snippet above finds the contents of the hidden column and copies this to the inline description field after the user clicks on the quick edit link
