@@ -122,6 +122,13 @@ defined( 'UBIK_FORMAT_SLUG' )               || define( 'UBIK_FORMAT_SLUG', false
 
 
 
+// == GENERAL == //
+
+// Disable jQuery migrate; true/false
+defined( 'UBIK_GENERAL_REMOVE_MIGRATE' )    || define( 'UBIK_GENERAL_REMOVE_MIGRATE', false );
+
+
+
 // == GOOGLE ANALYTICS == //
 
 // Google Analytics tracking code e.g. 'UA-XXXXXX-XX'; string or false to disable
