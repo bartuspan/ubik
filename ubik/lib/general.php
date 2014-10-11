@@ -19,11 +19,11 @@ add_action( 'init', 'ubik_init' );
 
 
 
-// Remove jQuery migrate from default scripts; via http://www.paulund.co.uk/remove-jquery-migrate-file-wordpress
+// Remove jQuery migrate from default scripts; adapted from: http://www.paulund.co.uk/remove-jquery-migrate-file-wordpress
 function ubik_remove_jquery_migrate(&$scripts) {
   if( !is_admin() ) {
-    $scripts->remove( 'jquery' );
-    $scripts->add( 'jquery', false, array( 'jquery-core' ), '1.11.1' );
+    $scripts->remove('jquery');
+    $scripts->add( 'jquery', false, array( 'jquery-core' ) );
   }
 }
 if ( UBIK_GENERAL_REMOVE_MIGRATE )
