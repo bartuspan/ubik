@@ -6,6 +6,11 @@
 
 // Check whether a blog has more than one category; via _s: https://github.com/Automattic/_s/blob/master/inc/template-tags.php
 function ubik_categorized_blog() {
+
+  // Hard switch for the category test; only acts when false
+  if ( UBIK_TERMS_CATEGORIZED_BLOG === false )
+    return false;
+
   if ( false === ( $all_the_cool_cats = get_transient( '_ubik_categories' ) ) ) {
     // Create an array of all the categories that are attached to posts.
     $all_the_cool_cats = get_categories( array(

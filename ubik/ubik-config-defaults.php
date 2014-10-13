@@ -211,6 +211,13 @@ defined( 'UBIK_SERIES_ORDER' )              || define( 'UBIK_SERIES_ORDER', 'ASC
 
 
 
+// == TERMS == //
+
+// Hard switch for the categorized blog test; true = blog has categories (no action taken), false = blog does not have categories (takes action)
+defined( 'UBIK_TERMS_CATEGORIZED_BLOG' )    || define( 'UBIK_TERMS_CATEGORIZED_BLOG', true );
+
+
+
 // == THUMBNAILS == //
 
 // Default thumbnail; must be an attachment ID (integer) or false to disable
