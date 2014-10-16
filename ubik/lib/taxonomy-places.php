@@ -241,12 +241,13 @@ add_filter( 'pendrell_archive_title', 'ubik_places_archive_title' );
 
 
 // Breadcrumb navigation for places based on http://www.billerickson.net/wordpress-taxonomy-breadcrumbs/
-function ubik_places_breadcrumb( $content, $term = '' ) {
+function ubik_places_breadcrumb( $term = '' ) {
 
+  $content = '';
   $tax = get_query_var( 'taxonomy' );
 
   if ( $tax !== 'places' )
-    return $content;
+    return;
 
   // Allows us to pass an explicit term and achieve the same functionality
   if ( empty( $term ) || $term == '' )
@@ -283,9 +284,9 @@ function ubik_places_breadcrumb( $content, $term = '' ) {
       $content .= '</ul>' . "\n" . '</nav>' . "\n";
     }
   }
-  return $content;
+  echo $content;
 }
-add_filter( 'pendrell_archive_term_before', 'ubik_places_breadcrumb' );
+add_action( 'pendrell_archive_description_before', 'ubik_places_breadcrumb' );
 
 
 
