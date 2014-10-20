@@ -1,6 +1,6 @@
 {
   "name": "ubik",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "A library of useful theme-agnostic WordPress snippets, hacks, and functions bundled into a plugin.",
   "homepage": "https://github.com/synapticism/ubik",
   "repository": {

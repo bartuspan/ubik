@@ -106,7 +106,7 @@ defined( 'UBIK_EXCERPT_SHORTCODES' )        || define( 'UBIK_EXCERPT_SHORTCODES'
 // Categories should be listed by slug or ID
 if ( empty( $ubik_exclude_cats ) )    { $ubik_exclude_cats = array(); }
 
-// Post formats should be complete post format names e.g. 'post-format-aside' or 'post-format-image'
+// Post formats should be complete post format names e.g. 'post-format-aside' or 'post-format-image' (not IDs)
 if ( empty( $ubik_exclude_formats ) ) { $ubik_exclude_formats = array(); }
 
 // Tags should also be listed by slug or ID

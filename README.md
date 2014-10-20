@@ -87,6 +87,12 @@ Here are some of Ubik's features broken down by module. Most of these features a
 
 
 
+### Excluder
+
+* Exclude posts from the home page by category, tag, or post format.
+
+
+
 ### Feed
 
 * Cleaner feed content titles.
