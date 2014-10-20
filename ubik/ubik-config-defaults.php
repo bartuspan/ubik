@@ -99,6 +99,21 @@ defined( 'UBIK_EXCERPT_SHORTCODES' )        || define( 'UBIK_EXCERPT_SHORTCODES'
 
 
 
+// == EXCLUDER == //
+
+// Categories, formats, and tags to exclude from the homepage; set these in your `ubik-config.php`
+
+// Categories should be listed by slug or ID
+if ( empty( $ubik_exclude_cats ) )    { $ubik_exclude_cats = array(); }
+
+// Post formats should be complete post format names e.g. 'post-format-aside' or 'post-format-image'
+if ( empty( $ubik_exclude_formats ) ) { $ubik_exclude_formats = array(); }
+
+// Tags should also be listed by slug or ID
+if ( empty( $ubik_exclude_tags ) )    { $ubik_exclude_tags = array(); }
+
+
+
 // == FEED == //
 
 // Disable all feeds

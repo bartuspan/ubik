@@ -27,6 +27,7 @@ require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/attachments.
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/comments.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/content.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/excerpt.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/excluder.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/feed.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/general.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/image.php' );
