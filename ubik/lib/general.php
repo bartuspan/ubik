@@ -1,7 +1,7 @@
 <?php // ==== GENERAL ==== //
 
 // Head cleaner: removes useless fluff
-function ubik_init() {
+function ubik_head_cleaner() {
   if ( !is_admin() ) {
     // Windows Live Writer support, version info
     remove_action( 'wp_head', 'rsd_link' );
@@ -15,12 +15,13 @@ function ubik_init() {
     remove_action( 'wp_head', 'start_post_rel_link', 10, 0 );
   }
 }
-add_action( 'init', 'ubik_init' );
+if ( UBIK_GENERAL_HEAD_CLEANER )
+  add_action( 'init', 'ubik_head_cleaner' );
 
 
 
 // Remove jQuery migrate from default scripts; adapted from: http://www.paulund.co.uk/remove-jquery-migrate-file-wordpress
-function ubik_remove_jquery_migrate(&$scripts) {
+function ubik_remove_jquery_migrate( &$scripts ) {
   if( !is_admin() ) {
     $scripts->remove('jquery');
     $scripts->add( 'jquery', false, array( 'jquery-core' ) );
@@ -89,7 +90,7 @@ add_filter( 'wp_page_menu_args', 'ubik_page_menu_args' );
 
 
 // Enable WordPress links manager on new installs; a copy of http://wordpress.org/plugins/link-manager/
-if ( UBIK_LINKS_MANAGER )
+if ( UBIK_GENERAL_LINKS_MANAGER )
   add_filter( 'pre_option_link_manager_enabled', '__return_true' );
 
 

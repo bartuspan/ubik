@@ -11,6 +11,7 @@ add_filter( 'get_wp_title_rss', 'ubik_feed_title', 10, 2 );
 
 
 // Standardize image sizes on feeds; just send medium regardless of what's in the original content
+// @TODO: flesh out this function to handle custom image sizes
 function ubik_feed_images( $size ) {
   if ( is_feed() && $size === 'large' )
     return 'medium';
@@ -75,24 +76,4 @@ if ( UBIK_FEED_DISABLE_COMMENTS ) {
 
 // @TODO: add taxonomies to feeds
 // @TODO: add footer text to feeds
-
-// Delay feed update; @TODO: test this
-function publish_later_on_feed($where) {
-    global $wpdb;
-
-    if (is_feed()) {
-        // timestamp in WP-format
-        $now = gmdate('Y-m-d H:i:s');
-
-        // value for wait; + device
-        $wait = '10'; // integer
-
-        // http://dev.mysql.com/doc/refman/5.0/en/date-and-time-functions.html#function_timestampdiff
-        $device = 'MINUTE'; // MINUTE, HOUR, DAY, WEEK, MONTH, YEAR
-
-        // add SQL-sytax to default $where
-        $where .= " AND TIMESTAMPDIFF($device, $wpdb->posts.post_date_gmt, '$now') > $wait ";
-    }
-    return $where;
-}
-//add_filter('posts_where', 'publish_later_on_feed');
+// @TODO: feed publication delay

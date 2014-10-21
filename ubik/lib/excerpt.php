@@ -111,7 +111,8 @@ function ubik_excerpt_strip_asides( $content ) {
     $content = preg_replace( '/<aside>(.*?)<\/aside>/si', '', $content, 1 );
   return $content;
 }
-add_filter( 'ubik_excerpt_content', 'ubik_excerpt_strip_asides' );
+if ( UBIK_EXCERPT_STRIP_ASIDES )
+  add_filter( 'ubik_excerpt_content', 'ubik_excerpt_strip_asides' );
 
 
 
@@ -119,4 +120,5 @@ add_filter( 'ubik_excerpt_content', 'ubik_excerpt_strip_asides' );
 function ubik_excerpt_pages() {
   add_post_type_support( 'page', 'excerpt' );
 }
-add_action( 'init', 'ubik_excerpt_pages' );
+if ( UBIK_EXCERPT_PAGES )
+  add_action( 'init', 'ubik_excerpt_pages' );

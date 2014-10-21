@@ -4,7 +4,7 @@
 
 // Exclude specific categories from the homepage
 function ubik_exclude_cats( $query ) {
-  if ( !is_admin() && $query->is_home() && $query->is_main_query() ) {
+  if ( !is_admin() && $query->is_home() && $query->is_main_query() && $query->get( 'ubik_include_all' ) !== true ) {
     global $ubik_exclude_cats;
 
     $terms = ubik_exclude_terms( $ubik_exclude_cats, 'category' );
@@ -21,7 +21,7 @@ if ( !empty( $ubik_exclude_cats ) )
 
 // Exclude specific post formats from the homepage
 function ubik_exclude_formats( $query ) {
-  if ( !is_admin() && $query->is_home() && $query->is_main_query() ) {
+  if ( !is_admin() && $query->is_home() && $query->is_main_query() && $query->get( 'ubik_include_all' ) !== true ) {
     global $ubik_exclude_formats;
     $args = array(
       array(
@@ -41,7 +41,7 @@ if ( !empty( $ubik_exclude_formats ) )
 
 // Exclude specific tags from the homepage
 function ubik_exclude_tags( $query ) {
-  if ( !is_admin() && $query->is_home() && $query->is_main_query() ) {
+  if ( !is_admin() && $query->is_home() && $query->is_main_query() && $query->get( 'ubik_include_all' ) !== true ) {
     global $ubik_exclude_tags;
 
     $terms = ubik_exclude_terms( $ubik_exclude_tags, 'post_tag' );
@@ -81,4 +81,30 @@ function ubik_exclude_terms( $terms, $taxonomy = 'category' ) {
   } else {
     return;
   }
+}
+
+
+
+// == INCLUDER == //
+
+// These functions allow for the creation of a virtual alias of the WordPress homepage not subject to any rules set above
+// Be sure to flush your permalinks after activating this feature in your configuration file
+
+// Add rewrite rules for our virtual page to the top of the rewrite rules
+function ubik_include_all_rewrite() {
+  add_rewrite_rule( UBIK_EXCLUDER_INCLUDE_ALL . '/?$', 'index.php?', 'top' );
+  add_rewrite_rule( UBIK_EXCLUDER_INCLUDE_ALL . '/page/?([0-9]{1,})/?$', 'index.php?&paged=$matches[1]', 'top' );
+}
+
+// Parse the query and conditionally add the 'ubik_include_all' variable to the query; this in turn will disable any exclusions
+function ubik_include_all_parse_query( $wp_query ) {
+  global $wp;
+  if ( strpos( $wp->matched_rule, UBIK_EXCLUDER_INCLUDE_ALL ) === 0 )
+    $wp_query->set( 'ubik_include_all', true );
+}
+
+// Only activate these functions when an 'include all' page slug is set in the configuration
+if ( UBIK_EXCLUDER_INCLUDE_ALL ) {
+  add_action( 'init', 'ubik_include_all_rewrite' );
+  add_action( 'parse_query', 'ubik_include_all_parse_query' );
 }

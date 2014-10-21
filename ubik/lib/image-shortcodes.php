@@ -1,5 +1,7 @@
 <?php // ==== IMAGE SHORTCODES ==== //
 
+// @TODO: clean this file up and apply switches to functions enabled by default
+
 // Create a really simple image shortcode based on HTML5 image markup standards
 function ubik_image_shortcode( $atts, $caption = '' ) {
   $args = shortcode_atts( array(

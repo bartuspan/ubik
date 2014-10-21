@@ -2,6 +2,7 @@
 
 // These functions are roughly in the order they are invoked
 // Filters: ubik_wp_title
+// @TODO: clean this file up and apply switches to functions enabled by default
 
 // Adds open graph namespace to html tag
 function ubik_meta_og_prefix( $atts ) {

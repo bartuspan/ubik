@@ -1,5 +1,16 @@
 <?php // ==== MARKDOWN ==== //
 
+// == CONFIGURATION == //
+
+// Allow Markdown in <aside> elements; true/false
+defined( 'UBIK_MARKDOWN_ASIDES' )           || define( 'UBIK_MARKDOWN_ASIDES', true );
+
+// Convert Markdown in term descriptions when displayed on the front-end; true/false
+defined( 'UBIK_MARKDOWN_TERM_DESCRIPTION' ) || define( 'UBIK_MARKDOWN_TERM_DESCRIPTION', false );
+
+
+// == FUNCTIONS == //
+
 // Check whether Markdown is enabled in comments (set by Jetpack and Jetpack Markdown plugins among others)
 function ubik_comments_markdown_enabled() {
   return (bool) get_option( 'wpcom_publish_comments_with_markdown' );
@@ -13,7 +24,8 @@ function ubik_markdown_asides( $content ) {
   $content = str_replace( '<aside>', '<aside markdown="1">', $content );
   return $content;
 }
-add_filter( 'content_save_pre', 'ubik_markdown_asides' );
+if ( UBIK_MARKDOWN_ASIDES )
+  add_filter( 'content_save_pre', 'ubik_markdown_asides' );
 
 
 

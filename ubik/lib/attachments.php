@@ -9,5 +9,5 @@ function ubik_attachment_comments( $open, $post_id ) {
     return false;
   return $open;
 }
-if ( UBIK_ATTACHMENT_COMMENTS === false )
-  add_filter( 'comments_open', 'ubik_attachment_comments', 10 , 2 );
+if ( UBIK_ATTACHMENT_COMMENTS_OFF )
+  add_filter( 'comments_open', 'ubik_attachment_comments', 10, 2 );

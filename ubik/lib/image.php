@@ -1,5 +1,7 @@
 <?php // ==== IMAGES ==== //
 
+// @TODO: clean this file up and apply switches to functions enabled by default
+
 // == IMAGE MARKUP == //
 
 // Generalized image markup generator; used by captioned images and image shortcodes; alternate markup presented on feeds is intended to validate
@@ -298,7 +300,7 @@ function ubik_thumbnail_dimensions( $html ) {
   $html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
   return $html;
 }
-if ( UBIK_THUMBNAIL_DIMENSIONS === false ) {
+if ( UBIK_THUMBNAIL_NO_DIMENSIONS ) {
   add_filter( 'post_thumbnail_html', 'ubik_thumbnail_dimensions', 10 );
   add_filter( 'img_caption_shortcode', 'ubik_thumbnail_dimensions' );
   add_filter( 'wp_caption', 'ubik_thumbnail_dimensions', 10 );

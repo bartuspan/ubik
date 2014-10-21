@@ -39,9 +39,9 @@ function ubik_content_title_filter( $title = '', $sep = '-', $seplocation = 'rig
   // Sanitize and add page number as needed
   return esc_html( strip_tags( stripslashes( $title . $page_num ) ) );
 }
-// Lower priority than WP default (10) and Pendrell (11) so titles aren't doubled up
+// Lower priority than WP default (10) so titles aren't doubled up
 if ( UBIK_CONTENT_TITLE )
-  add_filter( 'wp_title', 'ubik_content_title_filter', 12, 3 );
+  add_filter( 'wp_title', 'ubik_content_title_filter', 99, 3 );
 
 
 
@@ -339,7 +339,8 @@ function ubik_strip_more_tag_orphan( $content ) {
   $content = preg_replace( '/<p>(<(div|img|figure)[\s\S]*?)<span id="more-[0-9]*?"><\/span><\/p>/', '$1', $content );
   return $content;
 }
-add_filter( 'the_content', 'ubik_strip_more_tag_orphan', 99 );
+if ( UBIK_CONTENT_STRIP_MORE_ORPHAN )
+  add_filter( 'the_content', 'ubik_strip_more_tag_orphan', 99 );
 
 // Playing around with a function to strip paragraph tags off of images and such
 function ubik_strip_media_p( $content ) {
@@ -347,4 +348,5 @@ function ubik_strip_media_p( $content ) {
   $content = preg_replace( '/<p>\s*(<iframe .*>*.<\/iframe>)\s*<\/p>/iU', '\1', $content );
   return $content;
 }
-add_filter( 'the_content', 'ubik_strip_media_p' );
+if ( UBIK_CONTENT_STRIP_MEDIA_P )
+  add_filter( 'the_content', 'ubik_strip_media_p' );

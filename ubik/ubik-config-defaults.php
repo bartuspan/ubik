@@ -5,6 +5,7 @@
 // The following switches enable or disable various Ubik modules; true/false
 defined( 'UBIK_CHINESE' )                   || define( 'UBIK_CHINESE', false );
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
+defined( 'UBIK_EXCLUDER' )                  || define( 'UBIK_EXCLUDER', false );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
 defined( 'UBIK_MARKDOWN' )                  || define( 'UBIK_MARKDOWN', false );
 defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
@@ -23,7 +24,7 @@ defined( 'UBIK_ADMIN_ALL_SETTINGS' )        || define( 'UBIK_ADMIN_ALL_SETTINGS'
 defined( 'UBIK_ADMIN_ALL_SHORTCODES' )      || define( 'UBIK_ADMIN_ALL_SHORTCODES', false );
 
 // Additional contact methods hack; true/false
-defined( 'UBIK_ADMIN_CONTACT_METHODS' )     || define( 'UBIK_ADMIN_CONTACT_METHODS', true );
+defined( 'UBIK_ADMIN_CONTACT_METHODS' )     || define( 'UBIK_ADMIN_CONTACT_METHODS', false );
 
 // Admin HTML editor font size; string or false to disable
 defined( 'UBIK_ADMIN_EDITOR_FONT_SIZE' )    || define( 'UBIK_ADMIN_EDITOR_FONT_SIZE', '18px' );
@@ -40,18 +41,21 @@ defined( 'UBIK_ADMIN_TAG_FILTER' )          || define( 'UBIK_ADMIN_TAG_FILTER', 
 // Add term descriptions to the quick edit box for post tags and categories; true/false
 defined( 'UBIK_ADMIN_TERM_DESC_QUICK' )     || define( 'UBIK_ADMIN_TERM_DESC_QUICK', false );
 
+// Only show sanitized term descriptions in the admin; removes all HTML formatting, leaving just text; true/false
+defined( 'UBIK_ADMIN_TERM_DESC_STRIP' )     || define( 'UBIK_ADMIN_TERM_DESC_STRIP', false );
+
 // Inject some CSS to re-arrange the edit-tags.php template for term power users; true/false
 defined( 'UBIK_ADMIN_TERM_EDIT_STYLE' )     || define( 'UBIK_ADMIN_TERM_EDIT_STYLE', false );
 
-// Master switch for the visual editor; true/false; defaults to true (e.g. visual editor is enabled)
-defined( 'UBIK_ADMIN_VISUAL_EDITOR' )       || define( 'UBIK_ADMIN_VISUAL_EDITOR', true );
+// Master switch for the visual editor; true to disable editor, false to let WordPress sort it out
+defined( 'UBIK_ADMIN_VISUAL_EDITOR_OFF' )   || define( 'UBIK_ADMIN_VISUAL_EDITOR_OFF', false );
 
 
 
 // == ATTACHMENTS == //
 
-// Turn comments on/off for all attachments; true for enable comments (WordPress default), false for disable comments
-defined( 'UBIK_ATTACHMENT_COMMENTS' )       || define( 'UBIK_ATTACHMENT_COMMENTS', true );
+// Turn comments on/off for all attachments; true to disable comments or false to let WordPress sort it out
+defined( 'UBIK_ATTACHMENT_COMMENTS_OFF' )   || define( 'UBIK_ATTACHMENT_COMMENTS_OFF', false );
 
 
 
@@ -71,19 +75,25 @@ defined( 'UBIK_CONTENT_DATE' )              || define( 'UBIK_CONTENT_DATE', fals
 defined( 'UBIK_CONTENT_DATE_FORMAT' )       || define( 'UBIK_CONTENT_DATE_FORMAT', false );
 
 // Human-readable dates; true/false
-defined( 'UBIK_CONTENT_DATE_HUMAN' )        || define( 'UBIK_CONTENT_DATE_HUMAN', true );
+defined( 'UBIK_CONTENT_DATE_HUMAN' )        || define( 'UBIK_CONTENT_DATE_HUMAN', false );
 
 // Human-readable time span; integer or false to disable and use default (4838000; one week = 604800)
-defined( 'UBIK_CONTENT_DATE_HUMAN_SPAN' )   || define( 'UBIK_CONTENT_DATE_HUMAN_SPAN', false);
+defined( 'UBIK_CONTENT_DATE_HUMAN_SPAN' )   || define( 'UBIK_CONTENT_DATE_HUMAN_SPAN', false );
 
-// Switch for wp_title filter; disable if you use some sort of SEO plugin; true/false
-defined( 'UBIK_CONTENT_TITLE' )             || define( 'UBIK_CONTENT_TITLE', true );
+// Strip paragraph tags from <iframe> elements; true/false to disable
+defined( 'UBIK_CONTENT_STRIP_MEDIA_P' )     || define( 'UBIK_CONTENT_STRIP_MEDIA_P', false );
+
+// Strip orphaned paragraph tags formed by <!--more--> tag edge cases; true/false to disable
+defined( 'UBIK_CONTENT_STRIP_MORE_ORPHAN' ) || define( 'UBIK_CONTENT_STRIP_MORE_ORPHAN', false );
+
+// Switch for wp_title filter; disable if you use some sort of SEO plugin; true/false to disable
+defined( 'UBIK_CONTENT_TITLE' )             || define( 'UBIK_CONTENT_TITLE', false );
 
 
 
 // == EXCERPTS == //
 
-// Custom excerpt handling; true/false
+// Custom excerpt handling; this module needs to be enabled
 
 // Custom post excerpt length; integer or false to disable
 defined( 'UBIK_EXCERPT_LENGTH' )            || define( 'UBIK_EXCERPT_LENGTH', 70 );
@@ -92,16 +102,23 @@ defined( 'UBIK_EXCERPT_LENGTH' )            || define( 'UBIK_EXCERPT_LENGTH', 70
 defined( 'UBIK_EXCERPT_MORE' )              || define( 'UBIK_EXCERPT_MORE', '...' );
 
 // Custom "more" link; true/false
-defined( 'UBIK_EXCERPT_MORE_LINK' )         || define( 'UBIK_EXCERPT_MORE_LINK', true );
+defined( 'UBIK_EXCERPT_MORE_LINK' )         || define( 'UBIK_EXCERPT_MORE_LINK', false );
+
+// Add excerpts to pages; true/false
+defined( 'UBIK_EXCERPT_PAGES' )             || define( 'UBIK_EXCERPT_PAGES', false );
+
+// Process shortcodes in excerpts; true/false
+defined( 'UBIK_EXCERPT_SHORTCODES' )        || define( 'UBIK_EXCERPT_SHORTCODES', false );
 
 // Make excerpts shortcode-friendly; true/false
-defined( 'UBIK_EXCERPT_SHORTCODES' )        || define( 'UBIK_EXCERPT_SHORTCODES', true );
+defined( 'UBIK_EXCERPT_STRIP_ASIDES' )      || define( 'UBIK_EXCERPT_STRIP_ASIDES', false );
 
 
 
 // == EXCLUDER == //
 
 // Categories, formats, and tags to exclude from the homepage; set these in your `ubik-config.php`
+// See `lib/excluder.php` for more information; this module needs to be enabled
 
 // Categories should be listed by slug or ID
 if ( empty( $ubik_exclude_cats ) )    { $ubik_exclude_cats = array(); }
@@ -111,6 +128,9 @@ if ( empty( $ubik_exclude_formats ) ) { $ubik_exclude_formats = array(); }
 
 // Tags should also be listed by slug or ID
 if ( empty( $ubik_exclude_tags ) )    { $ubik_exclude_tags = array(); }
+
+// Rewrite slug for an all-inclusive homepage alias; string or false to disable
+defined( 'UBIK_EXCLUDER_INCLUDE_ALL' )      || define( 'UBIK_EXCLUDER_INCLUDE_ALL', false );
 
 
 
@@ -139,6 +159,12 @@ defined( 'UBIK_FORMAT_SLUG' )               || define( 'UBIK_FORMAT_SLUG', false
 
 // == GENERAL == //
 
+// Remove useless fluff from the <head> element; true/false
+defined( 'UBIK_GENERAL_HEAD_CLEANER' )      || define( 'UBIK_GENERAL_HEAD_CLEANER', false );
+
+// Enable core WordPress links manager on new installs; true/false
+defined( 'UBIK_GENERAL_LINKS_MANAGER' )     || define( 'UBIK_GENERAL_LINKS_MANAGER', false );
+
 // Disable jQuery migrate; true/false
 defined( 'UBIK_GENERAL_REMOVE_MIGRATE' )    || define( 'UBIK_GENERAL_REMOVE_MIGRATE', false );
 
@@ -152,8 +178,8 @@ defined( 'UBIK_GOOGLE_ANALYTICS' )          || define( 'UBIK_GOOGLE_ANALYTICS', 
 // Google Analytics display features; enable for compatibility with demographic reporting
 defined( 'UBIK_GOOGLE_ANALYTICS_DISPLAYF' ) || define( 'UBIK_GOOGLE_ANALYTICS_DISPLAYF', false );
 
-// Google Analytics tracking code version; true for universal analytics, false to fallback to asynchronous analytics
-defined( 'UBIK_GOOGLE_ANALYTICS_UA' )       || define( 'UBIK_GOOGLE_ANALYTICS_UA', true );
+// Google Analytics tracking code version; true for legacy support of asynchronous analytics; false for universal analytics
+defined( 'UBIK_GOOGLE_ANALYTICS_ASYNC' )    || define( 'UBIK_GOOGLE_ANALYTICS_ASYNC', false );
 
 
 
@@ -162,22 +188,8 @@ defined( 'UBIK_GOOGLE_ANALYTICS_UA' )       || define( 'UBIK_GOOGLE_ANALYTICS_UA
 // Enable image shortcode; true/false
 defined( 'UBIK_IMAGE_SHORTCODE' )           || define( 'UBIK_IMAGE_SHORTCODE', false );
 
-// Enable image shortcode; true/false
+// Default number of columns for the [group] shortcode
 defined( 'UBIK_IMAGE_SHORTCODE_COLUMNS' )   || define( 'UBIK_IMAGE_SHORTCODE_COLUMNS', 2 );
-
-
-
-// == LINKS == //
-
-// Enable core WordPress links manager on new installs; true/false
-defined( 'UBIK_LINKS_MANAGER' )             || define( 'UBIK_LINKS_MANAGER', false );
-
-
-
-// == MARKDOWN == //
-
-// Convert Markdown in term descriptions when displayed on the front-end; true/false
-defined( 'UBIK_MARKDOWN_TERM_DESCRIPTION' ) || define( 'UBIK_MARKDOWN_TERM_DESCRIPTION', false );
 
 
 
@@ -209,13 +221,13 @@ defined( 'UBIK_META_TWITTER_PUBLISHER' )    || define( 'UBIK_META_TWITTER_PUBLIS
 // == SEARCH == //
 
 // Improved HTML5 search form; true/false
-defined( 'UBIK_SEARCH_FORM' )               || define( 'UBIK_SEARCH_FORM', true );
+defined( 'UBIK_SEARCH_FORM' )               || define( 'UBIK_SEARCH_FORM', false );
 
 // Posts per search page; integer or false to disable
-defined( 'UBIK_SEARCH_POSTS_PER_PAGE' )     || define( 'UBIK_SEARCH_POSTS_PER_PAGE', 20 );
+defined( 'UBIK_SEARCH_POSTS_PER_PAGE' )     || define( 'UBIK_SEARCH_POSTS_PER_PAGE', false );
 
 // Singleton search redirect; true/false
-defined( 'UBIK_SEARCH_REDIRECT' )           || define( 'UBIK_SEARCH_REDIRECT', true );
+defined( 'UBIK_SEARCH_REDIRECT' )           || define( 'UBIK_SEARCH_REDIRECT', false );
 
 
 
@@ -228,8 +240,8 @@ defined( 'UBIK_SERIES_ORDER' )              || define( 'UBIK_SERIES_ORDER', 'ASC
 
 // == TERMS == //
 
-// Hard switch for the categorized blog test; true = blog has categories (no action taken), false = blog does not have categories (takes action)
-defined( 'UBIK_TERMS_CATEGORIZED_BLOG' )    || define( 'UBIK_TERMS_CATEGORIZED_BLOG', true );
+// Hard switch for the categorized blog test; set to true for no categories; false to let WordPress figure it out
+defined( 'UBIK_TERMS_UNCATEGORIZED_BLOG' )  || define( 'UBIK_TERMS_UNCATEGORIZED_BLOG', false );
 
 
 
@@ -239,7 +251,7 @@ defined( 'UBIK_TERMS_CATEGORIZED_BLOG' )    || define( 'UBIK_TERMS_CATEGORIZED_B
 defined( 'UBIK_THUMBNAIL_DEFAULT' )         || define( 'UBIK_THUMBNAIL_DEFAULT', false );
 
 // Image height and width attributes; true by default, false to remove dimensions for most images
-defined( 'UBIK_THUMBNAIL_DIMENSIONS' )      || define( 'UBIK_THUMBNAIL_DIMENSIONS', true );
+defined( 'UBIK_THUMBNAIL_NO_DIMENSIONS' )   || define( 'UBIK_THUMBNAIL_NO_DIMENSIONS', false );
 
 // Wrap post_thumbnail output in nicer image markup; use with caution; true/false
 defined( 'UBIK_THUMBNAIL_MARKUP' )          || define( 'UBIK_THUMBNAIL_MARKUP', false );

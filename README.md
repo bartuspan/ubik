@@ -1,12 +1,12 @@
 # UBIK
 
-Ubik is a library of useful theme-agnostic WordPress snippets, hacks, and functions bundled into a plugin. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file. Most features are disabled by default which means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for any number of single-use WordPress plugins.
+Ubik is a library of useful theme-agnostic WordPress snippets, hacks, and utility functions bundled into a plugin. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file and everything is disabled by default. This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
 
 
 
 ## Installation
 
-Copy or symlink `ubik/ubik` to your plugins folder and activate. Be sure to flush your permalinks after installation.
+Copy or symlink `ubik/ubik` to your plugins folder, configure, and activate. Be sure to flush your permalinks after installation.
 
 Ubik requires WordPress 3.9 and PHP 5.3.
 
@@ -14,7 +14,7 @@ Ubik requires WordPress 3.9 and PHP 5.3.
 
 ## Configuration
 
-Most of Ubik's features are disabled by default to reduce collision with other plugins and themes. There are two ways to activate Ubik's features or change settings:
+Virtually all of Ubik's features are disabled by default to reduce collision with other plugins and themes. There are two ways to activate Ubik's features or change settings:
 
 1. Override default values in your `wp-config.php` file.
 2. Rename `ubik-config-sample.php` to `ubik-config.php` and edit the default values.
@@ -27,7 +27,7 @@ So, for instance, to activate the meta module add this line to your `wp-config.p
 
 ## Features
 
-Here are some of Ubik's features broken down by module. Most of these features are disabled by default.
+Here are some of Ubik's features broken down by module. I highly recommend browsing the source code to understand what the library contains.
 
 
 
@@ -38,7 +38,7 @@ Here are some of Ubik's features broken down by module. Most of these features a
 * Switch for the magic "all settings" hack.
 * System-wide shortcode viewer shows you what shortcodes are registered (useful in development).
 * Adds term descriptions to the quick edit box for post tags and categories. Easily extensible. Also compatible with HTML, Markdown, shortcodes, etc.
-* "Clean" term descriptions: strig tags from descriptions in the edit tags view.
+* "Clean" term descriptions: strip tags from descriptions in the edit tags view.
 * Optional re-arrangement of some elements on the edit tags view.
 
 
@@ -89,7 +89,9 @@ Here are some of Ubik's features broken down by module. Most of these features a
 
 ### Excluder
 
-* Exclude posts from the home page by category, tag, or post format.
+* Exclude posts from the homepage by category, tag, or post format.
+* Create a virtual alias of the homepage to show all content at a specified URL e.g. `/all`. This alias functions just like your homepage in every other respect. (Flush permalinks after activation.)
+* Combining these two functions you can create a homepage that is free of clutter along with a link to a busier stream of content containing absolutely everything you post. Makes for a nice separation of top-shelf content and trivial micro-blogging and lifestreaming.
 
 
 
@@ -123,6 +125,7 @@ Here are some of Ubik's features broken down by module. Most of these features a
 ### Google Analytics
 
 * Adds Google Analytics code (universal or asynchronous) to the footer, where it belongs.
+* Some extra settings for the new UA script.
 
 
 
@@ -148,7 +151,7 @@ Here are some of Ubik's features broken down by module. Most of these features a
 
 * Automatically add `markdown="1"` to `aside` elements in posts. This way you can use Markdown in `aside` elements without second thought.
 * A hack to fix an edge case where a footnote is above the `<!--more-->` tag.
-* Enable Markdown in term descriptions.
+* [Enable Markdown in term descriptions](http://synapticism.com/wordpress-term-descriptions-in-markdown/).
 
 
 
@@ -167,7 +170,7 @@ This component is designed to be a lightweight drop-in replacement for most main
 
 ### Netlabel
 
-* A bunch of functions and taxonomies to help categorize netlabel releases. Might be spun into its own plugin at some point. Will be documented when development matures.
+* A bunch of undocumented functions and taxonomies to help categorize netlabel releases. Will be spun into its own plugin at some point.
 
 
 
@@ -195,6 +198,13 @@ This component is designed to be a lightweight drop-in replacement for most main
 * A lightweight implementation of a post series taxonomy. Designed to easily link posts together in a series.
 * Inserts an ordered list of posts in a given series at the bottom of posts when viewed individually.
 * Series archives themselves are in chronological order (i.e. oldest first).
+
+
+
+### Terms
+
+* A copy of the "uncategorized blog" function from `_s`. This version allows you to explicitly declare your blog category-free.
+* A bunch of experimental functions for retrieving only the most popular terms in a taxonomy (under `lib/terms-popular.php`).
 
 
 

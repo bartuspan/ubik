@@ -20,7 +20,7 @@ if ( UBIK_ADMIN_EDITOR_FONT_SIZE || UBIK_ADMIN_EDITOR_FONT_STACK ) {
 }
 
 // Disable the visual editor altogether
-if ( UBIK_ADMIN_VISUAL_EDITOR === false )
+if ( UBIK_ADMIN_VISUAL_EDITOR_OFF )
   add_filter( 'user_can_richedit' , '__return_false', 50 );
 
 
@@ -109,7 +109,8 @@ function ubik_term_description_admin_clean( $description ) {
     $description = strip_tags( $description );
   return $description;
 }
-add_filter( 'term_description', 'ubik_term_description_admin_clean', 99 );
+if ( UBIK_ADMIN_TERM_DESC_STRIP )
+  add_filter( 'term_description', 'ubik_term_description_admin_clean', 99 );
 
 
 
