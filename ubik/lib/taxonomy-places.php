@@ -19,12 +19,13 @@ function ubik_places_init() {
       'parent_item_colon' => __( 'Parent place:' ),
       'search_items'      => __( 'Search places' ),
     ),
-    'show_admin_column' => true,
-    'hierarchical' => true,
-    'rewrite' => array(
-      'slug' => 'places',
-      'with_front' => true,
-      'hierarchical' => true
+    'show_admin_column'   => true,
+    'hierarchical'        => true,
+    'rewrite'             => array(
+      'slug'              => 'places',
+      'with_front'        => true,
+      'hierarchical'      => true,
+      'ep_mask'           => EP_TAGS
     )
   ));
 

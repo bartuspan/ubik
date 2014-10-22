@@ -17,9 +17,10 @@ function ubik_series_init() {
       'new_item_name'     => __( 'New Series Name' ),
       'menu_name'         => __( 'Series' ),
     ),
-    'rewrite' => array(
-      'slug' => 'series',
-      'with_front' => false
+    'rewrite'             => array(
+      'slug'              => 'series',
+      'with_front'        => false,
+      'ep_mask'           => EP_TAGS
     ),
   ));
 }

@@ -21,8 +21,9 @@ function ubik_netlabel_init() {
       'new_item_name'     => __( 'New Artist Name' ),
       'menu_name'         => __( 'Artists' ),
     ),
-    'rewrite' => array(
-      'slug' => 'artists'
+    'rewrite'             => array(
+      'slug'              => 'artists',
+      'ep_mask'           => EP_TAGS
     ),
   ));
 
@@ -42,8 +43,9 @@ function ubik_netlabel_init() {
       'new_item_name'     => __( 'New Style Name' ),
       'menu_name'         => __( 'Styles' ),
     ),
-    'rewrite' => array(
-      'slug' => 'styles'
+    'rewrite'             => array(
+      'slug'              => 'styles',
+      'ep_mask'           => EP_TAGS
     ),
   ));
 
