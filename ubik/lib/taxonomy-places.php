@@ -272,17 +272,17 @@ function ubik_places_breadcrumb( $term = '' ) {
       $parents = array_reverse( $parents );
 
       // Wrap it up
-      $content .= "\n" . '<nav class="breadcrumbs">' . "\n" . '<ul>' . "\n";
+      $content .= "\n" . '<nav class="breadcrumbs"><ul>';
 
       // For each parent, create a breadcrumb item
       foreach ( $parents as $parent ) {
         $item = get_term_by( 'id', $parent, $tax );
         $link = get_term_link( $parent, $tax );
-        $content .= '<li><a href="' . $link . '">' . $item->name . '</a></li>' . "\n";
+        $content .= '<li><a href="' . $link . '">' . $item->name . '</a></li>';
       }
 
       // Wrap it up
-      $content .= '</ul>' . "\n" . '</nav>' . "\n";
+      $content .= '</ul></nav>' . "\n";
     }
   }
   echo $content;
