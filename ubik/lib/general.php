@@ -1,5 +1,7 @@
 <?php // ==== GENERAL ==== //
 
+// == HEAD CLEANER == //
+
 // Head cleaner: removes useless fluff
 function ubik_head_cleaner() {
   if ( !is_admin() ) {
@@ -15,8 +17,29 @@ function ubik_head_cleaner() {
     remove_action( 'wp_head', 'start_post_rel_link', 10, 0 );
   }
 }
-if ( UBIK_GENERAL_HEAD_CLEANER )
+
+// Removes the ".recentcomments" style added to the header for no good reason
+// http://www.narga.net/how-to-remove-or-disable-comment-reply-js-and-recentcomments-from-wordpress-header
+function ubik_remove_recent_comments_style_widget() {
+  global $wp_widget_factory;
+  if ( isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] ) ) {
+    remove_action( 'wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
+  }
+}
+
+// Remove injected CSS for recent comments widget; from Bones: https://github.com/eddiemachado/bones
+function ubik_remove_recent_comments_style() {
+  if ( has_filter( 'wp_head', 'wp_widget_recent_comments_style' ) ) {
+    remove_filter( 'wp_head', 'wp_widget_recent_comments_style' );
+  }
+}
+
+// Activate the last two functions
+if ( UBIK_GENERAL_HEAD_CLEANER ) {
   add_action( 'init', 'ubik_head_cleaner' );
+  add_action( 'wp_head', 'ubik_remove_recent_comments_style_widget', 1 );
+  add_filter( 'wp_head', 'ubik_remove_recent_comments_style', 1 );
+}
 
 
 
@@ -32,43 +55,13 @@ if ( UBIK_GENERAL_REMOVE_MIGRATE )
 
 
 
-// Cleans out the RSS feed
-function ubik_generator() {
-  return '';
-}
-add_filter( 'the_generator', 'ubik_generator' );
-
-
-
-// Removes the ".recentcomments" style added to the header for no good reason
-// http://www.narga.net/how-to-remove-or-disable-comment-reply-js-and-recentcomments-from-wordpress-header
-function ubik_remove_recent_comments_style_widget() {
-  global $wp_widget_factory;
-  if ( isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] ) ) {
-    remove_action( 'wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style') );
-  }
-}
-add_action( 'wp_head', 'ubik_remove_recent_comments_style_widget', 1 );
-
-
-
-// Remove injected CSS for recent comments widget; from Bones: https://github.com/eddiemachado/bones
-function ubik_remove_recent_comments_style() {
-  if ( has_filter( 'wp_head', 'wp_widget_recent_comments_style' ) ) {
-    remove_filter( 'wp_head', 'wp_widget_recent_comments_style' );
-  }
-}
-add_filter( 'wp_head', 'ubik_remove_recent_comments_style', 1 );
-
-
-
-// Enqueue scripts like a boss
-function ubik_enqueue_scripts() {
-  // Hack: no need to load Open Sans more than once
+// Remove built-in Open Sans stylesheet
+function ubik_remove_open_sans() {
   wp_deregister_style( 'open-sans' );
   wp_register_style( 'open-sans', false );
 }
-add_action( 'wp_enqueue_scripts', 'ubik_enqueue_scripts' );
+if ( UBIK_GENERAL_REMOVE_OPEN_SANS )
+  add_action( 'wp_enqueue_scripts', 'ubik_remove_open_sans' );
 
 
 
@@ -97,6 +90,5 @@ if ( UBIK_GENERAL_LINKS_MANAGER )
 
 // Allow HTML in author descriptions on single user blogs
 // Careful: might be stripped out anyway (e.g. when making meta descriptions) so don't put anything essential in there
-if ( !is_multi_author() ) {
+if ( !is_multi_author() )
   remove_filter( 'pre_user_description', 'wp_filter_kses' );
-}

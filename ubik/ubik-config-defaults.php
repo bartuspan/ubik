@@ -168,6 +168,9 @@ defined( 'UBIK_GENERAL_LINKS_MANAGER' )     || define( 'UBIK_GENERAL_LINKS_MANAG
 // Disable jQuery migrate; true/false
 defined( 'UBIK_GENERAL_REMOVE_MIGRATE' )    || define( 'UBIK_GENERAL_REMOVE_MIGRATE', false );
 
+// Disable automatic loading of Open Sans
+defined( 'UBIK_GENERAL_REMOVE_OPEN_SANS' )  || define( 'UBIK_GENERAL_REMOVE_OPEN_SANS', false );
+
 
 
 // == GOOGLE ANALYTICS == //

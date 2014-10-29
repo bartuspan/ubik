@@ -10,6 +10,14 @@ add_filter( 'get_wp_title_rss', 'ubik_feed_title', 10, 2 );
 
 
 
+// Cleans out the RSS feed
+function ubik_generator() {
+  return '';
+}
+add_filter( 'the_generator', 'ubik_generator' );
+
+
+
 // Standardize image sizes on feeds; just send medium regardless of what's in the original content
 // @TODO: flesh out this function to handle custom image sizes
 function ubik_feed_images( $size ) {
