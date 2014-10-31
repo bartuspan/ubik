@@ -87,8 +87,6 @@ if ( UBIK_ADMIN_TAG_FILTER ) {
   add_action( 'restrict_manage_posts', 'ubik_admin_tag_filter' );
 }
 
-
-
 // Hide categories filter on uncategorized blogs
 function ubik_admin_category_filter_hide() {
   ?><style type="text/css">
@@ -179,6 +177,13 @@ function ubik_contact_methods( $contact ) {
 }
 if ( UBIK_ADMIN_CONTACT_METHODS )
   add_filter('user_contactmethods', 'ubik_contact_methods');
+
+
+
+// Allow HTML in author descriptions on single user blogs
+// Careful: might be stripped out anyway (e.g. when making meta descriptions) so don't put anything essential in there
+if ( !is_multi_author() )
+  remove_filter( 'pre_user_description', 'wp_filter_kses' );
 
 
 

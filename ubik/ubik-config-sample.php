@@ -28,6 +28,7 @@ define( 'UBIK_EXCERPT_SHORTCODES', true );
 define( 'UBIK_GENERAL_HEAD_CLEANER', true );
 define( 'UBIK_GENERAL_REMOVE_MIGRATE', true );
 define( 'UBIK_GENERAL_REMOVE_OPEN_SANS', true );
+define( 'UBIK_GENERAL_REMOVE_PROTECTED', true );
 
 define( 'UBIK_IMAGE_SHORTCODE', true );
 

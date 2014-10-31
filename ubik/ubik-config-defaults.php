@@ -168,8 +168,11 @@ defined( 'UBIK_GENERAL_LINKS_MANAGER' )     || define( 'UBIK_GENERAL_LINKS_MANAG
 // Disable jQuery migrate; true/false
 defined( 'UBIK_GENERAL_REMOVE_MIGRATE' )    || define( 'UBIK_GENERAL_REMOVE_MIGRATE', false );
 
-// Disable automatic loading of Open Sans
+// Disable automatic loading of Open Sans; true/false
 defined( 'UBIK_GENERAL_REMOVE_OPEN_SANS' )  || define( 'UBIK_GENERAL_REMOVE_OPEN_SANS', false );
+
+// Remove the word "protected" from password-protected posts; true/false
+defined( 'UBIK_GENERAL_REMOVE_PROTECTED' )  || define( 'UBIK_GENERAL_REMOVE_PROTECTED', false );
 
 
 
