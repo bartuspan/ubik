@@ -40,9 +40,6 @@ if ( is_admin() )
 if ( UBIK_CHINESE )
   require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-chinese.php' );
 
-if ( UBIK_EXCLUDER )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-excluder.php' );
-
 if ( UBIK_FORMAT )
   require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-formats.php' );
 

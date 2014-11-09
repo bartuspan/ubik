@@ -5,7 +5,6 @@
 // The following switches enable or disable various Ubik modules; true/false
 defined( 'UBIK_CHINESE' )                   || define( 'UBIK_CHINESE', false );
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
-defined( 'UBIK_EXCLUDER' )                  || define( 'UBIK_EXCLUDER', false );
 defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
 defined( 'UBIK_MARKDOWN' )                  || define( 'UBIK_MARKDOWN', false );
 defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
@@ -112,25 +111,6 @@ defined( 'UBIK_EXCERPT_SHORTCODES' )        || define( 'UBIK_EXCERPT_SHORTCODES'
 
 // Make excerpts shortcode-friendly; true/false
 defined( 'UBIK_EXCERPT_STRIP_ASIDES' )      || define( 'UBIK_EXCERPT_STRIP_ASIDES', false );
-
-
-
-// == EXCLUDER == //
-
-// Categories, formats, and tags to exclude from the homepage; set these in your `ubik-config.php`
-// See `lib/excluder.php` for more information; this module needs to be enabled
-
-// Categories should be listed by slug or ID
-if ( empty( $ubik_exclude_cats ) )    { $ubik_exclude_cats = array(); }
-
-// Post formats should be complete post format names e.g. 'post-format-aside' or 'post-format-image' (not IDs)
-if ( empty( $ubik_exclude_formats ) ) { $ubik_exclude_formats = array(); }
-
-// Tags should also be listed by slug or ID
-if ( empty( $ubik_exclude_tags ) )    { $ubik_exclude_tags = array(); }
-
-// Rewrite slug for an all-inclusive homepage alias; string or false to disable
-defined( 'UBIK_EXCLUDER_INCLUDE_ALL' )      || define( 'UBIK_EXCLUDER_INCLUDE_ALL', false );
 
 
 

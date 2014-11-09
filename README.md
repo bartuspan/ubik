@@ -87,14 +87,6 @@ Here are some of Ubik's features broken down by module. I highly recommend brows
 
 
 
-### Excluder
-
-* Exclude posts from the homepage by category, tag, or post format.
-* Create a virtual alias of the homepage to show all content at a specified URL e.g. `/all`. This alias functions just like your homepage in every other respect. (Flush permalinks after activation.)
-* Combining these two functions you can create a homepage that is free of clutter along with a link to a busier stream of content containing absolutely everything you post. Makes for a nice separation of top-shelf content and trivial micro-blogging and lifestreaming.
-
-
-
 ### Feed
 
 * Cleaner feed content titles.

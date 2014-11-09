@@ -40,9 +40,3 @@ define( 'UBIK_SEARCH_POSTS_PER_PAGE', 20 );
 define( 'UBIK_SEARCH_REDIRECT', true );
 
 define( 'UBIK_THUMBNAIL_NO_DIMENSIONS', true );
-
-
-
-// == EXCLUDER == //
-
-// $ubik_exclude_formats = array( 'post-format-aside', 'post-format-link', 'post-format-status' );
