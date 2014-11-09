@@ -223,7 +223,7 @@ function ubik_meta_tags() {
     if ( UBIK_META_FACEBOOK_PUBLISHER )
       echo '<meta property="article:publisher" content="http://www.facebook.com/' . UBIK_META_FACEBOOK_PUBLISHER . '"/>' . "\n";
 
-    // Category, but only one; relies on ubik_categorized_blog in categories.php; @TODO: custom usort() function to select category by count or something
+    // Category, but only one; relies on ubik_categorized_blog in terms.php; @TODO: custom usort() function to select category by count or something
     if ( !empty( $category ) && ubik_categorized_blog() )
       echo '<meta property="article:section" content="' . esc_attr( $category[0]->cat_name ) . '"/>' . "\n";
 

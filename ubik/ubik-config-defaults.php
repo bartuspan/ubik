@@ -189,16 +189,6 @@ defined( 'UBIK_GOOGLE_ANALYTICS_ASYNC' )    || define( 'UBIK_GOOGLE_ANALYTICS_AS
 
 
 
-// == IMAGE == //
-
-// Enable image shortcode; true/false
-defined( 'UBIK_IMAGE_SHORTCODE' )           || define( 'UBIK_IMAGE_SHORTCODE', false );
-
-// Default number of columns for the [group] shortcode
-defined( 'UBIK_IMAGE_SHORTCODE_COLUMNS' )   || define( 'UBIK_IMAGE_SHORTCODE_COLUMNS', 2 );
-
-
-
 // == META TAGS == //
 
 // Facebook admin value for page insights; can be a single ID or comma-separated series of IDs; string or false to disable
@@ -248,16 +238,3 @@ defined( 'UBIK_SERIES_ORDER' )              || define( 'UBIK_SERIES_ORDER', 'ASC
 
 // Hard switch for the categorized blog test; set to true for no categories; false to let WordPress figure it out
 defined( 'UBIK_TERMS_UNCATEGORIZED_BLOG' )  || define( 'UBIK_TERMS_UNCATEGORIZED_BLOG', false );
-
-
-
-// == THUMBNAILS == //
-
-// Default thumbnail; must be an attachment ID (integer) or false to disable
-defined( 'UBIK_THUMBNAIL_DEFAULT' )         || define( 'UBIK_THUMBNAIL_DEFAULT', false );
-
-// Image height and width attributes; true by default, false to remove dimensions for most images
-defined( 'UBIK_THUMBNAIL_NO_DIMENSIONS' )   || define( 'UBIK_THUMBNAIL_NO_DIMENSIONS', false );
-
-// Wrap post_thumbnail output in nicer image markup; use with caution; true/false
-defined( 'UBIK_THUMBNAIL_MARKUP' )          || define( 'UBIK_THUMBNAIL_MARKUP', false );

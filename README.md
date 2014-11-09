@@ -1,6 +1,6 @@
 # UBIK
 
-Ubik is a library of useful theme-agnostic WordPress snippets, hacks, and utility functions bundled into a plugin. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file and everything is disabled by default. This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
+Ubik is a library of useful theme-agnostic WordPress snippets, hacks, and utility functions. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file and everything is disabled by default. This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
 
 
 
@@ -126,24 +126,6 @@ Here are some of Ubik's features broken down by module. I highly recommend brows
 
 * Adds Google Analytics code (universal or asynchronous) to the footer, where it belongs.
 * Some extra settings for the new UA script.
-
-
-
-### Image
-
-* Nicer HTML5-friendly image markup for attachments, image format posts, and image captions. Includes WAI-ARIA and schema.org structured data markup.
-* Filter `ubik_meta_image_size` to set image size for meta tags (e.g. for Facebook and Twitter). Defaults to 'large' and falls back to the original image. See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
-* Thumbnail fallback: if a featured image isn't set the appropriately-sized thumbnail of the first image attached to the post will be displayed.
-* Removes image height and width attributes from many different places for greater responsivity (optional).
-
-
-
-### Image shortcodes
-
-* This module introduces an image shortcode, one of Ubik's most powerful and convenient features. An image shortcode allows for dynamic resizing of images to suit different contexts (e.g. regular versus full-width view). Using a shortcode also means you never have to change URLs again. Read the source to find out more about this feature or [check out this post on my blog](http://synapticism.com/experimenting-with-html5-image-markup-and-shortcodes-in-wordpress/).
-* Image shortcode `[image/]` automatically entered in the post editor with minimal markup. Note: presently image shortcodes are not compatible with the visual editor!
-* Image group shortcode `[group][/group]` with optional parameter `columns` for control of image layout.
-* Filters caption shortcode, spitting out better markup using code in the image module (above).
 
 
 

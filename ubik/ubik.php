@@ -6,9 +6,9 @@
  * Description: A library of useful theme-agnostic WordPress snippets, hacks, and functions.
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.5.0
+ * Version: 0.6.0
  */
-define( 'UBIK_VERSION', '0.5.0' );
+define( 'UBIK_VERSION', '0.6.0' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -23,48 +23,46 @@ if ( is_readable( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config.
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config-defaults.php' );
 
 // Load ubik core library
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/attachments.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/comments.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/content.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/excerpt.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/feed.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/general.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/image.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/image-shortcodes.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/search.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/terms.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/terms-popular.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-attachments.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-comments.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-content.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-excerpt.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-feed.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-general.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-search.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-terms.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-terms-popular.php' );
 
 if ( is_admin() )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/admin.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-admin.php' );
 
 // Load optional Ubik modules; set these in your `ubik-config.php`
 if ( UBIK_CHINESE )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/chinese.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-chinese.php' );
 
 if ( UBIK_EXCLUDER )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/excluder.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-excluder.php' );
 
 if ( UBIK_FORMAT )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/formats.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-formats.php' );
 
 if ( UBIK_GOOGLE_ANALYTICS )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/google-analytics.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-google-analytics.php' );
 
 if ( UBIK_MARKDOWN )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/markdown.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-markdown.php' );
 
 if ( UBIK_META )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/meta.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-meta.php' );
 
 if ( UBIK_NETLABEL )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/taxonomy-netlabel.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-taxonomy-netlabel.php' );
 
 if ( UBIK_PLACES )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/taxonomy-places.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-taxonomy-places.php' );
 
 if ( UBIK_SERIES )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'lib/taxonomy-series.php' );
+  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-taxonomy-series.php' );
 
 
 
