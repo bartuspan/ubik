@@ -1,6 +1,20 @@
-# UBIK
+# Ubik
 
 Ubik is a library of useful theme-agnostic WordPress snippets, hacks, and utility functions. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file and everything is disabled by default. This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
+
+These days I am breaking Ubik up into a suit of micro-plugins that can easily be integrated into WordPress theme build systems to require various components. See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
+
+
+
+## Components
+
+These components were formerly a part of the main Ubik plugin:
+
+* [Imagery](https://github.com/synapticism/ubik-imagery): minimalist image management.
+* [Excluder](https://github.com/synapticism/ubik-excluder): arbitrarily exlude posts from the homepage.
+* [Places](https://github.com/synapticism/ubik-places): a simple places taxonomy.
+* [Quick Terms](https://github.com/synapticism/ubik-quick-terms): add term descriptions to the quick edit box.
+* [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy.
 
 
 
@@ -37,8 +51,6 @@ Here are some of Ubik's features broken down by module. I highly recommend brows
 * Adds Facebook, Flickr, GitHub, Google+, Instagram, and Twitter to user contact methods; removes AIM, Jabber, and Yahoo.
 * Switch for the magic "all settings" hack.
 * System-wide shortcode viewer shows you what shortcodes are registered (useful in development).
-* Adds term descriptions to the quick edit box for post tags and categories. Easily extensible. Also compatible with HTML, Markdown, shortcodes, etc.
-* "Clean" term descriptions: strip tags from descriptions in the edit tags view.
 * Optional re-arrangement of some elements on the edit tags view.
 
 
@@ -148,30 +160,11 @@ This component is designed to be a lightweight drop-in replacement for most main
 
 
 
-### Places
-
-* Places is a custom taxonomy designed to act as a lightweight geographic database. Each place is a term in a heirarchal taxonomy.
-* Place archives act like regular term archives with the addition of breadcrumb navigation and a list of descendent or related places.
-* Place shortcode: `[place]Place name[/place]` or `[place slug=placename]`. Will default back to plain text when the place doesn't exist. Makes it easy to reference places in your posts.
-* Places sidebar when navigating within the places database (requires configuration).
-* Hooks into entry metadata to display places next to tags and categories.
-* No custom mapping function at present. Just use simple Google Maps embeds.
-
-
-
 ### Search
 
 * Smarter HTML5-based search form replacement. Will include current search query in the search box.
 * Singleton search results redirect to matching post in one step.
 * Specify a different number of results on search pages (defaults to 20).
-
-
-
-### Series
-
-* A lightweight implementation of a post series taxonomy. Designed to easily link posts together in a series.
-* Inserts an ordered list of posts in a given series at the bottom of posts when viewed individually.
-* Series archives themselves are in chronological order (i.e. oldest first).
 
 
 
@@ -187,3 +180,9 @@ This component is designed to be a lightweight drop-in replacement for most main
 * Fill out your full user profile, blog description, and all category, tag, taxonomy, and other descriptions where available! All the SEO-friendly goodness in this plugin reads from standard WordPress data.
 * Flush your permalinks after fiddling around with anything.
 * **Read the source code!**
+
+
+
+## License
+
+GPLv3.

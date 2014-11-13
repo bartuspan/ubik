@@ -6,8 +6,6 @@
 
 define( 'UBIK_FORMAT', true );
 define( 'UBIK_META', true );
-define( 'UBIK_PLACES', true );
-define( 'UBIK_SERIES', true );
 
 
 

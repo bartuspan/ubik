@@ -200,10 +200,6 @@ if ( UBIK_ADMIN_ALL_SETTINGS )
 
 // == MODULES == //
 
-// Add term descriptions to the quick edit box
-if ( UBIK_ADMIN_TERM_DESC_QUICK )
-  require_once( 'ubik-admin-quick-term-descriptions.php' );
-
 // Show all shortcodes link
 if ( UBIK_ADMIN_ALL_SHORTCODES )
   require_once( 'ubik-admin-shortcodes.php' );

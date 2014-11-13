@@ -55,12 +55,6 @@ if ( UBIK_META )
 if ( UBIK_NETLABEL )
   require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-taxonomy-netlabel.php' );
 
-if ( UBIK_PLACES )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-taxonomy-places.php' );
-
-if ( UBIK_SERIES )
-  require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-taxonomy-series.php' );
-
 
 
 function ubik_activate() {

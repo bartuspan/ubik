@@ -9,8 +9,6 @@ defined( 'UBIK_FORMAT' )                    || define( 'UBIK_FORMAT', false );
 defined( 'UBIK_MARKDOWN' )                  || define( 'UBIK_MARKDOWN', false );
 defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
 defined( 'UBIK_NETLABEL' )                  || define( 'UBIK_NETLABEL', false );
-defined( 'UBIK_PLACES' )                    || define( 'UBIK_PLACES', false );
-defined( 'UBIK_SERIES' )                    || define( 'UBIK_SERIES', false );
 
 
 
@@ -36,12 +34,6 @@ defined( 'UBIK_ADMIN_POST_LIST_THUMB' )     || define( 'UBIK_ADMIN_POST_LIST_THU
 
 // Filter posts by tags; true/false
 defined( 'UBIK_ADMIN_TAG_FILTER' )          || define( 'UBIK_ADMIN_TAG_FILTER', false );
-
-// Add term descriptions to the quick edit box for post tags and categories; true/false
-defined( 'UBIK_ADMIN_TERM_DESC_QUICK' )     || define( 'UBIK_ADMIN_TERM_DESC_QUICK', false );
-
-// Only show sanitized term descriptions in the admin; removes all HTML formatting, leaving just text; true/false
-defined( 'UBIK_ADMIN_TERM_DESC_STRIP' )     || define( 'UBIK_ADMIN_TERM_DESC_STRIP', false );
 
 // Inject some CSS to re-arrange the edit-tags.php template for term power users; true/false
 defined( 'UBIK_ADMIN_TERM_EDIT_STYLE' )     || define( 'UBIK_ADMIN_TERM_EDIT_STYLE', false );
@@ -204,13 +196,6 @@ defined( 'UBIK_SEARCH_POSTS_PER_PAGE' )     || define( 'UBIK_SEARCH_POSTS_PER_PA
 
 // Singleton search redirect; true/false
 defined( 'UBIK_SEARCH_REDIRECT' )           || define( 'UBIK_SEARCH_REDIRECT', false );
-
-
-
-// == SERIES == //
-
-// Post series order; chronological by default; string or false to disable
-defined( 'UBIK_SERIES_ORDER' )              || define( 'UBIK_SERIES_ORDER', 'ASC' );
 
 
 
