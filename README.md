@@ -1,6 +1,6 @@
 # Ubik
 
-Ubik is a library of useful theme-agnostic WordPress snippets, hacks, and utility functions. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file and everything is disabled by default. This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
+Ubik is a collection of useful theme-agnostic WordPress snippets, hacks, and utility functions. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file and everything is disabled by default. This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
 
 These days I am breaking Ubik up into a suit of micro-plugins that can easily be integrated into WordPress theme build systems to require various components. See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
 
@@ -8,12 +8,21 @@ These days I am breaking Ubik up into a suit of micro-plugins that can easily be
 
 ## Components
 
-These components were formerly a part of the main Ubik plugin:
+These components were formerly a part of the core Ubik plugin:
 
+* [Admin](https://github.com/synapticism/ubik-admin): a library of hacks and snippets for the admin panel.
+* [Analytics](https://github.com/synapticism/ubik-analytics): simple Google Analytics functions.
+* [Cleaner](https://github.com/synapticism/ubik-cleaner): clean up default installations.
+* [Comments](https://github.com/synapticism/ubik-comments): a simple collection of comment-related functions.
+* [Excluder](https://github.com/synapticism/ubik-excluder): arbitrarily exclude posts from the homepage.
+* [Feed](https://github.com/synapticism/ubik-feed): a collection of feed-related functions.
 * [Imagery](https://github.com/synapticism/ubik-imagery): minimalist image management.
-* [Excluder](https://github.com/synapticism/ubik-excluder): arbitrarily exlude posts from the homepage.
+* [Lingual](https://github.com/synapticism/ubik-lingual): simple language-related functions.
+* [Markdown](https://github.com/synapticism/ubik-markdown): Markdown helper functions.
 * [Places](https://github.com/synapticism/ubik-places): a simple places taxonomy.
+* [Post Formats](https://github.com/synapticism/ubik-post-formats): post format hacks and snippets.
 * [Quick Terms](https://github.com/synapticism/ubik-quick-terms): add term descriptions to the quick edit box.
+* [Search](https://github.com/synapticism/ubik-search): a small library of useful search-related functions.
 * [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy.
 
 
@@ -45,42 +54,6 @@ Here are some of Ubik's features broken down by module. I highly recommend brows
 
 
 
-### Admin
-
-* Reset admin-side HTML editor to a nicer font size and stack.
-* Adds Facebook, Flickr, GitHub, Google+, Instagram, and Twitter to user contact methods; removes AIM, Jabber, and Yahoo.
-* Switch for the magic "all settings" hack.
-* System-wide shortcode viewer shows you what shortcodes are registered (useful in development).
-* Optional re-arrangement of some elements on the edit tags view.
-
-
-
-### Attachments
-
-* Turns off comments on all attachments (optional).
-
-
-
-### Categories
-
-* Test whether the blog has more than one category (via _s).
-
-
-
-### Chinese
-
-* "Strict" slugs; removes non-Latin characters (designed for use with bilingual English/Chinese post titles).
-* "Unpinyin" function; converts accented characters to their non-accented equivalents.
-
-
-
-### Comments
-
-* Modify what tags are allowable in comments. WordPress ships with a lot of stuff that nobody uses (e.g. `<abbr>`). This trims the list to just those elements that are most useful.
-* Also alters the text that commonly appears below the comment entry form to match what tags are actually allowed.
-
-
-
 ### Content
 
 * SEO-friendly title generator for use with `wp_title` and any other place neatly formatted titles are welcome.
@@ -96,48 +69,6 @@ Here are some of Ubik's features broken down by module. I highly recommend brows
 * Also used to generate meta description tag content for SEO.
 * Several user-configurable options including excerpt length, `<!--more-->` tag string, whether shortcodes are processed, etc.
 * Strip opening `<aside>` tags from post contents; this way you can open a post with an aside (e.g. "This post was originally written three years ago...") without it dominating SEO.
-
-
-
-### Feed
-
-* Cleaner feed content titles.
-* Downsize large photos to medium on RSS feeds (for use with Ubik's image shortcode).
-* Remove specified post formats from the feed (defaults to aside, link, quote, and status post formats).
-* Disable all feeds or only comments feeds (both inactive by default).
-
-
-
-### Formats
-
-* Post format rewrite: change the base ("type" to whatever).
-* Post format slugs: change the slug (e.g. "quote" to "quotation"). Not a great hack; you have to edit the array in `lib/formats.php`.
-
-
-
-### General
-
-* Head cleaner; removes a lot of junk from the page header, a common feature of most starter themes.
-* Dequeues the default Open Sans stylesheet.
-* Removes the `.recentcomments` style injected into the header.
-* Allow HTML in author descriptions on single user blogs.
-* Page list fallback adds home to the list (via _s).
-* Strips "protected" out of protected post titles.
-
-
-
-### Google Analytics
-
-* Adds Google Analytics code (universal or asynchronous) to the footer, where it belongs.
-* Some extra settings for the new UA script.
-
-
-
-### Markdown
-
-* Automatically add `markdown="1"` to `aside` elements in posts. This way you can use Markdown in `aside` elements without second thought.
-* A hack to fix an edge case where a footnote is above the `<!--more-->` tag.
-* [Enable Markdown in term descriptions](http://synapticism.com/wordpress-term-descriptions-in-markdown/).
 
 
 
@@ -160,18 +91,11 @@ This component is designed to be a lightweight drop-in replacement for most main
 
 
 
-### Search
-
-* Smarter HTML5-based search form replacement. Will include current search query in the search box.
-* Singleton search results redirect to matching post in one step.
-* Specify a different number of results on search pages (defaults to 20).
-
-
-
 ### Terms
 
 * A copy of the "uncategorized blog" function from `_s`. This version allows you to explicitly declare your blog category-free.
 * A bunch of experimental functions for retrieving only the most popular terms in a taxonomy (under `lib/terms-popular.php`).
+* Test whether the blog has more than one category (via _s).
 
 
 
