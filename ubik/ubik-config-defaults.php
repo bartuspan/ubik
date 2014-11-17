@@ -4,8 +4,6 @@
 
 // The following switches enable or disable various Ubik modules; true/false
 defined( 'UBIK_EXCERPT' )                   || define( 'UBIK_EXCERPT', true );
-defined( 'UBIK_META' )                      || define( 'UBIK_META', false );
-defined( 'UBIK_NETLABEL' )                  || define( 'UBIK_NETLABEL', false );
 
 
 
@@ -55,35 +53,3 @@ defined( 'UBIK_EXCERPT_SHORTCODES' )        || define( 'UBIK_EXCERPT_SHORTCODES'
 
 // Make excerpts shortcode-friendly; true/false
 defined( 'UBIK_EXCERPT_STRIP_ASIDES' )      || define( 'UBIK_EXCERPT_STRIP_ASIDES', false );
-
-
-
-// == META TAGS == //
-
-// Facebook admin value for page insights; can be a single ID or comma-separated series of IDs; string or false to disable
-defined( 'UBIK_META_FACEBOOK_ADMINS' )      || define( 'UBIK_META_FACEBOOK_ADMINS', false );
-
-// Facebook publisher; only for media outlets; string or false to disable
-defined( 'UBIK_META_FACEBOOK_PUBLISHER' )   || define( 'UBIK_META_FACEBOOK_PUBLISHER', false );
-
-// Favicon markup; dependent on generated Favicons in the root of the domain; true/false
-defined( 'UBIK_META_FAVICONS' )             || define( 'UBIK_META_FAVICONS', false );
-
-// Favicon tile color; should be a hex value or false to disable
-defined( 'UBIK_META_FAVICONS_TILE_COLOR' )  || define( 'UBIK_META_FAVICONS_TILE_COLOR', false );
-
-// Google Plus page for the entire site
-defined( 'UBIK_META_GOOGLE_PUBLISHER' )     || define( 'UBIK_META_GOOGLE_PUBLISHER', false );
-
-// Set the desired image size for images in the meta tags; defaults to 'large'; string or false to disable
-defined( 'UBIK_META_IMAGE_SIZE' )           || define( 'UBIK_META_IMAGE_SIZE', false );
-
-// Name of the Twitter account associated with the whole web site; should be "Account" without the @ sign; string or false to disable
-defined( 'UBIK_META_TWITTER_PUBLISHER' )    || define( 'UBIK_META_TWITTER_PUBLISHER', false );
-
-
-
-// == TERMS == //
-
-// Hard switch for the categorized blog test; set to true for no categories; false to let WordPress figure it out
-defined( 'UBIK_TERMS_UNCATEGORIZED_BLOG' )  || define( 'UBIK_TERMS_UNCATEGORIZED_BLOG', false );

@@ -1,5 +1,7 @@
 # Ubik
 
+*Ubik is currently in the process of being broken up into smaller modules. Do not install this plugin at this time!*
+
 Ubik is a collection of useful theme-agnostic WordPress snippets, hacks, and utility functions. It is designed to be extremely lightweight and configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed in a simple configuration file and everything is disabled by default. This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
 
 These days I am breaking Ubik up into a suit of micro-plugins that can easily be integrated into WordPress theme build systems to require various components. See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
@@ -19,11 +21,14 @@ These components were formerly a part of the core Ubik plugin:
 * [Imagery](https://github.com/synapticism/ubik-imagery): minimalist image management.
 * [Lingual](https://github.com/synapticism/ubik-lingual): simple language-related functions.
 * [Markdown](https://github.com/synapticism/ubik-markdown): Markdown helper functions.
+* [Meta](https://github.com/synapticism/ubik-meta): meta tag-related functions.
 * [Places](https://github.com/synapticism/ubik-places): a simple places taxonomy.
 * [Post Formats](https://github.com/synapticism/ubik-post-formats): post format hacks and snippets.
 * [Quick Terms](https://github.com/synapticism/ubik-quick-terms): add term descriptions to the quick edit box.
+* [RecordPress](https://github.com/synapticism/ubik-recordpress): useful things for netlabels.
 * [Search](https://github.com/synapticism/ubik-search): a small library of useful search-related functions.
 * [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy.
+* [Terms](https://github.com/synapticism/ubik-terms): functions for working with categories, tags, and taxonomies.
 
 
 
@@ -50,10 +55,6 @@ So, for instance, to activate the meta module add this line to your `wp-config.p
 
 ## Features
 
-Here are some of Ubik's features broken down by module. I highly recommend browsing the source code to understand what the library contains.
-
-
-
 ### Content
 
 * SEO-friendly title generator for use with `wp_title` and any other place neatly formatted titles are welcome.
@@ -69,33 +70,6 @@ Here are some of Ubik's features broken down by module. I highly recommend brows
 * Also used to generate meta description tag content for SEO.
 * Several user-configurable options including excerpt length, `<!--more-->` tag string, whether shortcodes are processed, etc.
 * Strip opening `<aside>` tags from post contents; this way you can open a post with an aside (e.g. "This post was originally written three years ago...") without it dominating SEO.
-
-
-
-### Meta
-
-This component is designed to be a lightweight drop-in replacement for most mainstream SEO plugins, most of which I find to be way too bulky and bloated. The idea here is to define just what is needed and otherwise work silently in the background without adding any cruft to the admin panel.
-
-* SEO-friendly title and description generator (based on code in the content and excerpts modules).
-* Supports Facebook/Open Graph, Google+, Twitter, and Pinterest social media meta tags. You will need to activate/verify ownership of most of these; check the comments in the source.
-* If a post has a featured image this will always be displayed *first* in the Open Graph image tags.
-* Includes a workaround for the [Facebook and Pinterest article author meta tag conflict](http://synapticism.com/pinterest-and-facebook-open-graph-incompatibility-fix/).
-* Favicon markup using [best practices for 2014](http://synapticism.com/favicon-best-practices-for-2014/). Generate favicons with [RealFaviconGenerator](http://realfavicongenerator.net/).
-* **Be sure to fill out the relevant fields in the configuration file to activate and use this module!**
-
-
-
-### Netlabel
-
-* A bunch of undocumented functions and taxonomies to help categorize netlabel releases. Will be spun into its own plugin at some point.
-
-
-
-### Terms
-
-* A copy of the "uncategorized blog" function from `_s`. This version allows you to explicitly declare your blog category-free.
-* A bunch of experimental functions for retrieving only the most popular terms in a taxonomy (under `lib/terms-popular.php`).
-* Test whether the blog has more than one category (via _s).
 
 
 

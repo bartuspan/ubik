@@ -274,7 +274,7 @@ function ubik_entry_meta() {
 
 
   // Category
-  if ( ubik_categorized_blog() )
+  if ( is_categorized_blog() )
     $categories = ubik_get_the_popular_term_list( $post->ID, 'category', '', ', ', '', 0 ); // Show all categories by popularity
   $categories = apply_filters( 'ubik_entry_meta_categories', $categories );
 
