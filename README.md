@@ -29,6 +29,7 @@ These components were formerly a part of the core Ubik plugin:
 * [Search](https://github.com/synapticism/ubik-search): a small library of useful search-related functions.
 * [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy.
 * [Terms](https://github.com/synapticism/ubik-terms): functions for working with categories, tags, and taxonomies.
+* [Title](https://github.com/synapticism/ubik-title): generate content and document titles.
 
 
 
@@ -57,7 +58,6 @@ So, for instance, to activate the meta module add this line to your `wp-config.p
 
 ### Content
 
-* SEO-friendly title generator for use with `wp_title` and any other place neatly formatted titles are welcome.
 * Human-readable dates (e.g. posted 21 hours ago) for recent entries (user-configurable; defaults to 8 weeks).
 * Standards-compliant entry metadata generator with schema.org structured data tags (e.g. proper use of `updated` and `published` classes).
 * Content filters to strip paragraph tags from images and orphaned `<!--more-->` tags.

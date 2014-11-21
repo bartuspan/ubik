@@ -27,9 +27,6 @@ defined( 'UBIK_CONTENT_STRIP_MEDIA_P' )     || define( 'UBIK_CONTENT_STRIP_MEDIA
 // Strip orphaned paragraph tags formed by <!--more--> tag edge cases; true/false to disable
 defined( 'UBIK_CONTENT_STRIP_MORE_ORPHAN' ) || define( 'UBIK_CONTENT_STRIP_MORE_ORPHAN', false );
 
-// Switch for wp_title filter; disable if you use some sort of SEO plugin; true/false to disable
-defined( 'UBIK_CONTENT_TITLE' )             || define( 'UBIK_CONTENT_TITLE', false );
-
 
 
 // == EXCERPTS == //
