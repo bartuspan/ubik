@@ -1,3 +1,0 @@
-<?php // ==== UBIK CONFIGURATION FILE ==== //
-
-// Nothing here for now...
