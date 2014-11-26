@@ -1,0 +1,22 @@
+{
+  "name": "synapticism/ubik",
+  "description": "A library of useful theme-agnostic WordPress snippets, hacks, and functions for WordPress",
+  "keywords": [
+    "wordpress",
+    "wordpress-plugin",
+    "plugin"
+  ],
+  "homepage": "https://github.com/synapticism/ubik",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alexander Synaptic",
+      "email": "alexander@synapticism.com",
+      "homepage": "http://alexandersynaptic.com"
+    }
+  ],
+  "type": "library",
+  "require": {
+    "composer/installers": "v1.0.6"
+  }
+}

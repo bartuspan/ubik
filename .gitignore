@@ -34,7 +34,3 @@ bower_components
 node_modules
 
 ## Project specific
-ubik-config.php
-ubik-config-dr*.php
-ubik-config-e*.php
-ubik-config-o*.php

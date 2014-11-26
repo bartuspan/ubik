@@ -1,0 +1,23 @@
+{
+  "name": "ubik",
+  "homepage": "https://github.com/synapticism/ubik",
+  "authors": [
+    "Alexander Synaptic <alexander@synapticism.com>"
+  ],
+  "keywords": [
+    "wordpress",
+    "wordpress-plugin",
+    "plugin"
+  ],
+  "license": "GPLv3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "composer.json",
+    "package.json"
+  ]
+}
