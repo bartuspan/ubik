@@ -6,9 +6,9 @@
  * Description: A library of useful theme-agnostic WordPress snippets, hacks, and functions
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.7.0
+ * Version: 0.8.0
  */
-define( 'UBIK_VERSION', '0.7.0' );
+define( 'UBIK_VERSION', '0.8.0' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -24,3 +24,4 @@ require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config-defa
 
 // Load plugin files
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-is-categorized.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-terms-popular.php' );
