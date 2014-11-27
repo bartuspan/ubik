@@ -22,19 +22,29 @@ if ( !function_exists( 'ubik_popular_terms' ) ) : function ubik_popular_terms( $
   //usort( $terms, function( $a, $b ) { return $b->count - $a->count; } );
 
   // Remove any terms with a count below 2
-  $terms = array_filter( $terms, "ubik_popular_terms_threshold" );
+  $terms_filtered = array_filter( $terms, "ubik_popular_terms_threshold" );
+
+  // If we stripped away all terms abort and restore the list
+  if ( empty( $terms_filtered ) )
+    $terms_filtered = $terms;
 
   // Sort terms by count
-  usort( $terms, "ubik_popular_terms_sort" );
+  usort( $terms_filtered, "ubik_popular_terms_sort" );
 
-  return $terms;
+  return $terms_filtered;
 } endif;
+
+
 
 // Only needed for backward compatibility with PHP 5.2; @TODO: upgrade to 5.3
 if ( !function_exists( 'ubik_popular_terms_threshold' ) ) : function ubik_popular_terms_threshold( $a ) {
-  return $a->count > 1; // @TODO: $threshold isn't user-configurable in PHP 5.2 and it's too much trouble to fix it :/
+  $threshold = 1;
+  return $a->count > $threshold; // @TODO: $threshold isn't user-configurable in PHP 5.2 and it's too much trouble to fix it :/
 } endif;
 
+
+
+// Sorting function to put more popular terms in front
 if ( !function_exists( 'ubik_popular_terms_sort' ) ) : function ubik_popular_terms_sort( $a, $b ) {
   return $b->count - $a->count;
 } endif;
@@ -45,6 +55,7 @@ if ( !function_exists( 'ubik_popular_terms_sort' ) ) : function ubik_popular_ter
 // @filter: term_links-$taxonomy
 if ( !function_exists( 'ubik_popular_terms_list' ) ) : function ubik_popular_terms_list( $id, $taxonomy, $before = '', $sep = '', $after = '', $threshold = 1 ) {
 
+  // Get the popular terms
   $terms = ubik_popular_terms( $id, $taxonomy, $threshold );
 
   if ( is_wp_error( $terms ) )
@@ -53,6 +64,7 @@ if ( !function_exists( 'ubik_popular_terms_list' ) ) : function ubik_popular_ter
   if ( empty( $terms ) )
     return false;
 
+  // Cycle through the terms and create HTML links
   foreach ( $terms as $term ) {
     $link = get_term_link( $term, $taxonomy );
     if ( is_wp_error( $link ) )
