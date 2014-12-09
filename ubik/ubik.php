@@ -25,3 +25,4 @@ require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config-defa
 // Load plugin files
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-is-categorized.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-terms-popular.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-text.php' );

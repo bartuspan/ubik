@@ -59,6 +59,7 @@ The core Ubik plugin is home to a common library of functions that the various c
 
 * `is_categorized()` conditional: an adaptation of the "uncategorized blog" function from `_s`. This version allows you to explicitly declare that your blog uses no categories.
 * `ubik_popular_terms()` and `ubik_popular_terms_list()` for retrieving only the most popular terms in a taxonomy.
+* `ubik_truncate_text()` for trimming excerpts and meta descriptions.
 
 
 
