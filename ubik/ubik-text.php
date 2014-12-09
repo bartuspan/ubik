@@ -45,14 +45,10 @@ if ( !function_exists( 'ubik_text_truncate' ) ) : function ubik_text_truncate( $
   // Strip any remaining tags
   $text = str_replace( ']]>', ']]&gt;', $text );
 
-  // Test whether the string is UTF-8 encoded
-  if ( seems_utf8( $text ) )
-    $text = $text; // @TODO: additional multibyte functionality?
-
   // A modification of the core `wp_trim_words` function
   if ( 'characters' == _x( 'words', 'word count: words or characters?' ) && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
 
-    // This first chunk handles character-based languages (e.g. Chinese)
+    // This code block handles character-based languages (e.g. Chinese)
     $text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $text ), ' ' );
     preg_match_all( '/./u', $text, $words_array );
     $words_array = array_slice( $words_array[0], 0, $words + 1 );
@@ -60,28 +56,29 @@ if ( !function_exists( 'ubik_text_truncate' ) ) : function ubik_text_truncate( $
 
   } else {
 
-    // This handles non-character based input
+    // This handles non-character based input the default WordPress way
     $words_array = preg_split( "/[\n\r\t ]+/", $text, $words + 1, PREG_SPLIT_NO_EMPTY );
     $sep = ' ';
   }
 
+  // Save the final count
+  $words_count = count( $words_array );
+
   // Trim the array to the desired word count
-  if ( count( $words_array ) > $words )
+  if ( $words_count > $words )
     array_pop( $words_array );
 
   // Make a string from the array of words
   $text = implode( $sep, $words_array );
 
-  //$text = 'target word count: ' . $words . '. actual: ' . str_word_count( $text ) . '. :::' . $text;
-
-  // Strip out trailing punctuation and add the excerpt ending
-  if ( str_word_count( $text ) > $words - 1 ) { // Fudge factor since str_word_count() may return something other than what we have
+  // Strip out trailing punctuation and add the excerpt ending as needed
+  if ( $words_count >= $words ) {
     if ( !preg_match( '/[.!?]$/u', $text ) ) { // Could also try \p{P} for punctuation; @TODO: i18n
-      $text = preg_replace('/^[\p{P}|\p{S}|\s]+|[\p{P}|\p{S}|\s]+$/', '', $text ) . $ending;
+      $text = preg_replace('/^[\p{P}|\p{S}|\s]+|[\p{P}|\p{S}|\s]+$/u', '', $text ) . $ending;
     }
   } else {
     if ( !preg_match( '/[.!?]$/u', $text ) ) {
-      $text = preg_replace('/^[\p{P}|\p{S}|\s]+|[\p{P}|\p{S}|\s]+$/', '', $text ) . _x( '.', 'sentence ending for truncated text below the word count', 'ubik' ); // A simple period
+      $text = preg_replace('/^[\p{P}|\p{S}|\s]+|[\p{P}|\p{S}|\s]+$/u', '', $text ) . _x( '.', 'sentence ending for truncated text below the word count', 'ubik' ); // A simple period
     }
   }
 
