@@ -40,7 +40,7 @@ if ( !function_exists( 'ubik_text_truncate' ) ) : function ubik_text_truncate( $
 
   // Strip all tags
   if ( in_array( 'tags', $strip ) )
-    $text = wp_strip_all_tags( $text );
+    $text = strip_tags( $text ); // Abandoning `wp_strip_all_tags` here...
 
   // Strip any remaining tags
   $text = str_replace( ']]>', ']]&gt;', $text );
@@ -100,6 +100,12 @@ if ( !function_exists( 'ubik_text_strip_asides' ) ) : function ubik_text_strip_a
 
 // Strip code blocks wrapped in `pre` and `code` elements
 if ( !function_exists( 'ubik_text_strip_code' ) ) : function ubik_text_strip_code( $text ) {
-  $text = preg_replace( '/<pre><code(.*?)<\/code><\/pre>/si', '', $text ); // Handles `<pre><code class="language-` style of markup via Markdown
+
+  // Handles `<pre><code class="language-` style of markup via Markdown
+  $text = preg_replace( '/<pre><code(.*?)<\/code><\/pre>/siu', '', $text );
+
+  // Handles `script` and `style` tags (which shouldn't be in our content at all); adapted from WP core
+  $text = preg_replace( '/<(script|style)[^>]*?>.*?<\/\/(script|style)>/siu', '', $text );
+
   return $text;
 } endif;
