@@ -26,6 +26,7 @@ Mix and match whichever components you require:
 * [Post Formats](https://github.com/synapticism/ubik-post-formats): post format hacks and snippets.
 * [Quick Terms](https://github.com/synapticism/ubik-quick-terms): add term descriptions to the quick edit box.
 * [RecordPress](https://github.com/synapticism/ubik-recordpress): useful things for netlabels.
+* [Related](https://github.com/synapticism/ubik-related): lightweight related posts.
 * [Search](https://github.com/synapticism/ubik-search): a small library of useful search-related functions.
 * [SEO](https://github.com/synapticism/ubik-seo): various SEO functions.
 * [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy.
