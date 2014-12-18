@@ -40,7 +40,7 @@ Components that "require core" must include the functionality with this master p
 
 ## Installation
 
-Ubik components feature raw PHP code that can be loaded as plugins or incorporated directly into your theme using `require_once`. See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
+Ubik components feature raw PHP code that can be loaded as plugins or incorporated directly into your theme using `require_once`. Where you put the files or how you integrate them is really up to you. Personally I recommend using Gulp and Bower to install and manage Ubik components (but explaining the why and the how is somewhat beyond the scope of this document). See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
 
 
 
