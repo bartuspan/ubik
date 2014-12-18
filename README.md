@@ -2,6 +2,8 @@
 
 Ubik is a collection of useful theme-agnostic WordPress snippets, hacks, and utility functions broken up into many modular components. All these components ship as WordPress micro-plugins and are meant to be integrated into themes using a build system such as Gulp/Grunt in combination with a package manager like Bower (working) or Component (untested). Each component is designed to be extremely lightweight and highly configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed with simple configuration files populated primarily by PHP constants (and occasionally global arrays where such functionality is necessary). This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
 
+In short, Ubik is for WordPress developers who don't want to install yet another plugin. Integrate these components into your theme or rip code out and modify or use it as you see fit.
+
 
 
 ## Components
