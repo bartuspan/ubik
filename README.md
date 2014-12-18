@@ -1,6 +1,7 @@
 # Ubik
 
-Ubik is a collection of useful theme-agnostic WordPress snippets, hacks, and utility functions broken up into many modular components. All these components ship as WordPress micro-plugins and are meant to be integrated into themes using a build system such as Gulp/Grunt in combination with a package manager like Bower (working) or Component (untested). Each component is designed to be extremely lightweight and highly configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed with simple configuration files populated primarily by PHP constants (and occasionally global arrays where such functionality is necessary). This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
+
+Ubik is a modular library of WordPress snippets, hacks, and functions for developers broken up into many components. All these components ship as WordPress plugins but are designed to be integrated into themes using a build system such as Gulp/Grunt in combination with a package manager like Bower (working) or Component (untested). Each component is designed to be extremely lightweight and highly configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed with simple configuration files populated primarily by PHP constants (and occasionally global arrays where such functionality is necessary). This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
 
 In short, Ubik is for WordPress developers who don't want to install yet another plugin. Integrate these components into your theme or rip code out and modify or use it as you see fit.
 
@@ -80,7 +81,7 @@ All Ubik components aspire to some simple guidelines:
 * Shortcodes should include simple fallback functionality (e.g. if the component is deactivated).
 * Comment liberally and in proper English; Ubik's code should be easy to follow.
 * Credit original sources even when adapting code beyond recognition.
-* There are no presumptions that everything you might want to do with WordPress can or should be done this way.
+* There are no presumptions that everything you might want to do with WordPress can or should be done this way. (And, in fact, Ubik deviates strongly from what you might call "the WordPress way".)
 
 If you'd like to contribute by identifying issues or submitting pull requests, please do!
 
