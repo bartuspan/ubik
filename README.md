@@ -64,6 +64,18 @@ The core Ubik plugin is home to a common library of functions that the various c
 
 
 
+## Coding standards
+
+All Ubik components adhere to some simple guidelines:
+
+* Procedural code; nothing object-oriented. This makes things simpler and should allow for most functions to be copied and pasted into other contexts.
+* Minimal dependencies; there are a few functions that rely on code within the Ubik core plugin but most features are meant to be standalone.
+* Modular, not monolithic; break functional components out into individual files whenever it is sensible to do so.
+* All settings and options are either PHP constants or easily hooked using the WordPress filter/action system. No options pages or other admin panel bloat.
+* Liberal commenting; there should be nothing too difficult to grasp in Ubik's code base.
+
+
+
 ## License
 
 GPLv3.
