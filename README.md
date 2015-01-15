@@ -1,7 +1,7 @@
 # Ubik
 
 
-Ubik is a modular library of WordPress snippets, hacks, and functions for developers broken up into many components. All these components ship as WordPress plugins but are designed to be integrated into themes using a build system such as Gulp/Grunt in combination with a package manager like Bower (working) or Component (untested). Each component is designed to be extremely lightweight and highly configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed with simple configuration files populated primarily by PHP constants (and occasionally global arrays where such functionality is necessary). This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
+Ubik is a modular library of WordPress components: common snippets, hacks, and functions bundled as plugins but designed for deeper integrated with WordPress themes using a build system such as Gulp/Grunt in combination with a package manager like Bower (working) or Component (untested). Each component is designed to be extremely lightweight and highly configurable, offering no back-end options screen or user interface of any kind. All settings and options are managed with simple configuration files populated primarily by PHP constants (and occasionally global arrays where such functionality is necessary). This means you'll need to get your hands dirty and break out a text editor to harness the power of Ubik. In essence, Ubik is a performance-optimized drop-in replacement for dozens of single-function WordPress plugins *or* a library of potentially useful code that can be mined for your own purposes.
 
 In short, Ubik is for WordPress developers who don't want to install yet another plugin. Integrate these components into your theme or rip code out and modify or use it as you see fit.
 
@@ -35,7 +35,7 @@ Mix and match whichever components you require:
 * [Time](https://github.com/synapticism/ubik-time): time and date functions.
 * [Title](https://github.com/synapticism/ubik-title): generate document, archive, and entry titles.
 
-Components that "require core" must include the functionality with this master plugin. It must be incorporated into your theme (or activated as a plugin) for those components to function properly.
+Components that "require core" must include the functionality with this master plugin. Ubik must be incorporated into your theme (or activated as a plugin) for those components to function properly.
 
 
 
@@ -72,8 +72,8 @@ The core Ubik plugin is home to a common library of functions that the various c
 All Ubik components aspire to some simple guidelines:
 
 * Only procedural code; nothing object-oriented. Procedural code is often easier to follow and more readily copied and pasted into other contexts. Ubik is, first and foremost, a library of snippets and hacks, after all.
-* All functions, constants, variables, and translation-ready strings are in the `ubik` namespace.
-* All functions are conditionally wrapped in `function_exists` for greater extensibility and customization.
+* All functions, constants, variables, and translation-ready strings are in the `ubik` namespace *e.g.* `ubik_truncate_text`.
+* All functions are conditionally wrapped in `function_exists` for greater extensibility and customization *except* when those functions are called exclusively by `add_filter` or `do_action` (at which point the `remove_filter` and `remove_actions` functions will allow the same without any additional overhead).
 * Follow a modular, not monolithic, design pattern; components are broken out into individual files describing functionality wherever it is sensible to do so.
 * Minimize dependencies. Most components are standalone but there are a few that require functions defined in Ubik core (the repo you're looking at right now). If something is close to the base metal and used by more than one component it may qualify for inclusion in Ubik core but I'd really like to keep the core as empty as possible (see previous standard).
 * All settings and options are either PHP constants or easily hooked using the WordPress filter/action system. No options pages or other admin panel bloat. Global variables only where strictly necessary.

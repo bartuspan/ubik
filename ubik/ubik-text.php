@@ -1,7 +1,6 @@
 <?php // ==== TEXT ==== //
 
-// A small common library of functions for manipulating text
-// Currently used by Ubik Excerpt and Ubik SEO
+// A library of functions for manipulating text used by Ubik Excerpt and Ubik SEO (and perhaps others)
 
 // Truncate text; a replacement for the native `wp_trim_words` function
 // @filter: ubik_text_truncate
@@ -83,7 +82,6 @@ if ( !function_exists( 'ubik_text_truncate' ) ) : function ubik_text_truncate( $
   }
 
   return apply_filters( 'ubik_text_truncate', $text );
-
 } endif;
 
 

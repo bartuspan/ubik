@@ -1,6 +1,6 @@
 {
   "name": "synapticism/ubik",
-  "description": "A library of useful theme-agnostic WordPress snippets, hacks, and functions for WordPress",
+  "description": "A modular library of WordPress components",
   "keywords": [
     "wordpress",
     "wordpress-plugin",

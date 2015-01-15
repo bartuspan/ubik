@@ -3,7 +3,7 @@
  * Plugin Name: Ubik
  * Plugin URI: http://github.com/synapticism/ubik
  * GitHub Plugin URI: https://github.com/synapticism/ubik
- * Description: A modular library of WordPress snippets, hacks, and functions for developers
+ * Description: A modular library of WordPress components
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
  * Version: 0.0.1

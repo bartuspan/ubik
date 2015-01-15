@@ -36,8 +36,8 @@ if ( !function_exists( 'ubik_is_categorized' ) ) : function ubik_is_categorized(
 } endif;
 
 // Flush out the transients used in ubik_is_categorized
-if ( !function_exists( 'ubik_is_categorized_transient_flusher' ) ) : function ubik_is_categorized_transient_flusher() {
+function ubik_is_categorized_transient_flusher() {
   delete_transient( '_ubik_categorized' );
-} endif;
+}
 add_action( 'edit_category', 'ubik_is_categorized_transient_flusher' );
 add_action( 'save_post', 'ubik_is_categorized_transient_flusher' );
