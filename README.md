@@ -47,13 +47,13 @@ Ubik components can be loaded like any other plugin but are designed to be direc
 
 Install via Composer:
 
-```composer require ubik```
+```composer require synapticism/ubik```
 
 Install via Bower (warning: no dependency management):
 
 ```bower install https://github.com/synapticism/ubik.git -D```
 
-See [Pendrell](https://github.com/synapticism/pendrell) for examples of usage.
+See [Pendrell](https://github.com/synapticism/pendrell) for an example of integration and usage.
 
 
 
@@ -83,18 +83,20 @@ The core Ubik repo is home to a common library of functions that several compone
 
 ## Philosophy
 
-All Ubik components aspire to some simple guidelines:
+All Ubik components aspire to some simple guidelines (in case anyone would like to contribute or simply understand a little more about what this project is about):
 
 * Only procedural code; nothing object-oriented. Procedural code is often easier to follow and more readily copied and pasted into other contexts.
 * All functions, constants, variables, and translation-ready strings are in the `ubik` namespace *e.g.* `ubik_truncate_text` and `__( 'String', 'ubik' )`.
 * Most functions are conditionally wrapped in `function_exists` for greater extensibility and customization. There are exceptions for functions called exclusively by `add_filter` or `do_action` (at which point the `remove_filter` and `remove_actions` functions will accomplish the same as `function_exists` without any additional overhead).
-* Follow a modular, not monolithic, design pattern; components are broken out into individual files describing functionality wherever it is sensible to do so.
+* Follow a modular, not monolithic, design pattern; components are broken out into individual files and/or components wherever it is sensible to do so.
 * Minimize dependencies. Most components are standalone but there are a few that require functions defined in Ubik core (the repo you're looking at right now). If something is close to the base metal and used by more than one component it may qualify for inclusion in Ubik core but I'd really like to keep the core as empty as possible (see previous standard).
 * All settings and options are either PHP constants or easily hooked using the WordPress filter/action system. No options pages or other admin panel bloat. Global variables only where strictly necessary.
+* Principle of least surprise: features should be switched off by default where possible (unless including a component suggests that it is safe to do otherwise).
 * Only include PHP code. Let themes handle front-end dependency management (e.g. CSS/JS). This requires more work by the developer but avoids that horrible problem in the WordPress world where sites are loading 20 different script and stylesheet fragments.
 * Shortcodes should include simple fallback functionality (e.g. if the component is deactivated) that can easily be copied and pasted into a "fallback file".
 * Comment liberally and in proper English; Ubik's code should be easy to follow.
 * Credit original sources where sensible to do so.
+* [Semantic versioning](http://semver.org/).
 * There are no presumptions that everything you might want to do with WordPress can or should be done this way. (And, in fact, Ubik deviates strongly from what you might call "the WordPress way".)
 
 If you'd like to contribute by identifying issues or submitting pull requests, please do!
