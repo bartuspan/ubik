@@ -9,7 +9,7 @@
     "wordpress-plugin",
     "plugin"
   ],
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "private": true,
   "ignore": [
     "**/.*",
