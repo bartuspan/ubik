@@ -2,11 +2,18 @@
 
 // A library of functions for manipulating text used by Ubik Excerpt and Ubik SEO (and perhaps others)
 
-// Truncate text; a replacement for the native `wp_trim_words` function
+// Truncate text; a replacement for the native `wp_trim_words` function; @TODO: multibyte support
 // @filter: ubik_text_truncate
 // @filter: ubik_text_truncate_length
 // @filter: ubik_text_truncate_ending
-if ( !function_exists( 'ubik_text_truncate' ) ) : function ubik_text_truncate( $text = '', $words = 55, $ending = '...', $strip = '' ) {
+// @filter: ubik_text_truncate_delimiter
+if ( !function_exists( 'ubik_text_truncate' ) ) : function ubik_text_truncate(
+  $text = '',
+  $words = 55,
+  $ending = '... ',
+  $delimiter = '. ',
+  $strip = ''
+) {
 
   // Exit early
   if ( empty( $text ) )
@@ -17,6 +24,9 @@ if ( !function_exists( 'ubik_text_truncate' ) ) : function ubik_text_truncate( $
 
   // Filter the ending
   $ending = (string) apply_filters( 'ubik_text_truncate_ending', $ending );
+
+  // Filter the delimiter
+  $delimiter = (string) apply_filters( 'ubik_text_truncate_delimiter', $delimiter );
 
   // Check the $strip array
   if ( empty( $strip ) || !is_array( $strip ) )
@@ -77,7 +87,7 @@ if ( !function_exists( 'ubik_text_truncate' ) ) : function ubik_text_truncate( $
     }
   } else {
     if ( !preg_match( '/[.!?]$/u', $text ) ) {
-      $text = preg_replace('/^[\p{P}|\p{S}|\s]+|[\p{P}|\p{S}|\s]+$/u', '', $text ) . _x( '.', 'sentence ending for truncated text below the word count', 'ubik' ); // A simple period
+      $text = preg_replace('/^[\p{P}|\p{S}|\s]+|[\p{P}|\p{S}|\s]+$/u', '', $text ) . $delimiter;
     }
   }
 
