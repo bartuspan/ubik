@@ -15,6 +15,7 @@ Mix and match whichever components you require:
 * [Admin](https://github.com/synapticism/ubik-admin): a library of hacks and snippets for the admin panel (requires core).
 * [Analytics](https://github.com/synapticism/ubik-analytics): simple Google Analytics functions.
 * [Cleaner](https://github.com/synapticism/ubik-cleaner): clean up default installations.
+* [Colophon](https://github.com/synapticism/ubik-colophon): a flexible system of generating footer data.
 * [Comments](https://github.com/synapticism/ubik-comments): a simple collection of comment-related functions.
 * [Excerpt](https://github.com/synapticism/ubik-excerpt): excerpt handling functions (requires core).
 * [Excluder](https://github.com/synapticism/ubik-excluder): arbitrarily exclude posts from the homepage.
@@ -25,6 +26,7 @@ Mix and match whichever components you require:
 * [Links](https://github.com/synapticism/ubik-links): expanded links management functionality.
 * [Markdown](https://github.com/synapticism/ubik-markdown): Markdown helper functions.
 * [Meta](https://github.com/synapticism/ubik-meta): post metadata management (requires core).
+* [Photo Meta](https://github.com/synapticism/ubik-photo-meta): display photo metadata and licensing info.
 * [Places](https://github.com/synapticism/ubik-places): a simple places taxonomy (requires core).
 * [Post Formats](https://github.com/synapticism/ubik-post-formats): post format hacks and snippets.
 * [Quick Terms](https://github.com/synapticism/ubik-quick-terms): add term descriptions to the quick edit box.
@@ -33,9 +35,11 @@ Mix and match whichever components you require:
 * [Search](https://github.com/synapticism/ubik-search): a small library of useful search-related functions.
 * [SEO](https://github.com/synapticism/ubik-seo): various SEO functions (requires core).
 * [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy.
+* [SVG Icons](https://github.com/synapticism/ubik-svg-icons): SVG icon helper functions.
 * [Terms](https://github.com/synapticism/ubik-terms): functions for working with categories, tags, and taxonomies.
 * [Time](https://github.com/synapticism/ubik-time): time and date functions.
 * [Title](https://github.com/synapticism/ubik-title): generate document, archive, and entry titles.
+* [Views](https://github.com/synapticism/ubik-views): a content template selector.
 
 Components that "require core" require functionality contained within this repo. Ubik must be incorporated into your theme (or activated as a plugin) for those components to function properly.
 
