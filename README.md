@@ -21,6 +21,7 @@ Mix and match whichever components you require:
 * [Excluder](https://github.com/synapticism/ubik-excluder): arbitrarily exclude posts from the homepage.
 * [Favicons](https://github.com/synapticism/ubik-favicons): favicon support.
 * [Feed](https://github.com/synapticism/ubik-feed): a collection of feed-related functions.
+* [Fonts](https://github.com/synapticism/ubik-fonts): simple font loading functions.
 * [Imagery](https://github.com/synapticism/ubik-imagery): minimalist image management.
 * [Lingual](https://github.com/synapticism/ubik-lingual): simple language-related functions.
 * [Links](https://github.com/synapticism/ubik-links): expanded links management functionality.
