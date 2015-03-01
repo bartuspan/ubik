@@ -2,7 +2,7 @@
 
 Ubik is a modular suite of WordPress components for developers. Ubik components are lightweight plugins designed for direct integration into WordPress themes using an automated build process such as [Gulp](http://gulpjs.com/) or [Grunt](http://gruntjs.com/) and a package manager like [Composer](https://getcomposer.org) (the "correct" way) or [Bower](http://bower.io/) (a bit more DIY). The ultimate aim of this project is to create a kind of standard library of common template tags, code snippets, and hacks that are regularly included in `functions.php` without any of the bloat (option screens, database tables, and so on) that typically ship with regular plugins.
 
-Ubik components do not feature any sort of back-end interface; all settings are managed with simple configuration files populated primarily by PHP constants (and occasionally global arrays where necessary). This project is for *WordPress hackers**, not general end-users, as you'll need to get your hands dirty and break out a text editor to harness the power of Ubik.
+Ubik components do not feature any sort of back-end interface; all settings are managed with simple configuration files populated primarily by PHP constants (and occasionally global arrays where necessary). This project is for *WordPress hackers**, not general end-users, as you'll need to get your hands dirty and break out an editor to harness the power of Ubik.
 
 Ubik also acts as a kind of curated code base of common WordPress snippets and hacks. Most functions are readily cut and pasted into new contexts. Integrate Ubik components into your theme or rip code out and modify or use it as you see fit (within the terms of the license, of course).
 
@@ -10,39 +10,38 @@ Ubik also acts as a kind of curated code base of common WordPress snippets and h
 
 ## Components
 
-Mix and match whichever components you require:
+Mix and match whichever components you require! Most components are dependency-free. Check `composer.json` for a full list where applicable. Most of these components are in good shape and ready to use but a few remain under development. Read the documentation for each component to get a sense of how mature each one is.
 
-* [Admin](https://github.com/synapticism/ubik-admin): a library of hacks and snippets for the admin panel (requires core).
-* [Analytics](https://github.com/synapticism/ubik-analytics): simple Google Analytics functions.
-* [Cleaner](https://github.com/synapticism/ubik-cleaner): clean up default installations.
-* [Colophon](https://github.com/synapticism/ubik-colophon): a flexible system of generating footer data.
-* [Comments](https://github.com/synapticism/ubik-comments): a simple collection of comment-related functions.
-* [Excerpt](https://github.com/synapticism/ubik-excerpt): excerpt handling functions (requires core).
-* [Excluder](https://github.com/synapticism/ubik-excluder): arbitrarily exclude posts from the homepage.
-* [Favicons](https://github.com/synapticism/ubik-favicons): favicon support.
-* [Feed](https://github.com/synapticism/ubik-feed): a collection of feed-related functions.
-* [Fonts](https://github.com/synapticism/ubik-fonts): simple font loading functions.
-* [Imagery](https://github.com/synapticism/ubik-imagery): minimalist image management.
-* [Lingual](https://github.com/synapticism/ubik-lingual): simple language-related functions.
-* [Links](https://github.com/synapticism/ubik-links): expanded links management functionality.
-* [Markdown](https://github.com/synapticism/ubik-markdown): Markdown helper functions.
-* [Meta](https://github.com/synapticism/ubik-meta): post metadata management (requires core).
-* [Photo Meta](https://github.com/synapticism/ubik-photo-meta): display photo metadata and licensing info.
-* [Places](https://github.com/synapticism/ubik-places): a simple places taxonomy (requires core).
-* [Post Formats](https://github.com/synapticism/ubik-post-formats): post format hacks and snippets.
-* [Quick Terms](https://github.com/synapticism/ubik-quick-terms): add term descriptions to the quick edit box.
-* [RecordPress](https://github.com/synapticism/ubik-recordpress): useful things for netlabels (requires core).
-* [Related](https://github.com/synapticism/ubik-related): lightweight related posts.
-* [Search](https://github.com/synapticism/ubik-search): a small library of useful search-related functions.
-* [SEO](https://github.com/synapticism/ubik-seo): various SEO functions (requires core).
-* [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy.
-* [SVG Icons](https://github.com/synapticism/ubik-svg-icons): SVG icon helper functions.
-* [Terms](https://github.com/synapticism/ubik-terms): functions for working with categories, tags, and taxonomies.
-* [Time](https://github.com/synapticism/ubik-time): time and date functions.
-* [Title](https://github.com/synapticism/ubik-title): generate document, archive, and entry titles.
-* [Views](https://github.com/synapticism/ubik-views): a content template selector.
-
-Components that "require core" require functionality contained within this repo. Ubik must be incorporated into your theme (or activated as a plugin) for those components to function properly.
+* [Admin](https://github.com/synapticism/ubik-admin): a library of hacks and snippets for the admin panel (in flux).
+* [Analytics](https://github.com/synapticism/ubik-analytics): simple Google Analytics functions (stable; no dependencies).
+* [Cleaner](https://github.com/synapticism/ubik-cleaner): clean up default installations (stable; no dependencies).
+* [Colophon](https://github.com/synapticism/ubik-colophon): a flexible system of generating footer data (stable; no dependencies).
+* [Comments](https://github.com/synapticism/ubik-comments): a simple collection of comment-related functions (stable; no dependencies).
+* [Excerpt](https://github.com/synapticism/ubik-excerpt): excerpt handling functions (stable; has dependencies).
+* [Excluder](https://github.com/synapticism/ubik-excluder): arbitrarily exclude posts from the homepage (stable; no dependencies).
+* [Favicons](https://github.com/synapticism/ubik-favicons): favicon support (stable; no dependencies).
+* [Feed](https://github.com/synapticism/ubik-feed): a collection of feed-related functions (under development; no dependencies).
+* [Fonts](https://github.com/synapticism/ubik-fonts): simple font loading functions (stable; no dependencies).
+* [Imagery](https://github.com/synapticism/ubik-imagery): minimalist image management (under development; will be spun out into its own plugin; no dependencies).
+* [Lingual](https://github.com/synapticism/ubik-lingual): simple language-related functions (stable; no dependencies).
+* [Links](https://github.com/synapticism/ubik-links): expanded links management functionality (experimental; no dependencies).
+* [Markdown](https://github.com/synapticism/ubik-markdown): Markdown helper functions (stable; no dependencies).
+* [Meta](https://github.com/synapticism/ubik-meta): post metadata management (under development; has dependencies).
+* [Photo Meta](https://github.com/synapticism/ubik-photo-meta): display photo metadata and licensing info (stable; no dependencies).
+* [Places](https://github.com/synapticism/ubik-places): a simple places taxonomy (stable; has dependencies).
+* [Post Formats](https://github.com/synapticism/ubik-post-formats): post format hacks and snippets (stable; no dependencies).
+* [Quick Terms](https://github.com/synapticism/ubik-quick-terms): add term descriptions to the quick edit box (stable; no dependencies).
+* [RecordPress](https://github.com/synapticism/ubik-recordpress): useful things for netlabels (experimental; has dependencies).
+* [Related](https://github.com/synapticism/ubik-related): lightweight related posts (stable; no dependencies).
+* [Search](https://github.com/synapticism/ubik-search): a small library of useful search-related functions (stable; no dependencies).
+* [SEO](https://github.com/synapticism/ubik-seo): various SEO functions (under development; has dependencies).
+* [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy (stable; no dependencies).
+* [SVG Icons](https://github.com/synapticism/ubik-svg-icons): SVG icon helper functions (stable; no dependencies).
+* [Terms](https://github.com/synapticism/ubik-terms): functions for working with categories, tags, and taxonomies (under development; no dependencies).
+* [Text](https://github.com/synapticism/ubik-text): simple text processing functions (stable; no dependencies).
+* [Time](https://github.com/synapticism/ubik-time): time and date functions (stable; no dependencies).
+* [Title](https://github.com/synapticism/ubik-title): generate document, archive, and entry titles (stable; no dependencies).
+* [Views](https://github.com/synapticism/ubik-views): a content template selector (stable; no dependencies).
 
 
 
@@ -82,7 +81,6 @@ The core Ubik repo is home to a common library of functions that several compone
 
 * `is_categorized()` conditional: an adaptation of the "uncategorized blog" function from `_s`. This version allows you to explicitly declare that your blog uses no categories.
 * `ubik_popular_terms()` and `ubik_popular_terms_list()` for retrieving only the most popular terms in a taxonomy.
-* `ubik_truncate_text()` for trimming excerpts and meta descriptions.
 
 
 
@@ -90,9 +88,9 @@ The core Ubik repo is home to a common library of functions that several compone
 
 All Ubik components aspire to some simple guidelines (in case anyone would like to contribute or simply understand a little more about what this project is about):
 
-* Only procedural code; nothing object-oriented. Procedural code is often easier to follow and more readily copied and pasted into other contexts.
+* Only procedural code; nothing object-oriented. Procedural code is often easier to follow and more readily copied and pasted into other contexts. Components are meant to be easily understood "at a glance"; code bases that grow too large should become full-fledged plugins.
 * All functions, constants, variables, and translation-ready strings are in the `ubik` namespace *e.g.* `ubik_truncate_text` and `__( 'String', 'ubik' )`.
-* Most functions are conditionally wrapped in `function_exists` for greater extensibility and customization. There are exceptions for functions called exclusively by `add_filter` or `do_action` (at which point the `remove_filter` and `remove_actions` functions will accomplish the same as `function_exists` without any additional overhead).
+* Some functions are conditionally wrapped in `function_exists` for greater extensibility and customization. There are exceptions for functions called exclusively by `add_filter` or `do_action` (at which point the `remove_filter` and `remove_actions` functions will accomplish the same as `function_exists` without any additional overhead).
 * Follow a modular, not monolithic, design pattern; components are broken out into individual files and/or components wherever it is sensible to do so.
 * Minimize dependencies. Most components are standalone but there are a few that require functions defined in Ubik core (the repo you're looking at right now). If something is close to the base metal and used by more than one component it may qualify for inclusion in Ubik core but I'd really like to keep the core as empty as possible (see previous standard).
 * All settings and options are either PHP constants or easily hooked using the WordPress filter/action system. No options pages or other admin panel bloat. Global variables only where strictly necessary.

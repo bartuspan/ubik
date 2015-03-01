@@ -6,9 +6,9 @@
  * Description: A modular library of WordPress components
  * Author: Alexander Synaptic
  * Author URI: http://alexandersynaptic.com
- * Version: 0.0.1
+ * Version: 0.0.4
  */
-define( 'UBIK_VERSION', '0.0.1' );
+define( 'UBIK_VERSION', '0.0.4' );
 
 // Do not call this plugin directly
 if ( !defined( 'WPINC' ) ) {
@@ -25,4 +25,3 @@ require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-config-defa
 // Load plugin files
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-is-categorized.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-terms-popular.php' );
-require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'ubik-text.php' );
