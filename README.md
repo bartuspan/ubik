@@ -39,7 +39,6 @@ Mix and match whichever components you require! Most components are dependency-f
 * [SVG Icons](https://github.com/synapticism/ubik-svg-icons): SVG icon helper functions (stable; no dependencies).
 * [Terms](https://github.com/synapticism/ubik-terms): functions for working with categories, tags, and taxonomies (stable; no dependencies).
 * [Text](https://github.com/synapticism/ubik-text): simple text processing functions (stable; no dependencies).
-* [Time](https://github.com/synapticism/ubik-time): time and date functions (stable; no dependencies).
 * [Title](https://github.com/synapticism/ubik-title): generate document, archive, and entry titles (stable; no dependencies).
 * [Views](https://github.com/synapticism/ubik-views): a content template selector (stable; no dependencies).
 
