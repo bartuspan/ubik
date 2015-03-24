@@ -26,7 +26,7 @@ Mix and match whichever components you require! Most components are dependency-f
 * [Lingual](https://github.com/synapticism/ubik-lingual): simple language-related functions (stable; no dependencies).
 * [Links](https://github.com/synapticism/ubik-links): expanded links management functionality (experimental; no dependencies).
 * [Markdown](https://github.com/synapticism/ubik-markdown): Markdown helper functions (stable; no dependencies).
-* [Meta](https://github.com/synapticism/ubik-meta): post metadata management (under development; has dependencies).
+* [Meta](https://github.com/synapticism/ubik-meta): post metadata management (stable; has dependencies).
 * [Photo Meta](https://github.com/synapticism/ubik-photo-meta): display photo metadata and licensing info (stable; no dependencies).
 * [Places](https://github.com/synapticism/ubik-places): a simple places taxonomy (stable; has dependencies).
 * [Post Formats](https://github.com/synapticism/ubik-post-formats): post format hacks and snippets (stable; no dependencies).
@@ -34,11 +34,12 @@ Mix and match whichever components you require! Most components are dependency-f
 * [RecordPress](https://github.com/synapticism/ubik-recordpress): useful things for netlabels (experimental; has dependencies).
 * [Related](https://github.com/synapticism/ubik-related): lightweight related posts (stable; no dependencies).
 * [Search](https://github.com/synapticism/ubik-search): a small library of useful search-related functions (stable; no dependencies).
-* [SEO](https://github.com/synapticism/ubik-seo): various SEO functions (under development; has dependencies).
+* [SEO](https://github.com/synapticism/ubik-seo): various SEO functions (stable; has dependencies).
 * [Series](https://github.com/synapticism/ubik-series): a lightweight post series taxonomy (stable; no dependencies).
 * [SVG Icons](https://github.com/synapticism/ubik-svg-icons): SVG icon helper functions (stable; no dependencies).
 * [Terms](https://github.com/synapticism/ubik-terms): functions for working with categories, tags, and taxonomies (stable; no dependencies).
 * [Text](https://github.com/synapticism/ubik-text): simple text processing functions (stable; no dependencies).
+* [Time](https://github.com/synapticism/ubik-time): time and date functions (stable; no dependencies).
 * [Title](https://github.com/synapticism/ubik-title): generate document, archive, and entry titles (stable; no dependencies).
 * [Views](https://github.com/synapticism/ubik-views): a content template selector (stable; no dependencies).
 
@@ -60,7 +61,7 @@ Install via Bower (warning: no dependency management):
 
 ## Configuration
 
-Ubik components follow a simple configuration pattern: constants and variables should be set in `functions.php` (or some equivalent in your theme) prior to loading each components. Some functions are wrapped in `function_exists` calls which means you can make small customizations to Ubik components without needing to fork a repo. Functions without `function_exists` are usually pluggable via the [action/filter hook system](http://codex.wordpress.org/Plugin_API/Hooks); remove existing hooks and add your own as needed.
+Most Ubik components follow a simple configuration pattern: constants and variables should be set in `functions.php` (or some equivalent in your theme) prior to loading each components. Some functions are wrapped in `function_exists` calls which means you can make small customizations to Ubik components without needing to fork a repo. Functions without `function_exists` are usually pluggable via the [action/filter hook system](http://codex.wordpress.org/Plugin_API/Hooks); remove existing hooks and add your own as needed.
 
 It is also possible to drop configuration files into component directories themselves but this is much more of a roundabout process. Part of the goal of this project is to provide a simple, centralized way to configure a wide variety of commonly deployed components; distributing your configuration into many different files defeats this purpose.
 
